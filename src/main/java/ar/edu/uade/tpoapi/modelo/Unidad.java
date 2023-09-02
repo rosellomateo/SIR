@@ -45,7 +45,7 @@ public class Unidad {
         this.piso = piso;
         this.numero = numero;
         this.habitado = false;
-        //this.edificio = edificio;
+        this.edificio = edificio;
         this.duenios = new ArrayList<Persona>();
         this.inquilinos = new ArrayList<Persona>();
     }
@@ -105,9 +105,9 @@ public class Unidad {
     }
 
 
-    // public Edificio getEdificio() {
-    //     return edificio;
-    // }
+    public Edificio getEdificio() {
+         return edificio;
+    }
 
     public List<Persona> getDuenios() {
         return duenios;
@@ -117,10 +117,10 @@ public class Unidad {
         return inquilinos;
     }
 
-    // public UnidadView toView() {
-    //     EdificioView auxEdificio = edificio.toView();
-    //     return new UnidadView(id, piso, numero, habitado, auxEdificio);
-    // }
+     public UnidadView toView() {
+         EdificioView auxEdificio = edificio.toView();
+         return new UnidadView(id, piso, numero, habitado, auxEdificio);
+     }
 
     public String toString() {
         return "Unidad: " + piso + " " + numero + " " + habitado;

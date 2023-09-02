@@ -34,14 +34,14 @@ public class Controlador {
         return null;
     }
 
-    // public List<UnidadView> getUnidadesPorEdificio(int codigo) throws EdificioException{
-    //     List<UnidadView> resultado = new ArrayList<UnidadView>();
-    //     Edificio edificio = buscarEdificio(codigo);
-    //     List<Unidad> unidades = edificio.getUnidades();
-    //     for(Unidad unidad : unidades)
-    //         resultado.add(unidad.toView());
-    //     return resultado;
-    // }
+    public List<UnidadView> getUnidadesPorEdificio(int codigo) throws EdificioException{
+         List<UnidadView> resultado = new ArrayList<UnidadView>();
+         Edificio edificio = buscarEdificio(codigo);
+         List<Unidad> unidades = edificio.getUnidades();
+         for(Unidad unidad : unidades)
+             resultado.add(unidad.toView());
+         return resultado;
+    }
 
     public List<PersonaView> habilitadosPorEdificio(int codigo) throws EdificioException{
         List<PersonaView> resultado = new ArrayList<PersonaView>();
