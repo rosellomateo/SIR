@@ -35,7 +35,8 @@ public class TpoApiApplication implements CommandLineRunner{
 	ReclamoRepository reclamoRepository;	
 
     public static void main(String[] args) {
-        SpringApplication.run(TpoApiApplication.class, args);
+
+		SpringApplication.run(TpoApiApplication.class, args);
     }
 
     @Override
