@@ -21,9 +21,9 @@ import ar.edu.uade.tpoapi.views.UnidadView;
 public class ControladorReclamo {
 
     private static ControladorReclamo instancia;
-    private static ControladorEdificio controladorEdificio = ControladorEdificio.getInstancia();
-    private static ControladorUnidad controlerUnidad = ControladorUnidad.getInstancia();
-    private static ControladorPersona controlerPersona = ControladorPersona.getInstancia();
+    private static final ControladorEdificio controladorEdificio = ControladorEdificio.getInstancia();
+    private static final ControladorUnidad controlerUnidad = ControladorUnidad.getInstancia();
+    private static final ControladorPersona controlerPersona = ControladorPersona.getInstancia();
 
     private ControladorReclamo() { }
 

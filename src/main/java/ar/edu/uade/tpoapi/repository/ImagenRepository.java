@@ -1,4 +1,4 @@
-package ar.edu.uade.tpoapi.dao;
+package ar.edu.uade.tpoapi.repository;
 
 import java.util.Optional;
 

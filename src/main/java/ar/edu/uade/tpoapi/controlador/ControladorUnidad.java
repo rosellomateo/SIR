@@ -8,7 +8,7 @@ import ar.edu.uade.tpoapi.modelo.Unidad;
 public class ControladorUnidad {
 
     private static ControladorUnidad instancia;
-    private static ControladorPersona controladorPersona = ControladorPersona.getInstancia();
+    private static final ControladorPersona controladorPersona = ControladorPersona.getInstancia();
 
     private ControladorUnidad() { }
 

@@ -12,7 +12,7 @@ import ar.edu.uade.tpoapi.views.PersonaView;
 public class ControladorPersona {
     
     private static ControladorPersona instancia;
-    private static ControladorUnidad controladorUnidad = ControladorUnidad.getInstancia();
+    private static final ControladorUnidad controladorUnidad = ControladorUnidad.getInstancia();
 
     private ControladorPersona() { }
 
