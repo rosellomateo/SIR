@@ -9,6 +9,7 @@ import ar.edu.uade.tpoapi.modelo.Edificio;
 
 public interface EdificioRepository extends JpaRepository<Edificio, Integer>{
     
-    	public Optional<Edificio> findByCodigo(Integer codigo);
+    public Optional<Edificio> findByCodigo(Integer codigo);
+	public Edificio getEdificioByCodigo(Integer codigo); 
 
 }

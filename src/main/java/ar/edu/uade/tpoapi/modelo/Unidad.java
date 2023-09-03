@@ -50,6 +50,17 @@ public class Unidad {
         this.inquilinos = new ArrayList<Persona>();
     }
 
+    public Unidad( String piso, String numero, Edificio edificio){
+
+        this.piso = piso;
+        this.numero = numero;
+        this.habitado = false;
+        this.edificio = edificio;
+        this.duenios = new ArrayList<Persona>();
+        this.inquilinos = new ArrayList<Persona>();
+
+    }
+
     public Unidad() {
     }
 
