@@ -8,6 +8,7 @@ import ar.edu.uade.tpoapi.exceptions.EdificioException;
 import ar.edu.uade.tpoapi.modelo.Edificio;
 import ar.edu.uade.tpoapi.modelo.Persona;
 import ar.edu.uade.tpoapi.modelo.Unidad;
+import ar.edu.uade.tpoapi.services.EdificioService;
 import ar.edu.uade.tpoapi.views.EdificioView;
 import ar.edu.uade.tpoapi.views.PersonaView;
 import ar.edu.uade.tpoapi.views.UnidadView;
@@ -15,8 +16,12 @@ import ar.edu.uade.tpoapi.views.UnidadView;
 public class ControladorEdificio {
 
     private static ControladorEdificio instancia;
+    private final EdificioService edificioService;
 
-    private ControladorEdificio() { }
+
+    private ControladorEdificio() {
+        edificioService =  EdificioService.getInstancia();
+    }
 
     public static ControladorEdificio getInstancia() {
         if(instancia == null)
@@ -25,7 +30,13 @@ public class ControladorEdificio {
     }
 
     public List<EdificioView> getEdificios(){
-        return null;
+        List<Edificio> edificios = edificioService.getAll();
+        List<EdificioView>edificioViews = new ArrayList<>();
+
+        for(Edificio e : edificios)
+            edificioViews.add(e.toView());
+
+        return edificioViews;
     }
 
     public List<UnidadView> getUnidadesPorEdificio(int codigo) throws EdificioException{
