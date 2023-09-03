@@ -7,5 +7,5 @@ import ar.edu.uade.tpoapi.modelo.Unidad;
 public interface UnidadRepository extends JpaRepository<Unidad, Integer>{
     
     public Optional<Unidad> findById(Integer  id);
-    
+    public void deleteById(Integer id);
 }
