@@ -34,10 +34,10 @@ public class Unidad {
     @JoinColumn(name = "codigoedificio")
     private Edificio edificio;
     @ManyToMany
-    @JoinTable(name = "personas", joinColumns = @JoinColumn(name = "documento"), inverseJoinColumns = @JoinColumn(name = "identificador"))
+    @JoinTable(name = "duenios", joinColumns = @JoinColumn(name = "identificador"), inverseJoinColumns = @JoinColumn(name = "documento"))
     private List<Persona> duenios;
     @ManyToMany
-    @JoinTable(name = "personas", joinColumns = @JoinColumn(name = "documento"), inverseJoinColumns = @JoinColumn(name = "identificador"))
+    @JoinTable(name = "inquilinos", joinColumns = @JoinColumn(name = "identificador"), inverseJoinColumns = @JoinColumn(name = "documento"))
     private List<Persona> inquilinos;
 
     public Unidad(int id, String piso, String numero, Edificio edificio) {

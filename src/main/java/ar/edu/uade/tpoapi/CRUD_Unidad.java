@@ -62,7 +62,17 @@ public class CRUD_Unidad implements CommandLineRunner {
         unidadRepository.deleteById(id);
         System.out.println(unidadRepository.existsById(id));
 
-        
+        //5. Actualizar una unidad de la BD
+
+        System.out.println("Ingrese el codigo de la unidad del cual desea actualizar info");
+        Integer iD = sc.nextInt();
+        String nuevoPiso = sc.nextLine();
+        String nuevoNumero = sc.nextLine();
+        Edificio nuevoEdificio = edificioRepository.getEdificioByCodigo(sc.nextInt());
+        Unidad UnidadModificada = unidadRepository.save(new Unidad(iD,nuevoPiso,nuevoNumero,nuevoEdificio));
+        System.out.println(UnidadModificada.toString());
+
+
 
 
         throw new Exception("---------------------------------finalizado con exito---------------------------------");
