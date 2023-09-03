@@ -27,7 +27,7 @@ public class Edificio {
     private String nombre;
     private String direccion;
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "codigo")
+    @JoinColumn(name = "codigoedificio")
     private List<Unidad> unidades;
     
 
@@ -37,10 +37,18 @@ public class Edificio {
         this.direccion = direccion;
         unidades = new ArrayList<Unidad>();
     }
-
+    //constructor sin codigo. CONSULTAR
+    public Edificio(String nombre ,String direccion){
+        this.nombre = nombre;
+        this.direccion = direccion;
+        unidades = new ArrayList<Unidad>();
+    }
     public Edificio() {
     }
-
+    public void updateEdificio(EdificioView eView){
+        this.nombre = eView.getNombre();
+        this.direccion = eView.getDireccion();
+    }
     public void agregarUnidad(Unidad unidad) {
         unidades.add(unidad);
     }
@@ -107,6 +115,6 @@ public class Edificio {
     }
 
     public String toString() {
-        return codigo + " " + nombre;
+        return codigo + " " + nombre + " " + direccion;
     }
 }
