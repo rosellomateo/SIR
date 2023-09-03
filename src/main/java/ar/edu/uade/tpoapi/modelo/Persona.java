@@ -25,7 +25,11 @@ public class Persona {
 
     public Persona() {
     }
-
+    public Persona(String nombre, String mail, String password){
+        this.nombre = nombre;
+        this.mail = mail;
+        this.password = password;
+    }
     public void cambiarPassword(String password) {
         this.password = password;
     }
