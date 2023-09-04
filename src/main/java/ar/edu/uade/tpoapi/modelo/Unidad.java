@@ -8,14 +8,12 @@ import ar.edu.uade.tpoapi.views.EdificioView;
 import ar.edu.uade.tpoapi.views.UnidadView;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -34,10 +32,10 @@ public class Unidad {
     @JoinColumn(name = "codigoedificio")
     private Edificio edificio;
     @ManyToMany
-    @JoinTable(name = "personas", joinColumns = @JoinColumn(name = "documento"), inverseJoinColumns = @JoinColumn(name = "identificador"))
+    @JoinTable(name = "duenios", joinColumns = @JoinColumn(name = "identificador"), inverseJoinColumns = @JoinColumn(name = "documento"))
     private List<Persona> duenios;
     @ManyToMany
-    @JoinTable(name = "personas", joinColumns = @JoinColumn(name = "documento"), inverseJoinColumns = @JoinColumn(name = "identificador"))
+    @JoinTable(name = "inquilinos", joinColumns = @JoinColumn(name = "identificador"), inverseJoinColumns = @JoinColumn(name = "documento"))
     private List<Persona> inquilinos;
 
     public Unidad(int id, String piso, String numero, Edificio edificio) {
@@ -48,6 +46,17 @@ public class Unidad {
         this.edificio = edificio;
         this.duenios = new ArrayList<Persona>();
         this.inquilinos = new ArrayList<Persona>();
+    }
+
+    public Unidad( String piso, String numero, Edificio edificio){
+
+        this.piso = piso;
+        this.numero = numero;
+        this.habitado = false;
+        this.edificio = edificio;
+        this.duenios = new ArrayList<Persona>();
+        this.inquilinos = new ArrayList<Persona>();
+
     }
 
     public Unidad() {
