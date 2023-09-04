@@ -2,7 +2,6 @@ package ar.edu.uade.tpoapi.controlador;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import ar.edu.uade.tpoapi.exceptions.EdificioException;
 import ar.edu.uade.tpoapi.exceptions.PersonaException;
@@ -12,11 +11,8 @@ import ar.edu.uade.tpoapi.modelo.Edificio;
 import ar.edu.uade.tpoapi.modelo.Persona;
 import ar.edu.uade.tpoapi.modelo.Reclamo;
 import ar.edu.uade.tpoapi.modelo.Unidad;
-import ar.edu.uade.tpoapi.views.EdificioView;
 import ar.edu.uade.tpoapi.views.Estado;
-import ar.edu.uade.tpoapi.views.PersonaView;
 import ar.edu.uade.tpoapi.views.ReclamoView;
-import ar.edu.uade.tpoapi.views.UnidadView;
 
 public class ControladorReclamo {
 

@@ -11,37 +11,16 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import ar.edu.uade.tpoapi.repository.EdificioRepository;
-import ar.edu.uade.tpoapi.repository.ImagenRepository;
-import ar.edu.uade.tpoapi.repository.PersonaRepository;
-import ar.edu.uade.tpoapi.repository.ReclamoRepository;
-import ar.edu.uade.tpoapi.repository.UnidadRepository;
 import ar.edu.uade.tpoapi.modelo.Edificio;
-import ar.edu.uade.tpoapi.modelo.Imagen;
-import ar.edu.uade.tpoapi.modelo.Persona;
-import ar.edu.uade.tpoapi.modelo.Reclamo;
-import ar.edu.uade.tpoapi.modelo.Unidad;
-import ar.edu.uade.tpoapi.controlador.ControladorEdificio;
 @SpringBootApplication
-public class TpoApiApplication implements CommandLineRunner{
-
-	@Autowired
-	ImagenRepository imagenRepository;
+public class CRUD_Edificio implements CommandLineRunner{
 
 	@Autowired
 	EdificioRepository edificioRepository;
 
-	@Autowired
-	UnidadRepository unidadRepository;
-
-	@Autowired
-	PersonaRepository personaRepository;
-
-	@Autowired
-	ReclamoRepository reclamoRepository;	
-
     public static void main(String[] args) {
 
-		SpringApplication.run(TpoApiApplication.class, args);
+		SpringApplication.run(CRUD_Edificio.class, args);
     }
 
     @Override
@@ -88,6 +67,7 @@ public class TpoApiApplication implements CommandLineRunner{
 
 		}
 
+		throw new Exception("___________________ FIN CRUD EDIFICIO ___________________");
 
 	}
 }
