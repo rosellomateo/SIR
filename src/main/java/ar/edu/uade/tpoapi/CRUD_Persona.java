@@ -27,7 +27,7 @@ public class CRUD_Persona implements CommandLineRunner {
     @Transactional
     public void run(String... args) throws Exception {
         //CRUD Persona
-        //1.Encontrar una persona determinada
+        //1.Encontrar una persona determinada == Controlador.BuscarPersona
         Scanner sc = new Scanner(System.in);
         System.out.println("Buscando una persona en especifico");
         Optional<Persona> persona = personaRepository.findByDocumento("DNI29988738");
@@ -45,7 +45,7 @@ public class CRUD_Persona implements CommandLineRunner {
         System.out.println("Presione enter para seguir");
         sc.nextLine();
 
-        //3. Guardar personas en la BD
+        //3. Guardar personas en la BD == Controlador.AgregarPersona
         System.out.println("Guardado de persona");
         System.out.println("el campo documento seria: DNI43900195" +
                 "El nombre va a ser Sebastian" +
@@ -54,9 +54,10 @@ public class CRUD_Persona implements CommandLineRunner {
         System.out.println("Guardado!");
         System.out.println("Presione enter para seguir");
         sc.nextLine();
-        
+
         //4. Actualizar alguna persona
-        System.out.println("Actualizando los datos de una persona");
+        System.out.println("Actualizando los datos de una persona " +
+                " y registro del usuario con mail y password ");
         System.out.println("El nombre se mantendra igual" +
                 " y lo que se va a modificar es el mail y la contraseña");
         if(personaRepository.existsByDocumento("DNI43900195")){
@@ -71,7 +72,19 @@ public class CRUD_Persona implements CommandLineRunner {
         System.out.println("Presione enter para seguir");
         sc.nextLine();
 
-        //5. Borrar una persona por id, en este caso documento
+
+        //5. Modificado de contraseña
+        persona = personaRepository.findByDocumento("DNI43900195");
+        if (persona.isPresent()) {
+            Persona personaContraseñaACambiar = persona.get();
+            if(personaContraseñaACambiar.getPassword() == "Contraseña"){
+                personaRepository.saveAndFlush(new Persona(personaContraseñaACambiar.getDocumento(),
+                        personaContraseñaACambiar.getNombre(), personaContraseñaACambiar.getMail(), "aproved?"));
+            }
+        }
+        System.out.println("Presione enter para seguir");
+        sc.nextLine();
+        //6. Borrar una persona por id, en este caso documento == Controlador.EliminarPersona
         System.out.println("Borrado de una persona especifica");
 
         if(personaRepository.existsByDocumento("DNI43900195")){

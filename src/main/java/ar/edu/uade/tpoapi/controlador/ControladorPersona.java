@@ -35,7 +35,20 @@ public class ControladorPersona {
         Persona persona = buscarPersona(documento);
         //eliminar el objeto
     }
-
+    public void validoParaRegistro(String documento) throws PersonaException {
+        //cambiar el void a boolean
+        Persona p = buscarPersona(documento);
+        /*if(contraseña y mail == null){
+                return true;
+          }else{
+                return false;
+            }*/
+    }
+    public void registrar(Persona p){
+        /*
+        personaRepository.saveAndFlush();
+        **/
+    }
     public List<PersonaView> dueniosPorUnidad(int codigo, String piso, String numero) throws UnidadException{
         List<PersonaView> resultado = new ArrayList<PersonaView>();
         Unidad unidad = controladorUnidad.buscarUnidad(codigo, piso, numero);
