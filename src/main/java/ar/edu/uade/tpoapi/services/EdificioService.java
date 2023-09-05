@@ -21,6 +21,9 @@ public class EdificioService  {
     }
 
     public List<Edificio> getAll(){
+
         return edificioRepository.findAll();
     }
+
+
 }
