@@ -25,55 +25,45 @@ public class CRUD_Unidad implements CommandLineRunner {
     }
     @Override
     public void run(String... args) throws Exception {
-        //CRUD Unidad
-        //1.Encontar una unidad deseada
+        
+        Scanner sc = new Scanner(System.in) ;
+        System.out.println("Encontrar una unidad deseada para el id 7");
         Optional<Unidad> unidad = unidadRepository.findById(7);
         System.out.println(unidad.toString());
+        System.out.println("Ingrese enter para continuar");
+        sc.nextLine();
 
         //2. Encontar todas las unidades
+        System.out.println("Encontrar todas las unidades");
         List<Unidad> u = unidadRepository.findAll();
         for (Unidad un:u) {
 			System.out.println(un.toString());
         }
+
         //3. Guardar una unidad en la base de datos
-        Scanner sc = new Scanner(System.in) ;
-        System.out.println("ingrese Piso");
-        String piso = sc.nextLine();
-        System.out.println("ingrese numero");
-        String numero = sc.nextLine();
-        List<Edificio> edificios = edificioRepository.findAll(); 
-        for (Edificio ed: edificios ){
-            System.out.println(ed.toString());
+        System.out.println("guardado unidad para el piso 7 numero 72 y edificio 1");
+        Optional<Edificio> edificio = edificioRepository.findById(1);
+        if(edificio.isPresent())
+        {
+            Unidad unidadGuardar = unidadRepository.save(new Unidad("7","72",edificio.get()));
+            System.out.println(unidadGuardar.toString());
+            System.out.println("Ingrese enter para continuar");
+            sc.nextLine();
+            System.out.println("modificando la unidad guardada");
+            Unidad unidadModificada = new Unidad(unidadGuardar.getId(),"8","82",edificio.get());
+            unidadModificada = unidadRepository.save(unidadModificada);
+            System.out.println(unidadModificada.toString());
+            System.out.println("Ingrese enter para continuar");
+            sc.nextLine();
+            System.out.println("eliminando la ultima unidad guardada");
+            unidadRepository.delete(unidadModificada);
+            System.out.println("Ingrese enter para continuar");
+            sc.nextLine();
         }
-        System.out.println("ingrese numero del codigo del edificio");
-        Edificio edificio = edificioRepository.getEdificioByCodigo(sc.nextInt());
-        Unidad unidadGuardar = unidadRepository.save(new Unidad(piso,numero,edificio));
-        System.out.println(unidadGuardar.toString());
+
+        //Transferir una unidad
+        System.out.println("Transferir una unidad");
         
-        //4. Borrar una unidad de la BD
-
-        
-        List<Unidad> uni = unidadRepository.findAll(); 
-        for (Unidad un:uni ){
-            System.out.println(un.toString());
-        }
-        System.out.println("ingrese numero del codigo de la unidad que desea eliminar");
-        Integer id = sc.nextInt();
-        unidadRepository.deleteById(id);
-        System.out.println(unidadRepository.existsById(id));
-
-        //5. Actualizar una unidad de la BD
-
-        System.out.println("Ingrese el codigo de la unidad del cual desea actualizar info");
-        Integer iD = sc.nextInt();
-        String nuevoPiso = sc.nextLine();
-        String nuevoNumero = sc.nextLine();
-        Edificio nuevoEdificio = edificioRepository.getEdificioByCodigo(sc.nextInt());
-        Unidad UnidadModificada = unidadRepository.save(new Unidad(iD,nuevoPiso,nuevoNumero,nuevoEdificio));
-        System.out.println(UnidadModificada.toString());
-
-
-
 
         throw new Exception("---------------------------------finalizado con exito---------------------------------");
     }
