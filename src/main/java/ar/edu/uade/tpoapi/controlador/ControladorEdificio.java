@@ -80,8 +80,5 @@ public class ControladorEdificio {
         return null;
     }
 
-    public static void main(String[] args) {
-        ControladorEdificio c = new ControladorEdificio();
-        c.getEdificios();
-    }
+
 }
