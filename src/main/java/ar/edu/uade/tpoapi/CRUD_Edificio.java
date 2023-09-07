@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+import ar.edu.uade.tpoapi.modelo.Unidad;
+import ar.edu.uade.tpoapi.repository.UnidadRepository;
 import ar.edu.uade.tpoapi.views.EdificioView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -17,6 +19,8 @@ public class CRUD_Edificio implements CommandLineRunner{
 
 	@Autowired
 	EdificioRepository edificioRepository;
+	@Autowired
+	UnidadRepository unidadRepository;
 
     public static void main(String[] args) {
 
@@ -88,6 +92,32 @@ public class CRUD_Edificio implements CommandLineRunner{
 			edificioRepository.saveAndFlush(new Edificio(codActualizacion,"nombre actualizado","direccion actualizada"));
 
 		}
+		System.out.println("Presione enter para continuar. " +
+				"La proxima operacion es recuperar todas las " +
+				"unidades que haya en el edificio");
+		sc.nextLine();
+
+		//6. recuperar todas las unidades en un edificio == Controlador.getUnidadesPorEdificio
+		System.out.println("Recuperando todas las unidades de un edificio");
+		//codigo
+		System.out.println("Presione enter para continuar. " +
+				"La proxima operacion es recuperar todas las " +
+				"unidades habilitadas de un edificio");
+		sc.nextLine();
+
+		//7. recuperar todas las unidades habilitadas de un edificio == Controlador.habilitadosPorEdificio
+		System.out.println("Recuperando todas las unidades habilitadas por edificio");
+		//codigo
+		System.out.println("Presione enter para continuar. " +
+				"La proxima operacion es recuperar todos los dueños en un edificio");
+		sc.nextLine();
+
+		//8. recuperar todos los dueños en un edificio == Controlador.dueñosPorEdificio
+		System.out.println("Recuperando todos los dueños de un edificio");
+		//codigo
+		System.out.println("Presione enter para continuar. " +
+				"La proxima operacion es recuperar los inquilinos de un edificio");
+		//codigo
 		sc.nextLine();
 		System.out.println("Esta fue la ultima operacion." +
 				" Presione enter para lanzar una excepcion " +
