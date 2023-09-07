@@ -92,7 +92,7 @@ public class CRUD_Persona implements CommandLineRunner {
             System.out.println("Borrado!");
         }
 
-        throw new Exception("-------------------------------Hasta aca llegamos master------------");
+        throw new Exception("___________________ FIN CRUD PERSONA ___________________");
     }   
 }
         
