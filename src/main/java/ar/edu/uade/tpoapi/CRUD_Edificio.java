@@ -1,19 +1,17 @@
 package ar.edu.uade.tpoapi;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-import ar.edu.uade.tpoapi.modelo.Unidad;
 import ar.edu.uade.tpoapi.repository.UnidadRepository;
-import ar.edu.uade.tpoapi.views.EdificioView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import ar.edu.uade.tpoapi.repository.EdificioRepository;
 import ar.edu.uade.tpoapi.modelo.Edificio;
+
 @SpringBootApplication
 public class CRUD_Edificio implements CommandLineRunner{
 
