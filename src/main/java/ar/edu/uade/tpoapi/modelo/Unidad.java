@@ -19,13 +19,13 @@ public class Unidad {
     private String piso;
     private String numero;
     private boolean habitado;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "codigoedificio")
     private Edificio edificio;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "duenios", joinColumns = @JoinColumn(name = "identificador"), inverseJoinColumns = @JoinColumn(name = "documento"))
     private List<Persona> duenios;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "inquilinos", joinColumns = @JoinColumn(name = "identificador"), inverseJoinColumns = @JoinColumn(name = "documento"))
     private List<Persona> inquilinos;
 
