@@ -1,10 +1,11 @@
 package ar.edu.uade.tpoapi;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
+import ar.edu.uade.tpoapi.modelo.Persona;
+import ar.edu.uade.tpoapi.modelo.Unidad;
 import ar.edu.uade.tpoapi.repository.UnidadRepository;
+import ar.edu.uade.tpoapi.views.UnidadView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -82,8 +83,8 @@ public class CRUD_Edificio implements CommandLineRunner{
 		//5.actualizar algun edificio por id
 		System.out.println("Actualizando algun edificio por un ID especifico");
 		System.out.println("");
-		System.out.println("Ingrese el cod del edificio del cual desea actualizar info." +
-				" En este caso el nombre del edificio se remplazara por nombre actualizado " +
+		System.out.println("Ingrese el codigo del edificio del cual desea actualizar info.\n" +
+				"En este caso el nombre del edificio se remplazara por nombre actualizado \n" +
 				"y la direccion por direccion actualizada");
 		int codActualizacion = sc.nextInt();
 		if(edificioRepository.existsById(codActualizacion)){
@@ -97,7 +98,16 @@ public class CRUD_Edificio implements CommandLineRunner{
 
 		//6. recuperar todas las unidades en un edificio == Controlador.getUnidadesPorEdificio
 		System.out.println("Recuperando todas las unidades de un edificio");
-		//codigo
+		System.out.println("");
+		System.out.println("Lo que se muestra a continuacion por cada unidad es \n" +
+				"el piso de la unidad, el nro de la unidad y si esta habitado o no");
+		Edificio edificioVerUnidades = edificioRepository.getEdificioByCodigo(1);
+		List<Unidad> unidadesXEdificio = edificioVerUnidades.getUnidades();
+		for (Unidad u :
+				unidadesXEdificio) {
+			System.out.println(u.toString());
+		}
+
 		System.out.println("Presione enter para continuar. " +
 				"La proxima operacion es recuperar todas las " +
 				"unidades habilitadas de un edificio");
@@ -105,17 +115,37 @@ public class CRUD_Edificio implements CommandLineRunner{
 
 		//7. recuperar todas las unidades habilitadas de un edificio == Controlador.habilitadosPorEdificio
 		System.out.println("Recuperando todas las unidades habilitadas por edificio");
-		//codigo
+		Edificio edificioVerHabitados = edificioRepository.getEdificioByCodigo(1);
+		unidadesXEdificio = edificioVerHabitados.getUnidades();
+		for (Unidad u :
+				unidadesXEdificio) {
+			if (u.estaHabitado()) {
+				System.out.println(u.toString());
+			}
+			}
 		System.out.println("Presione enter para continuar. " +
 				"La proxima operacion es recuperar todos los dueños en un edificio");
 		sc.nextLine();
 
 		//8. recuperar todos los dueños en un edificio == Controlador.dueñosPorEdificio
-		System.out.println("Recuperando todos los dueños de un edificio");
-		//codigo
+		System.out.println("Recuperando todos los dueños en un edificio");
+		Edificio edificioVerDuenios = edificioRepository.getEdificioByCodigo(1);
+		Set<Persona> duenios = edificioVerDuenios.duenios();
+		for (Persona p :
+				duenios) {
+			System.out.println(p.toString());
+		}
 		System.out.println("Presione enter para continuar. " +
 				"La proxima operacion es recuperar los inquilinos de un edificio");
-		//codigo
+
+		//9. recuperar todos los inquilinos de un edificio == Controlador.habitantesPorEdificio
+		System.out.println("Recuperando todos los inquilinos de un edificio");
+		Edificio edificioVerInquilinos = edificioRepository.getEdificioByCodigo(1);
+		Set<Persona> inquilinos = edificioVerDuenios.habitantes();
+		for (Persona p :
+				inquilinos) {
+			System.out.println(p.toString());
+		}
 		sc.nextLine();
 		System.out.println("Esta fue la ultima operacion." +
 				" Presione enter para lanzar una excepcion " +

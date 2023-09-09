@@ -26,7 +26,7 @@ public class Edificio {
     private int codigo;
     private String nombre;
     private String direccion;
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "codigoedificio")
     private List<Unidad> unidades;
     
