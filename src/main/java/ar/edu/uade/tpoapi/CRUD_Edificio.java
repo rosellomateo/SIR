@@ -5,7 +5,6 @@ import java.util.*;
 import ar.edu.uade.tpoapi.modelo.Persona;
 import ar.edu.uade.tpoapi.modelo.Unidad;
 import ar.edu.uade.tpoapi.repository.UnidadRepository;
-import ar.edu.uade.tpoapi.views.UnidadView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

@@ -86,11 +86,21 @@ public class Edificio {
         Set<Persona> resultado = new HashSet<Persona>();
         for(Unidad unidad : unidades) {
             List<Persona> duenios = unidad.getDuenios();
-            for(Persona p : duenios)
-                duenios.add(p);
+            resultado.addAll(duenios); // Agregar todos los elementos de duenios a resultado
         }
         return resultado;
     }
+    
+
+    // public Set<Persona> duenios() {
+    //     Set<Persona> resultado = new HashSet<Persona>();
+    //     for(Unidad unidad : unidades) {
+    //         List<Persona> duenios = unidad.getDuenios();
+    //         for(Persona p : duenios)
+    //             duenios.add(p);
+    //     }
+    //     return resultado;
+    // }
 
     public Set<Persona> habitantes() {
         Set<Persona> resultado = new HashSet<Persona>();
