@@ -27,7 +27,7 @@ public class Reclamo {
     private Unidad unidad;
     private Estado estado;
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "imagenes", joinColumns = @JoinColumn(name = "numero"))
+    @JoinColumn(name = "idreclamo")
     private List<Imagen> imagenes;
 
     public Reclamo(Persona usuario, Edificio edificio, String ubicacion, String descripcion, Unidad unidad) {
@@ -88,4 +88,7 @@ public class Reclamo {
         this.estado = estado;
     }
 
+    public String toString() {
+        return "Reclamo: " + this.numero + "  - " + this.ubicacion + " - " + this.descripcion + " - " + this.estado;
+    }
 }

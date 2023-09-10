@@ -1,6 +1,6 @@
 package ar.edu.uade.tpoapi;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -52,35 +52,31 @@ public class CRUD_Reclamo implements CommandLineRunner{
         System.out.println(reclamo.toString());
 
         // 3.  Guardar reclamo en la BD
-        System.out.println("Ingrese el documento del usuario");
-        sc.nextLine();
-        String documento = sc.nextLine();
-        Persona usuario = personaRepository.getByDocumento(documento);
+        Persona usuario = personaRepository.getByDocumento("DNI29988738");
         List<Edificio> edificios = edificioRepository.findAll();
         System.out.println("Listando edificios");
         for (Edificio edificio : edificios) {
             System.out.println(edificio.toString());
         }
-        System.out.println("Ingrese el codigo del edificio");
-        Edificio edificio = edificioRepository.getEdificioByCodigo(sc.nextInt());
-        System.out.println("Ingrese la ubicacion");
-        sc.nextLine();
-        String ubicacion = sc.nextLine();
-        System.out.println("Ingrese la descripcion");
-        sc.nextLine();
-        String descripcion = sc.nextLine();
-        System.out.println("Ingrese el identificador de la unidad");
-        sc.nextLine();
-        Unidad unidad = unidadRepository.getById(sc.nextInt());
+
+        Edificio edificio = edificioRepository.getEdificioByCodigo(1);
+
+        String ubicacion = "Esquina inferior derecha de la cocina";
+        String descripcion = "Pared manchada por perdida de agua";
+
+        Unidad unidad = unidadRepository.getById(5);
+
         Reclamo nuevoReclamo = new Reclamo(usuario, edificio, ubicacion, descripcion, unidad);
-        Reclamo reclamoGuardado = reclamoRepository.save(nuevoReclamo);
+        Reclamo reclamoGuardado = reclamoRepository.saveAndFlush(nuevoReclamo);
         System.out.println("Reclamo guardado");
         System.out.println(reclamoGuardado.toString());
+        System.out.println("Presione enter para continuar.");
+        sc.nextLine();
 
         //4. Obteniendo todos los reclamos de un edificio
         System.out.println("");
         System.out.println("Recuperando todos los reclamos de un edificio");
-        List<Reclamo> reclamosXEdificio = reclamoRepository.findAllByCodigo(1);
+        List<Reclamo> reclamosXEdificio = reclamoRepository.findByEdificioCodigo(1);
             for (Reclamo r :
                     reclamosXEdificio) {
                 System.out.println(r.toString());
@@ -90,7 +86,7 @@ public class CRUD_Reclamo implements CommandLineRunner{
         sc.nextLine();
 
         //5. Obteniendo los reclamos de una persona
-        System.out.println("");
+        /* System.out.println("");
         System.out.println("Recuperando todos los reclamos de una persona");
         List<Reclamo> reclamosXPersona = reclamoRepository.findAllByDocumento("DNI43900195");
         for (Reclamo r :
@@ -99,10 +95,10 @@ public class CRUD_Reclamo implements CommandLineRunner{
         }
         System.out.println("Presione enter para continuar. La proxima operacion " +
                 "es recuperar todos los reclamos de una unidad");
-        sc.nextLine();
+        sc.nextLine(); */
 
         //6. Obteniendo todos los reclamos de una unidad
-        System.out.println("");
+        /* System.out.println("");
         System.out.println("Recuperando todos los reclamos de una unidad");
         List<Reclamo> reclamosXUnidad = reclamoRepository.findAllByIdentificador(1);
         for (Reclamo r :
@@ -111,7 +107,7 @@ public class CRUD_Reclamo implements CommandLineRunner{
         }
         System.out.println("Esa fue la ultima opreacion. Presione enter para " +
                 "lanzar una excepcion y detener la ejecucion");
-        sc.nextLine();
+        sc.nextLine(); */
 
         throw new Exception("_____________ Finalizado con exito _____________");
     }

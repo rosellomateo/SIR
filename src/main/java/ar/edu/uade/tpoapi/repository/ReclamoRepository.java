@@ -1,5 +1,6 @@
 package ar.edu.uade.tpoapi.repository;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,8 +11,5 @@ import ar.edu.uade.tpoapi.modelo.Reclamo;
 public interface ReclamoRepository extends JpaRepository<Reclamo, Integer>{
     
     public Optional<Reclamo> getReclamoByNumero(Integer  numero);
-    public List<Reclamo> findAllByCodigo(Integer numero);
-    public List<Reclamo> findAllByIdentificador(Integer numero);
-    public  List<Reclamo> findAllByDocumento(String documento);
-    
+    List<Reclamo> findByEdificioCodigo(int codigo);
 }
