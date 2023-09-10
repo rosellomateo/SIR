@@ -123,6 +123,6 @@ public class Unidad {
      }
 
     public String toString() {
-        return "Unidad: " + piso + " " + numero + " " + habitado;
+        return "piso: " + piso + " numero: " + numero + " habitado: " + habitado;
     }
 }
