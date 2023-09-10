@@ -1,5 +1,6 @@
 package ar.edu.uade.tpoapi;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -75,6 +76,43 @@ public class CRUD_Reclamo implements CommandLineRunner{
         Reclamo reclamoGuardado = reclamoRepository.save(nuevoReclamo);
         System.out.println("Reclamo guardado");
         System.out.println(reclamoGuardado.toString());
+
+        //4. Obteniendo todos los reclamos de un edificio
+        System.out.println("");
+        System.out.println("Recuperando todos los reclamos de un edificio");
+        List<Reclamo> reclamosXEdificio = reclamoRepository.findAllByCodigo(1);
+            for (Reclamo r :
+                    reclamosXEdificio) {
+                System.out.println(r.toString());
+        }
+        System.out.println("Presione enter para continuar. La proxima operacion " +
+                "es recuperar todos los reclamos de una persona");
+        sc.nextLine();
+
+        //5. Obteniendo los reclamos de una persona
+        System.out.println("");
+        System.out.println("Recuperando todos los reclamos de una persona");
+        List<Reclamo> reclamosXPersona = reclamoRepository.findAllByDocumento("DNI43900195");
+        for (Reclamo r :
+                reclamosXPersona) {
+            System.out.println(r.toString());
+        }
+        System.out.println("Presione enter para continuar. La proxima operacion " +
+                "es recuperar todos los reclamos de una unidad");
+        sc.nextLine();
+
+        //6. Obteniendo todos los reclamos de una unidad
+        System.out.println("");
+        System.out.println("Recuperando todos los reclamos de una unidad");
+        List<Reclamo> reclamosXUnidad = reclamoRepository.findAllByIdentificador(1);
+        for (Reclamo r :
+                reclamosXUnidad) {
+            System.out.println(r.toString());
+        }
+        System.out.println("Esa fue la ultima opreacion. Presione enter para " +
+                "lanzar una excepcion y detener la ejecucion");
+        sc.nextLine();
+
         throw new Exception("_____________ Finalizado con exito _____________");
     }
     

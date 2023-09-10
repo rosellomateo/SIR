@@ -1,5 +1,6 @@
 package ar.edu.uade.tpoapi.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,6 +9,9 @@ import ar.edu.uade.tpoapi.modelo.Reclamo;
 
 public interface ReclamoRepository extends JpaRepository<Reclamo, Integer>{
     
-    public Optional<Reclamo> getReclamoByNumero(Integer  numero); 
+    public Optional<Reclamo> getReclamoByNumero(Integer  numero);
+    public List<Reclamo> findAllByCodigo(Integer numero);
+    public List<Reclamo> findAllByIdentificador(Integer numero);
+    public  List<Reclamo> findAllByDocumento(String documento);
     
 }
