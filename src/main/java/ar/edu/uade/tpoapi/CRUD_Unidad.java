@@ -27,6 +27,7 @@ public class CRUD_Unidad implements CommandLineRunner {
     public void run(String... args) throws Exception {
         
         Scanner sc = new Scanner(System.in) ;
+        //1. Encontrar una unidad especifica
         System.out.println("Encontrar una unidad deseada para el id 7");
         Optional<Unidad> unidad = unidadRepository.findById(7);
         System.out.println(unidad.toString());

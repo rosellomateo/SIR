@@ -4,17 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.edu.uade.tpoapi.views.Estado;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "reclamos")
@@ -36,7 +26,7 @@ public class Reclamo {
     @JoinColumn(name = "identificador")
     private Unidad unidad;
     private Estado estado;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "imagenes", joinColumns = @JoinColumn(name = "numero"))
     private List<Imagen> imagenes;
 

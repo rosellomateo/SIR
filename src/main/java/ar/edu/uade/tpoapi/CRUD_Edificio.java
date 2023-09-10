@@ -138,6 +138,7 @@ public class CRUD_Edificio implements CommandLineRunner{
 				"La proxima operacion es recuperar los inquilinos de un edificio");
 
 		//9. recuperar todos los inquilinos de un edificio == Controlador.habitantesPorEdificio
+		System.out.println("");
 		System.out.println("Recuperando todos los inquilinos de un edificio");
 		Edificio edificioVerInquilinos = edificioRepository.getEdificioByCodigo(1);
 		Set<Persona> inquilinos = edificioVerDuenios.habitantes();
