@@ -39,8 +39,8 @@ public class ControladorReclamo {
         return resultado;
     }
 
-    public ReclamoView reclamosPorNumero(int numero) {
-        ReclamoView resultado = null;
+    public ReclamoView reclamosPorNumero(int numero)  throws ReclamoException {
+        ReclamoView resultado = buscarReclamo(numero).toView();
         return resultado;
     }
 

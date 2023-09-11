@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.edu.uade.tpoapi.views.Estado;
+import ar.edu.uade.tpoapi.views.ImagenView;
+import ar.edu.uade.tpoapi.views.ReclamoView;
 import jakarta.persistence.*;
 
 @Entity
@@ -90,5 +92,14 @@ public class Reclamo {
 
     public String toString() {
         return "Reclamo: " + this.numero + "  - " + this.ubicacion + " - " + this.descripcion + " - " + this.estado;
+    }
+
+    public ReclamoView toView(){
+        List<ImagenView> imagenesView = new ArrayList<ImagenView>();
+
+        for (Imagen imagen : this.imagenes) {
+            imagenesView.add(imagen.toView());
+        }
+        return new ReclamoView(this.numero, this.usuario.toView(), this.edificio.toView(), this.ubicacion, this.descripcion, this.unidad.toView(), this.estado,imagenesView);
     }
 }
