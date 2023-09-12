@@ -26,7 +26,7 @@ public class Edificio {
     private int codigo;
     private String nombre;
     private String direccion;
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "codigoedificio")
     private List<Unidad> unidades;
     
@@ -86,29 +86,56 @@ public class Edificio {
         Set<Persona> resultado = new HashSet<Persona>();
         for(Unidad unidad : unidades) {
             List<Persona> duenios = unidad.getDuenios();
-            for(Persona p : duenios)
-                duenios.add(p);
+            resultado.addAll(duenios); // Agregar todos los elementos de duenios a resultado
         }
         return resultado;
     }
+    
+
+    // public Set<Persona> duenios() {
+    //     Set<Persona> resultado = new HashSet<Persona>();
+    //     for(Unidad unidad : unidades) {
+    //         List<Persona> duenios = unidad.getDuenios();
+    //         for(Persona p : duenios)
+    //             duenios.add(p);
+    //     }
+    //     return resultado;
+    // }
+
+    // public Set<Persona> habitantes() {
+    //     Set<Persona> resultado = new HashSet<Persona>();
+    //     for(Unidad unidad : unidades) {
+    //         if(unidad.estaHabitado()) {
+    //             List<Persona> inquilinos = unidad.getInquilinos();
+    //             if(inquilinos.size() > 0)
+    //                 for(Persona p : inquilinos)
+    //                     resultado.add(p);
+    //             else {
+    //                 List<Persona> duenios = unidad.getDuenios();
+    //                 for(Persona p : duenios)
+    //                     resultado.add(p);
+    //             }
+    //         }
+    //     }
+    //     return resultado;
+    // }
 
     public Set<Persona> habitantes() {
         Set<Persona> resultado = new HashSet<Persona>();
         for(Unidad unidad : unidades) {
             if(unidad.estaHabitado()) {
                 List<Persona> inquilinos = unidad.getInquilinos();
-                if(inquilinos.size() > 0)
-                    for(Persona p : inquilinos)
-                        resultado.add(p);
-                else {
+                if (!inquilinos.isEmpty()) {
+                    resultado.addAll(inquilinos); // Agregar todos los inquilinos a resultado
+                } else {
                     List<Persona> duenios = unidad.getDuenios();
-                    for(Persona p : duenios)
-                        resultado.add(p);
+                    resultado.addAll(duenios); // Agregar todos los dueños a resultado
                 }
             }
         }
         return resultado;
     }
+    
 
     public EdificioView toView() {
         return new EdificioView(codigo, nombre, direccion);

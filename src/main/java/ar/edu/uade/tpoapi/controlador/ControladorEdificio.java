@@ -20,6 +20,7 @@ public class ControladorEdificio {
 
 
     private ControladorEdificio() {
+
         edificioService =  EdificioService.getInstancia();
     }
 
@@ -78,4 +79,6 @@ public class ControladorEdificio {
     protected Edificio buscarEdificio(int codigo) throws EdificioException {
         return null;
     }
+
+
 }

@@ -4,17 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.edu.uade.tpoapi.views.Estado;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToOne;
+import ar.edu.uade.tpoapi.views.ImagenView;
+import ar.edu.uade.tpoapi.views.ReclamoView;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "reclamos")
@@ -36,8 +28,8 @@ public class Reclamo {
     @JoinColumn(name = "identificador")
     private Unidad unidad;
     private Estado estado;
-    @OneToMany
-    @JoinTable(name = "imagenes", joinColumns = @JoinColumn(name = "numero"))
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idreclamo")
     private List<Imagen> imagenes;
 
     public Reclamo(Persona usuario, Edificio edificio, String ubicacion, String descripcion, Unidad unidad) {
@@ -98,4 +90,16 @@ public class Reclamo {
         this.estado = estado;
     }
 
+    public String toString() {
+        return "Reclamo: " + this.numero + "  - " + this.ubicacion + " - " + this.descripcion + " - " + this.estado;
+    }
+
+    public ReclamoView toView(){
+        List<ImagenView> imagenesView = new ArrayList<ImagenView>();
+
+        for (Imagen imagen : this.imagenes) {
+            imagenesView.add(imagen.toView());
+        }
+        return new ReclamoView(this.numero, this.usuario.toView(), this.edificio.toView(), this.ubicacion, this.descripcion, this.unidad.toView(), this.estado,imagenesView);
+    }
 }

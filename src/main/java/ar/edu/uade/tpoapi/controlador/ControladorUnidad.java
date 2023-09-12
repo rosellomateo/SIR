@@ -1,9 +1,13 @@
 package ar.edu.uade.tpoapi.controlador;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ar.edu.uade.tpoapi.exceptions.PersonaException;
 import ar.edu.uade.tpoapi.exceptions.UnidadException;
 import ar.edu.uade.tpoapi.modelo.Persona;
 import ar.edu.uade.tpoapi.modelo.Unidad;
+import ar.edu.uade.tpoapi.views.PersonaView;
 
 public class ControladorUnidad {
 
@@ -54,5 +58,23 @@ public class ControladorUnidad {
 
     protected Unidad buscarUnidad(int codigo, String piso, String numero) throws UnidadException{
         return null;
+    }
+
+    public List<PersonaView> dueniosPorUnidad(int codigo, String piso, String numero) throws UnidadException{
+        List<PersonaView> resultado = new ArrayList<PersonaView>();
+        Unidad unidad = buscarUnidad(codigo, piso, numero);
+        List<Persona> duenios = unidad.getDuenios();
+        for(Persona persona : duenios)
+            resultado.add(persona.toView());
+        return resultado;
+    }
+
+    public List<PersonaView> inquilinosPorUnidad(int codigo, String piso, String numero) throws UnidadException{
+        List<PersonaView> resultado = new ArrayList<PersonaView>();
+        Unidad unidad = buscarUnidad(codigo, piso, numero);
+        List<Persona> inquilinos = unidad.getInquilinos();
+        for(Persona persona : inquilinos)
+            resultado.add(persona.toView());
+        return resultado;
     }
 }

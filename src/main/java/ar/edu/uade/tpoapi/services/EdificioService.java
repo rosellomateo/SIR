@@ -2,8 +2,6 @@ package ar.edu.uade.tpoapi.services;
 
 import ar.edu.uade.tpoapi.modelo.Edificio;
 import ar.edu.uade.tpoapi.repository.EdificioRepository;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -21,6 +19,9 @@ public class EdificioService  {
     }
 
     public List<Edificio> getAll(){
+
         return edificioRepository.findAll();
     }
+
+
 }

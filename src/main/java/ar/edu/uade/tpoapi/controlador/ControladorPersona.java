@@ -1,18 +1,11 @@
 package ar.edu.uade.tpoapi.controlador;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ar.edu.uade.tpoapi.exceptions.PersonaException;
-import ar.edu.uade.tpoapi.exceptions.UnidadException;
 import ar.edu.uade.tpoapi.modelo.Persona;
-import ar.edu.uade.tpoapi.modelo.Unidad;
-import ar.edu.uade.tpoapi.views.PersonaView;
 
 public class ControladorPersona {
     
     private static ControladorPersona instancia;
-    private static final ControladorUnidad controladorUnidad = ControladorUnidad.getInstancia();
 
     private ControladorPersona() { }
 
@@ -26,7 +19,7 @@ public class ControladorPersona {
         return null;
     }
 
-    public void agregarPersona(String documento, String nombre) {
+    public void agregarPersona(String documento, String nombre)  throws PersonaException{
         Persona persona = new Persona(documento, nombre, null, null);
         //guardar el objeto
     }
@@ -36,21 +29,43 @@ public class ControladorPersona {
         //eliminar el objeto
     }
 
-    public List<PersonaView> dueniosPorUnidad(int codigo, String piso, String numero) throws UnidadException{
-        List<PersonaView> resultado = new ArrayList<PersonaView>();
-        Unidad unidad = controladorUnidad.buscarUnidad(codigo, piso, numero);
-        List<Persona> duenios = unidad.getDuenios();
-        for(Persona persona : duenios)
-            resultado.add(persona.toView());
-        return resultado;
+    private void modificarPersona(Persona persona) throws PersonaException {
+        //modificar el objeto
     }
 
-    public List<PersonaView> inquilinosPorUnidad(int codigo, String piso, String numero) throws UnidadException{
-        List<PersonaView> resultado = new ArrayList<PersonaView>();
-        Unidad unidad = controladorUnidad.buscarUnidad(codigo, piso, numero);
-        List<Persona> inquilinos = unidad.getInquilinos();
-        for(Persona persona : inquilinos)
-            resultado.add(persona.toView());
-        return resultado;
+    public boolean validoParaRegistro(String documento) throws PersonaException {
+        Persona p = buscarPersona(documento);
+        if(p == null)
+            return false;
+        else{
+            if(p.getMail() == null && p.getPassword() == null)
+                return true;
+            else
+                return false;
+        }
     }
+
+    public void registrar(Persona p) throws PersonaException{
+        if (validoParaRegistro(p.getDocumento())){
+            modificarPersona(p);
+        }
+        else{
+            throw new PersonaException("No se puede registrar");
+        }
+    }
+
+    public Boolean Logear(String documento, String mail, String password) throws PersonaException{
+
+        Persona p = buscarPersona(documento);
+        if(p == null)
+            throw new PersonaException("No existe la persona");
+        else{
+            if(p.getMail() == mail && p.getPassword() == password)
+                return true;
+            else
+                return false;
+        }
+    }
+
+    
 }

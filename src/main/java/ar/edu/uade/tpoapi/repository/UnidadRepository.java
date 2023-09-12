@@ -9,4 +9,5 @@ public interface UnidadRepository extends JpaRepository<Unidad, Integer>{
     public Optional<Unidad> findById(Integer  id);
     public void deleteById(Integer id);
     public Unidad getById(Integer id);
+
 }
