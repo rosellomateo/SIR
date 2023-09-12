@@ -107,6 +107,7 @@ public class CRUD_Reclamo implements CommandLineRunner{
         reclamo2.agregarImagen("imagen1.jpg", "jpg");
         reclamo2.agregarImagen("imagen2.jpg", "png");
         reclamoRepository.saveAndFlush(reclamo2);
+
         System.out.println("Presione enter para continuar. La proxima operacion es " +
                 "modificar el estado del reclamo numero 2 a terminado");
         sc.nextLine();

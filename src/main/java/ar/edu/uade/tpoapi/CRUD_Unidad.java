@@ -96,6 +96,7 @@ public class CRUD_Unidad implements CommandLineRunner {
         System.out.println("Ingrese enter para continuar");
         sc.nextLine();
 
+
         System.out.println("Aquilando con documento DNI30600888 a la unidad con id 1");
         Optional<Persona> personaAlquiler = personaRepository.findById("DNI30600888");
         if(personaAlquiler.isPresent())
@@ -106,6 +107,7 @@ public class CRUD_Unidad implements CommandLineRunner {
             System.out.println("Ingrese enter para continuar");
             sc.nextLine();
         }
+        //Alquilar unidad
         System.out.println("Agregando un inquilino con documento DNI30161468 a la unidad con id 1");
         Optional<Persona> personaInquilino = personaRepository.findById("DNI30161468");
         if(personaInquilino.isPresent())
