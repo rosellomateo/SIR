@@ -33,6 +33,9 @@ public class Persona {
     public void cambiarPassword(String password) {
         this.password = password;
     }
+    public boolean validoParaRegistro(){
+        return (this.mail == null && this.password == null);
+    }
 
     public String getDocumento() {
         return documento;

@@ -1,5 +1,6 @@
 package ar.edu.uade.tpoapi.modelo;
 
+import ar.edu.uade.tpoapi.views.ImagenView;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -52,5 +53,10 @@ public class Imagen {
 
     public String toString(){
         return "Imagen: " + this.numero + " - " + this.direccion + " - " + this.tipo;
+    }
+
+
+    public ImagenView toView() {
+        return new ImagenView(this.numero, this.direccion, this.tipo);
     }
 }
