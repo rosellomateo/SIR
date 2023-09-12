@@ -5,15 +5,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+import ar.edu.uade.tpoapi.modelo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import ar.edu.uade.tpoapi.modelo.Edificio;
-import ar.edu.uade.tpoapi.modelo.Persona;
-import ar.edu.uade.tpoapi.modelo.Reclamo;
-import ar.edu.uade.tpoapi.modelo.Unidad;
 import ar.edu.uade.tpoapi.repository.EdificioRepository;
 import ar.edu.uade.tpoapi.repository.PersonaRepository;
 import ar.edu.uade.tpoapi.repository.ReclamoRepository;
@@ -100,22 +97,25 @@ public class CRUD_Reclamo implements CommandLineRunner{
                 reclamosXUnidad) {
             System.out.println(r.toString());
         }
-        System.out.println("Presione enter para continuar.");
+        System.out.println("Presione enter para continuar. La proxima operacion es " +
+                "agregar una imagen al reclamo 2");
         sc.nextLine();
 
         //7 agregar una imagen al reclamo 2
-
+        System.out.println("Agregando dos imagenes al reclamo ");
         Reclamo reclamo2 = reclamoRepository.getReclamoByNumero(2).get();
         reclamo2.agregarImagen("imagen1.jpg", "jpg");
         reclamo2.agregarImagen("imagen2.jpg", "png");
         reclamoRepository.saveAndFlush(reclamo2);
-        System.out.println("Presione enter para continuar.");
+        System.out.println("Presione enter para continuar. La proxima operacion es " +
+                "modificar el estado del reclamo numero 2 a terminado");
         sc.nextLine();
 
         //8 cambiar el estado del reclamo 2 a finalizado
         reclamo2.cambiarEstado(Estado.terminado);
         reclamoRepository.saveAndFlush(reclamo2);
-        System.out.println("Presione enter para continuar.");
+        System.out.println("Presione enter para continuar. La proxima operacion es " +
+                "borrar el reclamo recien agregado");
         sc.nextLine();
 
         //9 borrar el ultimo reclamo agregado
