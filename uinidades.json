@@ -1,0 +1,662 @@
+[
+    {
+        "id": 1,
+        "piso": "10",
+        "numero": "6",
+        "habitado": true,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 2,
+        "piso": "10",
+        "numero": "5",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 3,
+        "piso": "10",
+        "numero": "4",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 4,
+        "piso": "10",
+        "numero": "3",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 5,
+        "piso": "10",
+        "numero": "2",
+        "habitado": true,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 6,
+        "piso": "10",
+        "numero": "1",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 7,
+        "piso": "9",
+        "numero": "6",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 8,
+        "piso": "9",
+        "numero": "5",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 9,
+        "piso": "9",
+        "numero": "4",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 10,
+        "piso": "9",
+        "numero": "3",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 11,
+        "piso": "9",
+        "numero": "2",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 12,
+        "piso": "9",
+        "numero": "1",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 13,
+        "piso": "8",
+        "numero": "6",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 14,
+        "piso": "8",
+        "numero": "5",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 15,
+        "piso": "8",
+        "numero": "4",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 16,
+        "piso": "8",
+        "numero": "3",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 17,
+        "piso": "8",
+        "numero": "2",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 18,
+        "piso": "8",
+        "numero": "1",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 19,
+        "piso": "7",
+        "numero": "6",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 20,
+        "piso": "7",
+        "numero": "5",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 21,
+        "piso": "7",
+        "numero": "4",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 22,
+        "piso": "7",
+        "numero": "3",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 23,
+        "piso": "7",
+        "numero": "2",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 24,
+        "piso": "7",
+        "numero": "1",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 25,
+        "piso": "6",
+        "numero": "6",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 26,
+        "piso": "6",
+        "numero": "5",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 27,
+        "piso": "6",
+        "numero": "4",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 28,
+        "piso": "6",
+        "numero": "3",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 29,
+        "piso": "6",
+        "numero": "2",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 30,
+        "piso": "6",
+        "numero": "1",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 31,
+        "piso": "5",
+        "numero": "6",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 32,
+        "piso": "5",
+        "numero": "5",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 33,
+        "piso": "5",
+        "numero": "4",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 34,
+        "piso": "5",
+        "numero": "3",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 35,
+        "piso": "5",
+        "numero": "2",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 36,
+        "piso": "5",
+        "numero": "1",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 37,
+        "piso": "4",
+        "numero": "6",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 38,
+        "piso": "4",
+        "numero": "5",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 39,
+        "piso": "4",
+        "numero": "4",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 40,
+        "piso": "4",
+        "numero": "3",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 41,
+        "piso": "4",
+        "numero": "2",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 42,
+        "piso": "4",
+        "numero": "1",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 43,
+        "piso": "3",
+        "numero": "6",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 44,
+        "piso": "3",
+        "numero": "5",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 45,
+        "piso": "3",
+        "numero": "4",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 46,
+        "piso": "3",
+        "numero": "3",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 47,
+        "piso": "3",
+        "numero": "2",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 48,
+        "piso": "3",
+        "numero": "1",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 49,
+        "piso": "2",
+        "numero": "6",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 50,
+        "piso": "2",
+        "numero": "5",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 51,
+        "piso": "2",
+        "numero": "4",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 52,
+        "piso": "2",
+        "numero": "3",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 53,
+        "piso": "2",
+        "numero": "2",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 54,
+        "piso": "2",
+        "numero": "1",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 55,
+        "piso": "1",
+        "numero": "6",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 56,
+        "piso": "1",
+        "numero": "5",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 57,
+        "piso": "1",
+        "numero": "4",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 58,
+        "piso": "1",
+        "numero": "3",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 59,
+        "piso": "1",
+        "numero": "2",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    },
+    {
+        "id": 60,
+        "piso": "1",
+        "numero": "1",
+        "habitado": false,
+        "edificio": {
+            "codigo": 1,
+            "nombre": "SLS Puerto Madero",
+            "direccion": "Mogliani 425"
+        }
+    }
+]
