@@ -43,4 +43,14 @@ public class EdificioService  {
     {
         return edificioRepository.existsByCodigo(codigo);
     }
+
+    public boolean existeDireccion(String direccion) {
+        return edificioRepository.existsByDireccion(direccion);
+    }
+
+    public boolean existeNombre(String nombre) {
+        return edificioRepository.existsByNombre(nombre);
+    }
+
+
 }

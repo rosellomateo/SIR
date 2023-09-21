@@ -11,6 +11,8 @@ public interface EdificioRepository extends JpaRepository<Edificio, Integer>{
     public Optional<Edificio> findByCodigo(Integer codigo);
 	public Edificio getEdificioByCodigo(Integer codigo);
     public void deleteByCodigo(int codigo);
-    public boolean existsByCodigo(int codigo); 
+    public boolean existsByCodigo(int codigo);
+    public boolean existsByDireccion(String direccion);
+    public boolean existsByNombre(String nombre); 
 
 }
