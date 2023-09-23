@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import ar.edu.uade.tpoapi.controlador.request.CreateEdificioDTO;
+import ar.edu.uade.tpoapi.controlador.request.Edificio.CreateEdificioDTO;
 import ar.edu.uade.tpoapi.exceptions.EdificioException;
 import ar.edu.uade.tpoapi.modelo.Edificio;
 import ar.edu.uade.tpoapi.modelo.Persona;

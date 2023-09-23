@@ -1,9 +1,28 @@
 package ar.edu.uade.tpoapi.controlador;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import ar.edu.uade.tpoapi.controlador.request.Edificio.CreateEdificioDTO;
+import ar.edu.uade.tpoapi.controlador.request.persona.LoginPersonaDTO;
 import ar.edu.uade.tpoapi.exceptions.PersonaException;
 import ar.edu.uade.tpoapi.modelo.Persona;
+import ar.edu.uade.tpoapi.services.EdificioService;
+import ar.edu.uade.tpoapi.services.EncriptServiceImplement;
+import ar.edu.uade.tpoapi.services.PersonaService;
+import jakarta.validation.Valid;
 
+@RestController
 public class ControladorPersona {
+    
+    @Autowired
+    PersonaService personaService;
+    @Autowired
+    EncriptServiceImplement encriptServiceImplement;
     
     private static ControladorPersona instancia;
 
@@ -54,18 +73,12 @@ public class ControladorPersona {
         }
     }
 
-    public Boolean Logear(String documento, String mail, String password) throws PersonaException{
-
-        Persona p = buscarPersona(documento);
-        if(p == null)
-            throw new PersonaException("No existe la persona");
-        else{
-            if(p.getMail() == mail && p.getPassword() == password)
-                return true;
-            else
-                return false;
-        }
-    }
+    /* @RequestMapping(value = "/login",method = RequestMethod.GET)
+    public ResponseEntity<?> Login(@Valid @RequestBody LoginPersonaDTO loginPersonaDTO) throws PersonaException{
+        //TODO: validar password con encriptacion y devolver token de sesion en caso de ser correcto el login
+        
+        Persona persona = buscarPersona(loginPersonaDTO.getDocumento());
+    } */
 
     
 }
