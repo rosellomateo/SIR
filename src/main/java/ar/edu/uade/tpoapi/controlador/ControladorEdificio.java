@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import ar.edu.uade.tpoapi.controlador.request.CreateEdificioDTO;
 import ar.edu.uade.tpoapi.exceptions.EdificioException;
 import ar.edu.uade.tpoapi.modelo.Edificio;
 import ar.edu.uade.tpoapi.modelo.Persona;
@@ -20,6 +22,7 @@ import ar.edu.uade.tpoapi.services.EdificioService;
 import ar.edu.uade.tpoapi.views.EdificioView;
 import ar.edu.uade.tpoapi.views.PersonaView;
 import ar.edu.uade.tpoapi.views.UnidadView;
+import jakarta.validation.Valid;
 
 @RestController
 public class ControladorEdificio {
@@ -90,15 +93,17 @@ public class ControladorEdificio {
         return edificioService.buscarEdificioPorCodigo(codigo);
     }
 
-    //deberia ser post me queda googlea TODO
-    @RequestMapping(value = "/agregaredificio/{nombre}/{direccion}",method = RequestMethod.GET)
-    public ResponseEntity agregarEdificio(@PathVariable String nombre,@PathVariable String direccion) throws EdificioException {
-        if(edificioService.existeNombre(nombre))
+    @PostMapping(value = "/agregaredificio")
+    public ResponseEntity<?> agregarEdificio(@Valid @RequestBody CreateEdificioDTO createEdificioDTO) throws EdificioException {
+        if(edificioService.existeNombre(createEdificioDTO.getNombre()))
             return ResponseEntity.badRequest().body("Ya existe un edificio con ese nombre");
-        else if (edificioService.existeDireccion(direccion))
+        else if (edificioService.existeDireccion(createEdificioDTO.getDireccion()))
             return ResponseEntity.badRequest().body("Ya existe un edificio con esa direccion");
         else{
-            Edificio edificio = new Edificio(nombre,direccion);
+            Edificio edificio = Edificio.builder()
+                    .nombre(createEdificioDTO.getNombre())
+                    .direccion(createEdificioDTO.getDireccion())
+                    .build();
             edificioService.guardarEdificio(edificio);
             return ResponseEntity.ok().body("Edificio agregado correctamente");
         }

@@ -15,8 +15,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "edificios")
 public class Edificio {
 
@@ -30,23 +36,6 @@ public class Edificio {
     @JoinColumn(name = "codigoedificio")
     private List<Unidad> unidades;
     
-
-    public Edificio(int codigo, String nombre, String direccion) {
-        this.codigo = codigo;
-        this.nombre = nombre;
-        this.direccion = direccion;
-        unidades = new ArrayList<Unidad>();
-    }
-    
-    public Edificio(String nombre ,String direccion){
-        this.nombre = nombre;
-        this.direccion = direccion;
-        unidades = new ArrayList<Unidad>();
-    }
-
-    public Edificio() {
-    }
-
     public void updateEdificio(EdificioView eView){
         this.nombre = eView.getNombre();
         this.direccion = eView.getDireccion();
