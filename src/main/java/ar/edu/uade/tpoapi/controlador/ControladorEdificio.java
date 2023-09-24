@@ -39,7 +39,7 @@ public class ControladorEdificio {
         return instancia;
     }
 
-    @RequestMapping(value = "/edificios",method = RequestMethod.GET)
+    @RequestMapping(value = "/getAll",method = RequestMethod.GET)
     public List<EdificioView> getEdificios(){
         List<Edificio> edificios = edificioService.buscarTodosEdificios();
         List<EdificioView>edificioViews = new ArrayList<>();
@@ -50,8 +50,8 @@ public class ControladorEdificio {
         return edificioViews;
     }
 
-    @RequestMapping(value = "/edificios/{codigo}",method = RequestMethod.GET)
-    public List<UnidadView> getUnidadesPorEdificio(@PathVariable int codigo) throws EdificioException{
+    @RequestMapping(value = "/getUnidadesByEdificio",method = RequestMethod.POST)
+    public List<UnidadView> getUnidadesPorEdificio(@RequestBody int codigo) throws EdificioException{
          List<UnidadView> resultado = new ArrayList<UnidadView>();
          Edificio edificio = buscarEdificio(codigo);
          List<Unidad> unidades = edificio.getUnidades();
