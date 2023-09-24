@@ -17,6 +17,7 @@ import ar.edu.uade.tpoapi.services.PersonaService;
 import jakarta.validation.Valid;
 
 @RestController
+@RequestMapping("/persona")
 public class ControladorPersona {
     
     @Autowired
@@ -71,14 +72,5 @@ public class ControladorPersona {
         else{
             throw new PersonaException("No se puede registrar");
         }
-    }
-
-    /* @RequestMapping(value = "/login",method = RequestMethod.GET)
-    public ResponseEntity<?> Login(@Valid @RequestBody LoginPersonaDTO loginPersonaDTO) throws PersonaException{
-        //TODO: validar password con encriptacion y devolver token de sesion en caso de ser correcto el login
-        
-        Persona persona = buscarPersona(loginPersonaDTO.getDocumento());
-    } */
-
-    
+    }    
 }

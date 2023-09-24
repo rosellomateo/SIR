@@ -1,5 +1,6 @@
 package ar.edu.uade.tpoapi.modelo;
 
+import ar.edu.uade.tpoapi.views.EnumRol;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

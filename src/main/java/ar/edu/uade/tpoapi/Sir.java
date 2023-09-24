@@ -5,11 +5,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CRUD_Edificio implements CommandLineRunner{
+public class Sir implements CommandLineRunner{
 
     public static void main(String[] args) {
 
-		SpringApplication.run(CRUD_Edificio.class, args);
+		SpringApplication.run(Sir.class, args);
     }
 
     @Override

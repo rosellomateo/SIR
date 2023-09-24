@@ -25,6 +25,7 @@ import ar.edu.uade.tpoapi.views.UnidadView;
 import jakarta.validation.Valid;
 
 @RestController
+@RequestMapping("/edificio")
 public class ControladorEdificio {
     @Autowired
     EdificioService edificioService;
