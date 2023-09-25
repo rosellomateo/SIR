@@ -4,6 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import ar.edu.uade.tpoapi.controlador.request.Edificio.CreateEdificioDTO;
 import ar.edu.uade.tpoapi.exceptions.EdificioException;
 import ar.edu.uade.tpoapi.modelo.Edificio;
 import ar.edu.uade.tpoapi.modelo.Persona;
@@ -12,17 +22,16 @@ import ar.edu.uade.tpoapi.services.EdificioService;
 import ar.edu.uade.tpoapi.views.EdificioView;
 import ar.edu.uade.tpoapi.views.PersonaView;
 import ar.edu.uade.tpoapi.views.UnidadView;
+import jakarta.validation.Valid;
 
+@RestController
+@RequestMapping("/edificio")
 public class ControladorEdificio {
+    @Autowired
+    EdificioService edificioService;
 
     private static ControladorEdificio instancia;
-    private final EdificioService edificioService;
 
-
-    private ControladorEdificio() {
-
-        edificioService =  EdificioService.getInstancia();
-    }
 
     public static ControladorEdificio getInstancia() {
         if(instancia == null)
@@ -30,8 +39,9 @@ public class ControladorEdificio {
         return instancia;
     }
 
+    @RequestMapping(value = "/getAll",method = RequestMethod.GET)
     public List<EdificioView> getEdificios(){
-        List<Edificio> edificios = edificioService.getAll();
+        List<Edificio> edificios = edificioService.buscarTodosEdificios();
         List<EdificioView>edificioViews = new ArrayList<>();
 
         for(Edificio e : edificios)
@@ -40,7 +50,8 @@ public class ControladorEdificio {
         return edificioViews;
     }
 
-    public List<UnidadView> getUnidadesPorEdificio(int codigo) throws EdificioException{
+    @RequestMapping(value = "/getUnidadesByEdificio",method = RequestMethod.POST)
+    public List<UnidadView> getUnidadesPorEdificio(@RequestBody int codigo) throws EdificioException{
          List<UnidadView> resultado = new ArrayList<UnidadView>();
          Edificio edificio = buscarEdificio(codigo);
          List<Unidad> unidades = edificio.getUnidades();
@@ -49,7 +60,8 @@ public class ControladorEdificio {
          return resultado;
     }
 
-    public List<PersonaView> habilitadosPorEdificio(int codigo) throws EdificioException{
+    @RequestMapping(value = "/habilitadosxedificios/{codigo}",method = RequestMethod.GET)
+    public List<PersonaView> habilitadosPorEdificio(@PathVariable int codigo) throws EdificioException{
         List<PersonaView> resultado = new ArrayList<PersonaView>();
         Edificio edificio = buscarEdificio(codigo);
         Set<Persona> habilitados = edificio.habilitados();
@@ -58,7 +70,8 @@ public class ControladorEdificio {
         return resultado;
     }
 
-    public List<PersonaView> dueniosPorEdificio(int codigo) throws EdificioException{
+    @RequestMapping(value = "/dueniosxedificios/{codigo}",method = RequestMethod.GET)
+    public List<PersonaView> dueniosPorEdificio(@PathVariable int codigo) throws EdificioException{
         List<PersonaView> resultado = new ArrayList<PersonaView>();
         Edificio edificio = buscarEdificio(codigo);
         Set<Persona> duenios = edificio.duenios();
@@ -67,7 +80,8 @@ public class ControladorEdificio {
         return resultado;
     }
 
-    public List<PersonaView> habitantesPorEdificio(int codigo) throws EdificioException{
+    @RequestMapping(value = "/habitantesxedificios/{codigo}",method = RequestMethod.GET)
+    public List<PersonaView> habitantesPorEdificio(@PathVariable int codigo) throws EdificioException{
         List<PersonaView> resultado = new ArrayList<PersonaView>();
         Edificio edificio = buscarEdificio(codigo);
         Set<Persona> habitantes = edificio.duenios();
@@ -77,8 +91,22 @@ public class ControladorEdificio {
     }
 
     protected Edificio buscarEdificio(int codigo) throws EdificioException {
-        return null;
+        return edificioService.buscarEdificioPorCodigo(codigo);
     }
 
-
+    @PostMapping(value = "/agregaredificio")
+    public ResponseEntity<?> agregarEdificio(@Valid @RequestBody CreateEdificioDTO createEdificioDTO) throws EdificioException {
+        if(edificioService.existeNombre(createEdificioDTO.getNombre()))
+            return ResponseEntity.badRequest().body("Ya existe un edificio con ese nombre");
+        else if (edificioService.existeDireccion(createEdificioDTO.getDireccion()))
+            return ResponseEntity.badRequest().body("Ya existe un edificio con esa direccion");
+        else{
+            Edificio edificio = Edificio.builder()
+                    .nombre(createEdificioDTO.getNombre())
+                    .direccion(createEdificioDTO.getDireccion())
+                    .build();
+            edificioService.guardarEdificio(edificio);
+            return ResponseEntity.ok().body("Edificio agregado correctamente");
+        }
+    }
 }

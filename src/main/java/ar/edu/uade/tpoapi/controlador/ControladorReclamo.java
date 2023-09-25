@@ -3,6 +3,9 @@ package ar.edu.uade.tpoapi.controlador;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import ar.edu.uade.tpoapi.exceptions.EdificioException;
 import ar.edu.uade.tpoapi.exceptions.PersonaException;
 import ar.edu.uade.tpoapi.exceptions.ReclamoException;
@@ -14,6 +17,8 @@ import ar.edu.uade.tpoapi.modelo.Unidad;
 import ar.edu.uade.tpoapi.views.Estado;
 import ar.edu.uade.tpoapi.views.ReclamoView;
 
+@RestController
+@RequestMapping("/Reclamo")
 public class ControladorReclamo {
 
     private static ControladorReclamo instancia;
