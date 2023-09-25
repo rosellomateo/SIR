@@ -73,6 +73,5 @@ public class ControladorAuth {
                 return ResponseEntity.badRequest().body("El documento ya posee un usuario registrado");
             }
         }
-        
     }
 }

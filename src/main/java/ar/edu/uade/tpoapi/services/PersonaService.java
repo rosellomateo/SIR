@@ -1,12 +1,14 @@
 package ar.edu.uade.tpoapi.services;
 
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.stereotype.Service;
 
 import ar.edu.uade.tpoapi.modelo.Persona;
+import ar.edu.uade.tpoapi.modelo.Roles;
 import ar.edu.uade.tpoapi.repository.PersonaRepository;
 
 @Service
@@ -50,6 +52,12 @@ public class PersonaService {
     public Persona buscarPersonaPorMail(String mail) {
         Optional<Persona> persona = personaRepository.findByMail(mail);
         return persona.orElse(null);
+    }
+
+    public void modificarPersona(String documento, Set<Roles> roles) {
+        Persona persona = buscarPersona(documento);
+        persona.setRoles(roles);
+        personaRepository.save(persona);
     }
 
     

@@ -1,15 +1,28 @@
 package ar.edu.uade.tpoapi.controlador;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.method.P;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import ar.edu.uade.tpoapi.controlador.request.Edificio.CreateEdificioDTO;
+import ar.edu.uade.tpoapi.controlador.request.Persona.CreatePersonaDTO;
+import ar.edu.uade.tpoapi.controlador.request.Persona.DeletePersonaDTO;
+import ar.edu.uade.tpoapi.controlador.request.Persona.UpdatePersonaDTO;
 import ar.edu.uade.tpoapi.exceptions.PersonaException;
 import ar.edu.uade.tpoapi.modelo.Persona;
 import ar.edu.uade.tpoapi.services.PersonaService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/persona")
+
 public class ControladorPersona {
     
     @Autowired
@@ -17,7 +30,6 @@ public class ControladorPersona {
     
     private static ControladorPersona instancia;
 
-    private ControladorPersona() { }
 
     public static ControladorPersona getInstancia() {
         if(instancia == null)
@@ -32,24 +44,53 @@ public class ControladorPersona {
             throw new PersonaException("No existe una persona con ese documento");
     }
 
-    public void agregarPersona(String documento, String nombre)  throws PersonaException{
-        if(personaService.existePersona(documento))
-            throw new PersonaException("Ya existe una persona con ese documento");
+    @PostMapping("/agregar")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
+    public ResponseEntity<?>  agregarPersona(@Valid @RequestBody CreatePersonaDTO createPersonaDTO)  throws PersonaException{
+        // if(personaService.existePersona(documento))
+        //     throw new PersonaException("Ya existe una persona con ese documento");
+        // else{
+        //     personaService.guardarPersona(new Persona(documento, nombre, null, null, null));
+        // }
+
+        if(personaService.existePersona(createPersonaDTO.getDocumento()))
+            return ResponseEntity.badRequest().body("Ya existe una persona con ese documento");
         else{
-            personaService.guardarPersona(new Persona(documento, nombre, null, null, null));
+            personaService.guardarPersona(new Persona(createPersonaDTO.getDocumento(), createPersonaDTO.getNombre(), null, null, createPersonaDTO.getRoles()));
+            return ResponseEntity.ok().body("Persona agregada correctamente");
         }
     }
 
-    public void eliminarPersona(String documento) throws PersonaException {
-        personaService.eliminarPersona(documento);
+    @DeleteMapping("/eliminar")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    public ResponseEntity<?> eliminarPersona(@Valid @RequestBody DeletePersonaDTO deletePersonaDTO) throws PersonaException {
+        if(personaService.existePersona(deletePersonaDTO.getDocumento()))
+        {
+            try {
+                personaService.eliminarPersona(deletePersonaDTO.getDocumento());
+                return ResponseEntity.ok().body("Persona eliminada correctamente");
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body("No se pudo eliminar la persona");
+            }
+        }
+        else
+            return ResponseEntity.badRequest().body("No existe una persona con ese documento");
     }
 
-    private void modificarPersona(Persona persona) throws PersonaException {
-
-        if(personaService.existePersona(persona.getDocumento()))
-            personaService.guardarPersona(persona);
+    @PatchMapping("/modificar")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    private ResponseEntity<?> modificarPersona(@Valid @RequestBody UpdatePersonaDTO updatePersonaDTO) throws PersonaException {
+        if(personaService.existePersona(updatePersonaDTO.getDocumento()))
+        {
+            try {
+                personaService.modificarPersona(updatePersonaDTO.getDocumento(), updatePersonaDTO.getRoles());
+                return ResponseEntity.ok().body("Persona modificada correctamente");
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body("No se pudo modificar la persona");
+            }
+        }
         else
-            throw new PersonaException("No existe una persona con ese documento");
+            return ResponseEntity.badRequest().body("No existe una persona con ese documento");
     }
 
 
