@@ -46,8 +46,8 @@ public class JwtUtils {
         }
     }
 
-    //Obtener documento del token
-    public String getDocumentoFromToken(String token) {
+    //Obtener mail del token
+    public String getMailFromToken(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 

@@ -26,7 +26,10 @@ public class ControladorPersona {
     }
 
     protected Persona buscarPersona(String documento) throws PersonaException {
-        return null;
+        if(personaService.existePersona(documento))
+            return personaService.buscarPersona(documento);
+        else
+            throw new PersonaException("No existe una persona con ese documento");
     }
 
     public void agregarPersona(String documento, String nombre)  throws PersonaException{

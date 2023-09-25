@@ -21,8 +21,5 @@ public class Sir implements CommandLineRunner{
     @Override
 	public void run(String... args) throws Exception {
 		
-      Persona p = servicePersona.buscarPersonaPorMail("carlosfernandezmendez091@gmail.com");
-      System.out.println(p.toString());
-  
 	}
 }

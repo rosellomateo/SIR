@@ -13,8 +13,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import ar.edu.uade.tpoapi.security.filters.JwtAuthenticationFilter;
+import ar.edu.uade.tpoapi.security.filters.JwtAuthorizationFilter;
 import ar.edu.uade.tpoapi.security.jwt.JwtUtils;
 import ar.edu.uade.tpoapi.services.UserDetailsImpl;
 
@@ -28,6 +30,9 @@ public class SecurityConfig{
 
     @Autowired
     UserDetailsImpl userDetailsImpl;
+
+    @Autowired
+    JwtAuthorizationFilter jwtAuthorizationFilter;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity,AuthenticationManager authenticationManager) throws Exception{
@@ -47,6 +52,7 @@ public class SecurityConfig{
                             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                     })
                     .addFilter(jwtAuthenticationFilter)
+                    .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
                     .build();
     }
 
@@ -61,10 +67,5 @@ public class SecurityConfig{
         .userDetailsService(userDetailsImpl)
         .passwordEncoder(passwordEncoder())
         .and().build();
-    }
-
-
-    public static void main(String[] args) {
-        System.out.println(new BCryptPasswordEncoder().encode("K@r@7e33"));
     }
 }

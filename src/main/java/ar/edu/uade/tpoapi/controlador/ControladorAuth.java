@@ -74,12 +74,5 @@ public class ControladorAuth {
             }
         }
         
-    }    
-
-    // @RequestMapping("/login")
-    // public ResponseEntity<?> login(@Valid @RequestBody LoginDTO loginDTO) throws PersonaException{
-    //     //se realiza la validacion de mail y contraseña y se devuelve el token
-    //     Persona persona = personaService.buscarPersona(documento);
-
-    // }
+    }
 }
