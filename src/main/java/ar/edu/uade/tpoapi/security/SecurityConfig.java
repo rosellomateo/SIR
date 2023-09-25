@@ -1,5 +1,6 @@
 package ar.edu.uade.tpoapi.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -7,61 +8,63 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-import net.bytebuddy.build.Plugin.NoOp;
-import net.bytebuddy.build.Plugin.Engine.Source.InMemory;
+import ar.edu.uade.tpoapi.security.filters.JwtAuthenticationFilter;
+import ar.edu.uade.tpoapi.security.jwt.JwtUtils;
+import ar.edu.uade.tpoapi.services.UserDetailsImpl;
+
 
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig{
 
+    @Autowired
+    JwtUtils jwtUtils;
+
+    @Autowired
+    UserDetailsImpl userDetailsImpl;
+
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
+    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity,AuthenticationManager authenticationManager) throws Exception{
+
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtUtils);
+        jwtAuthenticationFilter.setAuthenticationManager(authenticationManager);
+
         return httpSecurity
                     .csrf(config -> config.disable())
                     .authorizeHttpRequests(auth -> {
-                        auth.requestMatchers("/auth/**").permitAll();
+                        auth.requestMatchers("/auth/validarDocumento").permitAll();
+                        auth.requestMatchers("/auth/registrar").permitAll();
                         auth.anyRequest().authenticated();
                     })
                     .sessionManagement( session -> {
                         session
                             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                     })
-                    .httpBasic()
-                    .and()
+                    .addFilter(jwtAuthenticationFilter)
                     .build();
     }
 
     @Bean
-    UserDetailsService userDetailsService(){
-        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        manager.createUser(
-            org.springframework.security.core.userdetails.User
-                .withUsername("admin")
-                .password("admin")
-                .roles()
-                .build()
-        );
-
-        return manager;
-    }
-
-    @Bean
     PasswordEncoder passwordEncoder(){
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
     AuthenticationManager authenticationManager(HttpSecurity httpSecurity) throws Exception{
         return httpSecurity.getSharedObject(AuthenticationManagerBuilder.class)
-        .userDetailsService(userDetailsService())
+        .userDetailsService(userDetailsImpl)
         .passwordEncoder(passwordEncoder())
         .and().build();
+    }
+
+
+    public static void main(String[] args) {
+        System.out.println(new BCryptPasswordEncoder().encode("K@r@7e33"));
     }
 }

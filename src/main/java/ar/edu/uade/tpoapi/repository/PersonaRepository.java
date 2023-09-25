@@ -11,4 +11,6 @@ public interface PersonaRepository extends JpaRepository<Persona, String>{
     public void deleteByDocumento(String documento);
     public boolean existsByDocumento(String documento);
     public Persona getByDocumento(String documento);
+    public boolean existsByMail(String mail);
+    public Optional<Persona> findByMail(String mail);
 }

@@ -1,4 +1,4 @@
-package ar.edu.uade.tpoapi.controlador.request.persona;
+package ar.edu.uade.tpoapi.controlador.request.Auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -9,12 +9,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginPersonaDTO {
+public class RegisterDTO {
+    
     @NotBlank
-    private String documento;
-    @NotBlank
-    private String password;
+    String documento;
     @NotBlank
     @Email
-    private String Email;
+    String mail;
+    @NotBlank
+    String password;
 }
