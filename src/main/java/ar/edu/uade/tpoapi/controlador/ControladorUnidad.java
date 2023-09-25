@@ -7,9 +7,17 @@ import ar.edu.uade.tpoapi.exceptions.PersonaException;
 import ar.edu.uade.tpoapi.exceptions.UnidadException;
 import ar.edu.uade.tpoapi.modelo.Persona;
 import ar.edu.uade.tpoapi.modelo.Unidad;
+import ar.edu.uade.tpoapi.services.UnidadService;
 import ar.edu.uade.tpoapi.views.PersonaView;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+@RestController
+@RequestMapping("/unidad")
 public class ControladorUnidad {
+    @Autowired
+    UnidadService unidadService;
 
     private static ControladorUnidad instancia;
     private static final ControladorPersona controladorPersona = ControladorPersona.getInstancia();
