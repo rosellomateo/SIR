@@ -6,6 +6,8 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,39 +41,43 @@ public class ControladorEdificio {
         return instancia;
     }
 
-    @RequestMapping(value = "/getAll",method = RequestMethod.GET)
-    public List<EdificioView> getEdificios(){
+    @GetMapping(value = "/getAll")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    public ResponseEntity<?> getEdificios(){
         List<Edificio> edificios = edificioService.buscarTodosEdificios();
         List<EdificioView>edificioViews = new ArrayList<>();
 
         for(Edificio e : edificios)
             edificioViews.add(e.toView());
-
-        return edificioViews;
+        
+        return ResponseEntity.ok().body(edificioViews);
     }
 
-    @RequestMapping(value = "/getUnidadesByEdificio",method = RequestMethod.POST)
-    public List<UnidadView> getUnidadesPorEdificio(@RequestBody int codigo) throws EdificioException{
+    @GetMapping(value = "/getUnidades")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    public ResponseEntity<?> getUnidadesPorEdificio(@RequestBody int codigo) throws EdificioException{
          List<UnidadView> resultado = new ArrayList<UnidadView>();
          Edificio edificio = buscarEdificio(codigo);
          List<Unidad> unidades = edificio.getUnidades();
          for(Unidad unidad : unidades)
              resultado.add(unidad.toView());
-         return resultado;
+        return ResponseEntity.ok().body(resultado);
     }
 
-    @RequestMapping(value = "/habilitadosxedificios/{codigo}",method = RequestMethod.GET)
-    public List<PersonaView> habilitadosPorEdificio(@PathVariable int codigo) throws EdificioException{
+    @GetMapping(value = "/habilitados")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    public ResponseEntity<?> habilitadosPorEdificio(@RequestBody int codigo) throws EdificioException{
         List<PersonaView> resultado = new ArrayList<PersonaView>();
         Edificio edificio = buscarEdificio(codigo);
         Set<Persona> habilitados = edificio.habilitados();
         for(Persona persona : habilitados)
             resultado.add(persona.toView());
-        return resultado;
+        return ResponseEntity.ok().body(resultado);
     }
 
-    @RequestMapping(value = "/dueniosxedificios/{codigo}",method = RequestMethod.GET)
-    public List<PersonaView> dueniosPorEdificio(@PathVariable int codigo) throws EdificioException{
+    @GetMapping(value = "/duenios")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    public List<PersonaView> dueniosPorEdificio(@RequestBody int codigo) throws EdificioException{
         List<PersonaView> resultado = new ArrayList<PersonaView>();
         Edificio edificio = buscarEdificio(codigo);
         Set<Persona> duenios = edificio.duenios();
@@ -80,18 +86,15 @@ public class ControladorEdificio {
         return resultado;
     }
 
-    @RequestMapping(value = "/habitantesxedificios/{codigo}",method = RequestMethod.GET)
-    public List<PersonaView> habitantesPorEdificio(@PathVariable int codigo) throws EdificioException{
+    @GetMapping(value = "/habitantes")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    public List<PersonaView> habitantesPorEdificio(@RequestBody int codigo) throws EdificioException{
         List<PersonaView> resultado = new ArrayList<PersonaView>();
         Edificio edificio = buscarEdificio(codigo);
         Set<Persona> habitantes = edificio.duenios();
         for(Persona persona : habitantes)
             resultado.add(persona.toView());
         return resultado;
-    }
-
-    protected Edificio buscarEdificio(int codigo) throws EdificioException {
-        return edificioService.buscarEdificioPorCodigo(codigo);
     }
 
     @PostMapping(value = "/agregaredificio")
@@ -108,5 +111,9 @@ public class ControladorEdificio {
             edificioService.guardarEdificio(edificio);
             return ResponseEntity.ok().body("Edificio agregado correctamente");
         }
+    }
+
+    protected Edificio buscarEdificio(int codigo) throws EdificioException {
+        return edificioService.buscarEdificioPorCodigo(codigo);
     }
 }

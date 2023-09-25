@@ -2,7 +2,6 @@ package ar.edu.uade.tpoapi.controlador;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import ar.edu.uade.tpoapi.controlador.request.Edificio.CreateEdificioDTO;
 import ar.edu.uade.tpoapi.controlador.request.Persona.CreatePersonaDTO;
 import ar.edu.uade.tpoapi.controlador.request.Persona.DeletePersonaDTO;
 import ar.edu.uade.tpoapi.controlador.request.Persona.UpdatePersonaDTO;
@@ -22,7 +20,6 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/persona")
-
 public class ControladorPersona {
     
     @Autowired
@@ -47,12 +44,6 @@ public class ControladorPersona {
     @PostMapping("/agregar")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
     public ResponseEntity<?>  agregarPersona(@Valid @RequestBody CreatePersonaDTO createPersonaDTO)  throws PersonaException{
-        // if(personaService.existePersona(documento))
-        //     throw new PersonaException("Ya existe una persona con ese documento");
-        // else{
-        //     personaService.guardarPersona(new Persona(documento, nombre, null, null, null));
-        // }
-
         if(personaService.existePersona(createPersonaDTO.getDocumento()))
             return ResponseEntity.badRequest().body("Ya existe una persona con ese documento");
         else{
