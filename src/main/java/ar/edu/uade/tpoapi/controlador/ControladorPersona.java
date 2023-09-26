@@ -27,7 +27,6 @@ public class ControladorPersona {
     
     private static ControladorPersona instancia;
 
-
     public static ControladorPersona getInstancia() {
         if(instancia == null)
             instancia = new ControladorPersona();

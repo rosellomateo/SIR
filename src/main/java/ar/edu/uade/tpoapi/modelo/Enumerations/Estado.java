@@ -1,4 +1,4 @@
-package ar.edu.uade.tpoapi.views;
+package ar.edu.uade.tpoapi.modelo.Enumerations;
 
 public enum Estado {
 

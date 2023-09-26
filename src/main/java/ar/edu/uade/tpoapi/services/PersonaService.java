@@ -34,10 +34,8 @@ public class PersonaService {
     }
 
     public Persona buscarPersona(String documento) {
-        if (existePersona(documento))
-            return personaRepository.findById(documento).get();
-        else
-            return null;
+        return personaRepository.findById(documento).orElse(null);
+        
     }
 
     public Boolean guardarPersona(Persona personaRegistro) {

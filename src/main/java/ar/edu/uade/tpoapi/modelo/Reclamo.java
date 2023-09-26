@@ -3,7 +3,7 @@ package ar.edu.uade.tpoapi.modelo;
 import java.util.ArrayList;
 import java.util.List;
 
-import ar.edu.uade.tpoapi.views.Estado;
+import ar.edu.uade.tpoapi.modelo.Enumerations.Estado;
 import ar.edu.uade.tpoapi.views.ImagenView;
 import ar.edu.uade.tpoapi.views.ReclamoView;
 import jakarta.persistence.*;
