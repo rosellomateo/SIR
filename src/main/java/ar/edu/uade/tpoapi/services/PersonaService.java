@@ -26,6 +26,7 @@ public class PersonaService {
     }
 
     public boolean existePersona(String documento) {
+
         return personaRepository.existsById(documento);
     }
 

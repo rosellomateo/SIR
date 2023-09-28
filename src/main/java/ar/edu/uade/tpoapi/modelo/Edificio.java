@@ -17,9 +17,11 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -58,21 +60,7 @@ public class Edificio {
         return habilitados;
     }
 
-    public int getCodigo() {
-        return codigo;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public List<Unidad> getUnidades() {
-        return unidades;
-    }
+    
 
     public Set<Persona> duenios() {
         Set<Persona> resultado = new HashSet<Persona>();
