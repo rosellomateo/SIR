@@ -10,16 +10,34 @@ public class UnidadService {
     @Autowired
     UnidadRepository unidadRepository;
 
-    public boolean existeUnidad(int codigo){
-        return unidadRepository.existsById(codigo);
+    public boolean existeUnidad(int identificador){
+        return unidadRepository.existsById(identificador);
     }
 
-    public Unidad buscarUnidad(int codigo){
-        if (existeUnidad(codigo)) {
-            return unidadRepository.findById(codigo).get();
+    public Unidad buscarUnidad(int identificador){
+        if (existeUnidad(identificador)) {
+            return unidadRepository.findById(identificador).get();
         }else{
             return null;
         }
     }
+
+    public Unidad buscarUnidad(int codigo, String piso, String numero) {
+        Unidad unidad = unidadRepository.findByEdificioCodigoAndPisoAndNumero(codigo, piso, numero);
+        return unidad;
+    }
+
+    public Unidad crearUnidad(Unidad unidad) {
+
+        return unidadRepository.save(unidad);
+    }
+
+    public void eliminarUnidad(Unidad unidad) {
+        unidadRepository.delete(unidad);
+
+    }
+
+
+
 
 }

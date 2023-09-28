@@ -7,8 +7,17 @@ import ar.edu.uade.tpoapi.exceptions.UnidadException;
 import ar.edu.uade.tpoapi.views.EdificioView;
 import ar.edu.uade.tpoapi.views.UnidadView;
 import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "unidades")
 public class Unidad {
 
@@ -29,28 +38,10 @@ public class Unidad {
     @JoinTable(name = "inquilinos", joinColumns = @JoinColumn(name = "identificador"), inverseJoinColumns = @JoinColumn(name = "documento"))
     private List<Persona> inquilinos;
 
-    public Unidad(int id, String piso, String numero, Edificio edificio) {
-        this.id = id;
-        this.piso = piso;
-        this.numero = numero;
-        this.habitado = false;
-        this.edificio = edificio;
-        this.duenios = new ArrayList<Persona>();
-        this.inquilinos = new ArrayList<Persona>();
-    }
-
-    public Unidad( String piso, String numero, Edificio edificio){
-
-        this.piso = piso;
-        this.numero = numero;
-        this.habitado = false;
-        this.edificio = edificio;
-        this.duenios = new ArrayList<Persona>();
-        this.inquilinos = new ArrayList<Persona>();
-
-    }
-
-    public Unidad() {
+    public void updateUnidad(UnidadView uView){
+        this.piso = uView.getPiso();
+        this.numero = uView.getNumero();
+        this.habitado = uView.isHabitado();
     }
 
     public void transferir(Persona nuevoDuenio) {
@@ -92,30 +83,7 @@ public class Unidad {
             this.habitado = true;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getPiso() {
-        return piso;
-    }
-
-    public String getNumero() {
-        return numero;
-    }
-
-
-    public Edificio getEdificio() {
-         return edificio;
-    }
-
-    public List<Persona> getDuenios() {
-        return duenios;
-    }
-
-    public List<Persona> getInquilinos() {
-        return inquilinos;
-    }
+   
 
      public UnidadView toView() {
          EdificioView auxEdificio = edificio.toView();
