@@ -42,7 +42,7 @@ public class ReclamoService {
     }
 
     public List<ReclamoView> reclamosPorPersona(String documento) {
-        List<Reclamo> reclamos = reclamoRepository.findByPersonaDocumento(documento);
+        List<Reclamo> reclamos = reclamoRepository.findByUsuarioDocumento(documento);
         List<ReclamoView> resultado = new ArrayList<ReclamoView>();
 
         for (Reclamo reclamo : reclamos) {
