@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ar.edu.uade.tpoapi.controlador.request.Edificio.ConsultaEdificioDTO;
 import ar.edu.uade.tpoapi.controlador.request.Edificio.CreateEdificioDTO;
 import ar.edu.uade.tpoapi.exceptions.EdificioException;
 import ar.edu.uade.tpoapi.modelo.Edificio;
@@ -55,7 +57,7 @@ public class ControladorEdificio {
 
     @GetMapping(value = "/getUnidades")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
-    public ResponseEntity<?> getUnidadesPorEdificio(@RequestBody int codigo) throws EdificioException{
+    public ResponseEntity<?> getUnidadesPorEdificio(@RequestParam int codigo) throws EdificioException{
          List<UnidadView> resultado = new ArrayList<UnidadView>();
          Edificio edificio = buscarEdificio(codigo);
          List<Unidad> unidades = edificio.getUnidades();
@@ -66,8 +68,9 @@ public class ControladorEdificio {
 
     @GetMapping(value = "/habilitados")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
-    public ResponseEntity<?> habilitadosPorEdificio(@RequestBody int codigo) throws EdificioException{
+    public ResponseEntity<?> habilitadosPorEdificio(@RequestBody ConsultaEdificioDTO consultaEdificioDTO) throws EdificioException{
         List<PersonaView> resultado = new ArrayList<PersonaView>();
+        int codigo = consultaEdificioDTO.getCodigo();
         Edificio edificio = buscarEdificio(codigo);
         Set<Persona> habilitados = edificio.habilitados();
         for(Persona persona : habilitados)
