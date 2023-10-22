@@ -42,7 +42,7 @@ public class ControladorPersona {
 
     @PostMapping("/agregar")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
-    public ResponseEntity<?>  agregarPersona(@Valid @RequestBody CreatePersonaDTO createPersonaDTO)  throws PersonaException{
+    public ResponseEntity<?>agregarPersona(@Valid @RequestBody CreatePersonaDTO createPersonaDTO)  throws PersonaException{
         if(personaService.existePersona(createPersonaDTO.getDocumento()))
             return ResponseEntity.badRequest().body("Ya existe una persona con ese documento");
         else{

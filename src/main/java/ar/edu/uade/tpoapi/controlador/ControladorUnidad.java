@@ -50,9 +50,7 @@ public class ControladorUnidad {
         unidadService.crearUnidad(unidad);
         return ResponseEntity.ok().build();
     }
-
-
-
+    
     @PostMapping("/transferirUnidad")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
     public ResponseEntity<?> transferirUnidad(UnidadDTO transferirUnidadDTO) throws UnidadException, PersonaException {
@@ -95,15 +93,12 @@ public class ControladorUnidad {
         return ResponseEntity.ok().build();
     }
 
-
-
     protected Unidad buscarUnidad(int codigo, String piso, String numero) throws UnidadException{
         Unidad unidad = unidadService.buscarUnidad(codigo, piso, numero);
         if(unidad == null)
             throw new UnidadException("No se encontro la unidad");
         return unidad;
     }
-
 
     @PostMapping("/agregarDuenioUnidad")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
@@ -113,7 +108,6 @@ public class ControladorUnidad {
         unidad.agregarDuenio(persona);
         return ResponseEntity.ok().build();
     }
-
     
     @PostMapping("/agregarInquilinoUnidad")    
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
@@ -124,10 +118,6 @@ public class ControladorUnidad {
         return ResponseEntity.ok().build();
     }
 
-    
-
- 
-   
     @GetMapping("/dueniosPorUnidad")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
     public ResponseEntity<?> dueniosPorUnidad(UnidadDTO unidadDTO) throws UnidadException{

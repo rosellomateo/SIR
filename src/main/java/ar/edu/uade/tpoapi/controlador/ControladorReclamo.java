@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ar.edu.uade.tpoapi.controlador.request.Reclamo.CambiarEstadoDTO;
 import ar.edu.uade.tpoapi.controlador.request.Reclamo.ImagenReclamoDTO;
 import ar.edu.uade.tpoapi.controlador.request.Reclamo.ReclamoDTO;
 import ar.edu.uade.tpoapi.controlador.request.Reclamo.UnidadDTO;
@@ -48,57 +50,48 @@ public class ControladorReclamo
         return instancia;
     }
     
-    @GetMapping("/Edificio")
-    @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado') ")
-    public ResponseEntity<?> reclamosPorEdificio(@RequestBody int codigo){
-        List<ReclamoView> resultado = new ArrayList<ReclamoView>();
-        if(reclamoService.reclamosPorEdificio(codigo).isEmpty()){
-            return ResponseEntity.badRequest().body("No existen reclamos para ese edificio");
-        }else{
-            resultado = reclamoService.reclamosPorEdificio(codigo);
-            return ResponseEntity.ok(resultado);
+    @GetMapping("/edificio")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
+    public ResponseEntity<?> reclamosPorEdificio(@RequestParam int codigo) {
+        List<ReclamoView> resultado = reclamoService.reclamosPorEdificio(codigo);
+        if (resultado.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
-
+        return ResponseEntity.ok(resultado);
     }
 
-    @GetMapping("/Unidad")
+    @GetMapping("/unidad")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
-    public ResponseEntity<?> reclamosPorUnidad(@Valid @RequestBody UnidadDTO unidadDTO){
-        List<ReclamoView> resultado = new ArrayList<ReclamoView>();
-        if(reclamoService.reclamosPorUnidad(unidadDTO).isEmpty()){
-            return ResponseEntity.badRequest().body("No existen reclamos para esa unidad");
-        }else{
-            resultado = reclamoService.reclamosPorUnidad(unidadDTO);
-            return ResponseEntity.ok(resultado);
-        }        
+    public ResponseEntity<?> reclamosPorUnidad(@Valid @RequestBody UnidadDTO unidadDTO) {
+        List<ReclamoView> resultado = reclamoService.reclamosPorUnidad(unidadDTO);
+        if (resultado.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(resultado);
     }
 
-    @GetMapping("/Numero")
+    @GetMapping("/numero")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
-    public ResponseEntity<?> reclamosPorNumero(@RequestBody int numero)  throws ReclamoException {
+    public ResponseEntity<?> reclamosPorNumero(@RequestParam int numero) throws ReclamoException {
         ReclamoView resultado = buscarReclamo(numero).toView();
         if (resultado == null) {
-            return ResponseEntity.badRequest().body("No existe reclamoDTO con ese numero");
-        } else {
-            return ResponseEntity.ok(resultado);
+            return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok(resultado);
     }
 
-    @GetMapping("/Persona")
+    @GetMapping("/persona")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
-    public ResponseEntity<?> reclamosPorPersona(@RequestBody String documento) {
-        List<ReclamoView> resultado = new ArrayList<ReclamoView>();
-        if(reclamoService.reclamosPorPersona(documento).isEmpty()){
-            return ResponseEntity.badRequest().body("No existen reclamos para esa persona");   
+    public ResponseEntity<?> reclamosPorPersona(@RequestParam String documento) {
+        List<ReclamoView> resultado = reclamoService.reclamosPorPersona(documento);
+        if (resultado.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
-        else{
-            resultado = reclamoService.reclamosPorPersona(documento);
-            return ResponseEntity.ok(resultado);
-        }
+        return ResponseEntity.ok(resultado);
     }
 
 
-    @PutMapping("/Agregar")
+    @PutMapping("/agregar")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
     public ResponseEntity<?> agregarReclamo(ReclamoDTO reclamoDTO) throws EdificioException, UnidadException, PersonaException {
         Edificio edificio = controladorEdificio.buscarEdificio(reclamoDTO.getCodigo());
@@ -109,7 +102,7 @@ public class ControladorReclamo
         return ResponseEntity.ok("Reclamo agregado correctamente " + reclamo.getNumero());
     }
 
-    @PutMapping("/AgregarImagen")
+    @PutMapping("/agregar-imagen")
     @PreAuthorize("hasRole('Residente')or hasRole('Encargado')")
     public ResponseEntity<?> agregarImagenAReclamo(ImagenReclamoDTO imagenDTO) throws ReclamoException {
         Reclamo reclamo = buscarReclamo(imagenDTO.getNumero());
@@ -118,13 +111,17 @@ public class ControladorReclamo
         return ResponseEntity.ok("Imagen agregada correctamente");
     }
 
-    @PostMapping("/CambiarEstado")
+    @PostMapping("/cambiar-estado")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
-    public ResponseEntity<?> cambiarEstado(@RequestBody int numero,@RequestBody Estado estado) throws ReclamoException {
-        Reclamo reclamo = buscarReclamo(numero);
-        reclamo.cambiarEstado(estado);
-        reclamoService.ActualizarEstado(reclamo);
-        return ResponseEntity.ok("Estado cambiado correctamente");
+    public ResponseEntity<?> cambiarEstado(@RequestBody CambiarEstadoDTO dto) throws ReclamoException {
+        Reclamo reclamo = buscarReclamo(dto.getNumero());
+        reclamo.cambiarEstado(dto.getEstado());
+        boolean isUpdated = reclamoService.ActualizarEstado(reclamo);
+        if (isUpdated) {
+            return ResponseEntity.ok("Estado cambiado correctamente");
+        } else {
+            return ResponseEntity.badRequest().body("Error al actualizar el estado");
+        }
     }
     
     private Reclamo buscarReclamo(int numero) throws ReclamoException {

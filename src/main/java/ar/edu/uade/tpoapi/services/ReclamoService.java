@@ -59,9 +59,9 @@ public class ReclamoService {
         reclamoRepository.save(reclamo);
     }
 
-    public void ActualizarEstado(Reclamo reclamo) {
-        reclamoRepository.save(reclamo);
-
+    public boolean ActualizarEstado(Reclamo reclamo) {
+        Reclamo reclamoGuardado = reclamoRepository.save(reclamo);
+        return reclamoGuardado != null;
     }
 
     public Reclamo buscarReclamo(int numero) {
