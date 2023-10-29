@@ -1,10 +1,13 @@
 package ar.edu.uade.tpoapi.controlador;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ar.edu.uade.tpoapi.controlador.request.Auth.RegisterDTO;
 import ar.edu.uade.tpoapi.exceptions.PersonaException;
 import ar.edu.uade.tpoapi.modelo.Persona;
+import ar.edu.uade.tpoapi.security.jwt.JwtUtils;
 import ar.edu.uade.tpoapi.services.PersonaService;
 import jakarta.validation.Valid;
 
@@ -19,6 +23,9 @@ import jakarta.validation.Valid;
 @RequestMapping("/auth")
 public class ControladorAuth {
 
+    // Inyecta la clase JwtUtils
+    @Autowired
+    private JwtUtils jwtUtils;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -73,5 +80,21 @@ public class ControladorAuth {
                 return ResponseEntity.badRequest().body("El documento ya posee un usuario registrado");
             }
         }
+    }
+
+    @PostMapping("/auth/refreshToken")
+    public ResponseEntity<String> refreshJwtToken(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        // Verifica si el token es válido y existente
+        if (token != null && token.startsWith("Bearer ")) {
+            String authToken = token.substring(7);
+            if (jwtUtils.validateAccesToken(authToken)) {
+                String email = jwtUtils.getMailFromToken(authToken);
+                // Genera un nuevo token
+                String newToken = jwtUtils.generateAccesToken(email);
+                // Devuelve el nuevo token
+                return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION, "Bearer " + newToken).body("Token refreshed successfully.");
+            }
+        }
+        return ResponseEntity.badRequest().body("Token invalid or missing.");
     }
 }
