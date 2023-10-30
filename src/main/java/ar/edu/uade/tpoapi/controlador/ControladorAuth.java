@@ -82,9 +82,8 @@ public class ControladorAuth {
         }
     }
 
-    @PostMapping("/auth/refreshToken")
+    @PostMapping("/refreshToken")
     public ResponseEntity<String> refreshJwtToken(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        // Verifica si el token es válido y existente
         if (token != null && token.startsWith("Bearer ")) {
             String authToken = token.substring(7);
             if (jwtUtils.validateAccesToken(authToken)) {
