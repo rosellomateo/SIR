@@ -46,7 +46,7 @@ public class ControladorPersona {
         if(personaService.existePersona(createPersonaDTO.getDocumento()))
             return ResponseEntity.badRequest().body("Ya existe una persona con ese documento");
         else{
-            personaService.guardarPersona(new Persona(createPersonaDTO.getDocumento(), createPersonaDTO.getNombre(), null, null, createPersonaDTO.getRoles()));
+            personaService.guardarPersona(Persona.builder().documento(createPersonaDTO.getDocumento()).nombre(createPersonaDTO.getNombre()).roles(createPersonaDTO.getRoles()).build());
             return ResponseEntity.ok().body("Persona agregada correctamente");
         }
     }

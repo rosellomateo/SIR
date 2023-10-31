@@ -51,6 +51,35 @@ public class ControladorAuth {
         }
     }
 
+    @RequestMapping("/validarMail")
+    public ResponseEntity<?> validoParaRegistro(@RequestParam String documento, @RequestParam String mail) throws PersonaException {
+        String documentoValidar = documento;
+        String mailValidar = mail;
+        if (!personaService.existePersona(documentoValidar))
+        {
+            return ResponseEntity.badRequest().body("No se encuentra cargado el documento");
+        }
+        else{
+            if(personaService.buscarPersona(documentoValidar).validoParaRegistro())
+            {
+                if(personaService.existeMail(mailValidar))
+                {
+                    return ResponseEntity.badRequest().body("El mail ya se encuentra registrado");
+                }
+                else
+                {
+                    //Envia mail de confirmacion
+                    personaService.enviarMailConfirmacion(documentoValidar, mailValidar);
+                    return ResponseEntity.ok().body("El mail es valido para registro, se envio un mail de confirmacion");
+                }
+            }
+            else
+            {
+                return ResponseEntity.badRequest().body("El documento ya posee un usuario registrado");
+            }
+        }
+    }
+
     @PatchMapping("/registrar")
     public ResponseEntity<?> registrar(@Valid @RequestBody RegisterDTO registerDTO) throws PersonaException{
         if(!personaService.existePersona(registerDTO.getDocumento()))
@@ -82,9 +111,8 @@ public class ControladorAuth {
         }
     }
 
-    @PostMapping("/auth/refreshToken")
+    @PostMapping("/refreshToken")
     public ResponseEntity<String> refreshJwtToken(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        // Verifica si el token es válido y existente
         if (token != null && token.startsWith("Bearer ")) {
             String authToken = token.substring(7);
             if (jwtUtils.validateAccesToken(authToken)) {
@@ -96,5 +124,28 @@ public class ControladorAuth {
             }
         }
         return ResponseEntity.badRequest().body("Token invalid or missing.");
+    }
+
+    @PostMapping("/confirmarMail")
+    public ResponseEntity<?> confirmarMail(@RequestParam String token, @RequestParam String mail) throws PersonaException {
+        Persona persona = personaService.buscarPersonaPorMail(mail);
+        if(persona == null)
+        {
+            return ResponseEntity.badRequest().body("No se encuentra cargado el mail");
+        }
+        else
+        {
+            if(!persona.getTokenVerificacion().equals(token))
+            {
+                return ResponseEntity.badRequest().body("El token no es valido");
+            }
+            personaService.confirmarMail(mail);
+            return ResponseEntity.ok().body("Mail confirmado correctamente");
+        }
+    }
+
+    @PostMapping("/olvidePassword")
+    public ResponseEntity<?> olvidePassword(@RequestParam String mail) throws PersonaException {
+        return ResponseEntity.ok().body(personaService.enviarMailOlvidePassword(mail));
     }
 }

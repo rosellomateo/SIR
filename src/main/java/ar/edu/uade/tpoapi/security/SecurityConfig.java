@@ -46,8 +46,7 @@ public class SecurityConfig{
         return httpSecurity
             .csrf(config -> config.disable())
             .authorizeHttpRequests(auth -> {
-                auth.requestMatchers("/auth/validarDocumento").permitAll();
-                auth.requestMatchers("/auth/registrar").permitAll();
+                auth.requestMatchers("/auth/**").permitAll();
                 auth.anyRequest().authenticated();
             })
             .sessionManagement( session -> {

@@ -29,6 +29,7 @@ import ar.edu.uade.tpoapi.modelo.Unidad;
 import ar.edu.uade.tpoapi.modelo.Enumerations.Estado;
 import ar.edu.uade.tpoapi.services.ReclamoService;
 import ar.edu.uade.tpoapi.views.ReclamoView;
+import ar.edu.uade.tpoapi.views.SendRequest;
 import jakarta.validation.Valid;
 
 @RestController
