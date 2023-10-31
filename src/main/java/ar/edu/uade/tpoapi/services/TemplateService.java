@@ -10,9 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import ar.edu.uade.tpoapi.dto.Body;
 import ar.edu.uade.tpoapi.modelo.Templates;
 import ar.edu.uade.tpoapi.repository.TemplateRepository;
+import ar.edu.uade.tpoapi.views.Body;
 
 
 @Service

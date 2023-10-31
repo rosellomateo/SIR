@@ -30,4 +30,8 @@ public class Templates {
 	private String content;
 	
 	private String vars;
+
+	public String toString() {
+		return "Templates(id=" + this.getId() + ", name=" + this.getName() + ", description=" + this.getDescription() + ", content=" + this.getContent() + ", vars=" + this.getVars() + ")";
+	}
 }

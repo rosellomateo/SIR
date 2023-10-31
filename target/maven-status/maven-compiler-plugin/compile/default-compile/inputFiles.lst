@@ -1,51 +1,60 @@
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\request\Persona\DeletePersonaDTO.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\request\Reclamo\CambiarEstadoDTO.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\ControladorUnidad.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\repository\EdificioRepository.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\repository\ReclamoRepository.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\request\Edificio\CreateEdificioDTO.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\exceptions\PersonaException.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\modelo\Persona.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\Sir.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\services\PersonaService.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\request\Reclamo\ReclamoDTO.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\modelo\Enumerations\Estado.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\ControladorReclamo.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\modelo\Roles.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\services\UserDetailsImpl.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\services\UnidadService.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\config\MyConfiguration.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\request\Persona\CreatePersonaDTO.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\ControladorEdificio.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\views\PersonaView.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\views\ReclamoView.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\exceptions\ImagenException.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\security\filters\JwtAuthenticationFilter.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\security\filters\JwtAuthorizationFilter.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\modelo\Reclamo.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\exceptions\UnidadException.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\request\Auth\LoginDTO.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\ControladorPersona.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\request\Edificio\ConsultaEdificioDTO.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\request\Reclamo\ImagenReclamoDTO.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\modelo\Unidad.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\repository\UnidadRepository.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\modelo\Imagen.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\request\Auth\RegisterDTO.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\ControladorAuth.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\services\EdificioService.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\request\Reclamo\UnidadDTO.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\request\Unidad\UnidadDTO.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\views\ImagenView.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\request\Persona\UpdatePersonaDTO.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\views\UnidadView.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\exceptions\EdificioException.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\modelo\Edificio.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\repository\PersonaRepository.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\security\jwt\JwtUtils.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\views\EdificioView.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\modelo\Enumerations\Rol.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\repository\ImagenRepository.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\security\SecurityConfig.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\exceptions\ReclamoException.java
-c:\Carlos\Facultad\API\SIR\src\main\java\ar\edu\uade\tpoapi\services\ReclamoService.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\request\Edificio\CreateEdificioDTO.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\views\PersonaView.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\services\ReclamoService.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\modelo\Imagen.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\exceptions\ReclamoException.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\repository\PersonaRepository.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\request\Reclamo\ImagenReclamoDTO.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\exceptions\UnidadException.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\ControladorReclamo.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\services\PersonaService.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\modelo\Reclamo.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\views\Body.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\services\UserDetailsImpl.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\request\Persona\UpdatePersonaDTO.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\request\Edificio\ConsultaEdificioDTO.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\request\Reclamo\UnidadDTO.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\security\filters\JwtAuthorizationFilter.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\services\TemplateService.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\modelo\Templates.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\exceptions\EdificioException.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\views\EdificioView.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\modelo\Roles.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\ControladorUnidad.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\views\SendRequest.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\exceptions\PersonaException.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\modelo\Edificio.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\request\Auth\RegisterDTO.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\ControladorEdificio.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\request\Reclamo\CambiarEstadoDTO.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\security\filters\JwtAuthenticationFilter.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\request\Persona\DeletePersonaDTO.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\exceptions\ImagenException.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\repository\TemplateRepository.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\ControladorAuth.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\ControladorPersona.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\repository\EdificioRepository.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\services\SendMessageService.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\services\UnidadService.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\views\ImagenView.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\repository\ImagenRepository.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\views\UnidadView.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\request\Auth\LoginDTO.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\services\EdificioService.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\config\MyConfiguration.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\request\Persona\CreatePersonaDTO.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\request\Reclamo\ReclamoDTO.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\modelo\Persona.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\views\ReclamoView.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\views\MetaData.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\modelo\Enumerations\Rol.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\security\SecurityConfig.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\repository\UnidadRepository.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\repository\ReclamoRepository.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\Sir.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\modelo\Unidad.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\views\Validatios.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\modelo\Enumerations\Estado.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\ControladorTemplate.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\controlador\request\Unidad\UnidadDTO.java
+c:\Miguel\Facultad\2° cuatrimestre 2023\API\SIR\src\main\java\ar\edu\uade\tpoapi\security\jwt\JwtUtils.java

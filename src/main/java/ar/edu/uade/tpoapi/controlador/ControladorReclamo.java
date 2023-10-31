@@ -29,6 +29,7 @@ import ar.edu.uade.tpoapi.modelo.Unidad;
 import ar.edu.uade.tpoapi.modelo.Enumerations.Estado;
 import ar.edu.uade.tpoapi.services.ReclamoService;
 import ar.edu.uade.tpoapi.views.ReclamoView;
+import ar.edu.uade.tpoapi.views.SendRequest;
 import jakarta.validation.Valid;
 
 @RestController
@@ -130,5 +131,11 @@ public class ControladorReclamo
             throw new ReclamoException("No existe reclamo con ese numero");
         }
         return reclamo;
+    }
+
+    @PostMapping("/send-mail")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
+    public ResponseEntity<?> sendMail(@RequestBody SendRequest sendRequest) {
+        return reclamoService.sendMail(sendRequest);
     }
 }
