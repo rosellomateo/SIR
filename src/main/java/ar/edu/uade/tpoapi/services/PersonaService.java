@@ -101,4 +101,35 @@ public class PersonaService {
         sendMessageService.sendMessage(SendRequest.builder().to(mail).subject("Bienvenido a la aplicacion")
                 .template(2).metaData(metaData).build());
     }
+
+    public String enviarMailOlvidePassword(String mail) {
+        Persona persona = buscarPersonaPorMail(mail);
+
+        if(persona == null)
+        {
+            return "No se encontro una persona con ese mail";
+        }
+
+        if(!persona.isCuentaVerificado())
+        {
+            return "La cuenta no esta verificada";
+        }
+
+        if(persona.getTokenVerificacion() != null)
+        {
+            return "Ya se envio un mail para recuperar el password";
+        }
+
+        String token = generarToken();
+        persona.setTokenVerificacion(token);
+        personaRepository.save(persona);
+
+        List<MetaData> metaData = new ArrayList<>();
+        metaData.add(new MetaData("name", persona.getNombre()));
+        metaData.add(new MetaData("resetCode", token));
+
+        sendMessageService.sendMessage(SendRequest.builder().to(mail).subject("Recuperacion de password")
+                .template(3).metaData(metaData).build());
+        return "Se envio un mail para recuperar el password";
+    }
 }

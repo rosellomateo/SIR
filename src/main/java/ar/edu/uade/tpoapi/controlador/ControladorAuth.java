@@ -143,4 +143,9 @@ public class ControladorAuth {
             return ResponseEntity.ok().body("Mail confirmado correctamente");
         }
     }
+
+    @PostMapping("/olvidePassword")
+    public ResponseEntity<?> olvidePassword(@RequestParam String mail) throws PersonaException {
+        return ResponseEntity.ok().body(personaService.enviarMailOlvidePassword(mail));
+    }
 }

@@ -132,10 +132,4 @@ public class ControladorReclamo
         }
         return reclamo;
     }
-
-    @PostMapping("/send-mail")
-    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
-    public ResponseEntity<?> sendMail(@RequestBody SendRequest sendRequest) {
-        return reclamoService.sendMail(sendRequest);
-    }
 }
