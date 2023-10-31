@@ -51,6 +51,35 @@ public class ControladorAuth {
         }
     }
 
+    @RequestMapping("/validarMail")
+    public ResponseEntity<?> validoParaRegistro(@RequestParam String documento, @RequestParam String mail) throws PersonaException {
+        String documentoValidar = documento;
+        String mailValidar = mail;
+        if (!personaService.existePersona(documentoValidar))
+        {
+            return ResponseEntity.badRequest().body("No se encuentra cargado el documento");
+        }
+        else{
+            if(personaService.buscarPersona(documentoValidar).validoParaRegistro())
+            {
+                if(personaService.existeMail(mailValidar))
+                {
+                    return ResponseEntity.badRequest().body("El mail ya se encuentra registrado");
+                }
+                else
+                {
+                    //Envia mail de confirmacion
+                    personaService.enviarMailConfirmacion(documentoValidar, mailValidar);
+                    return ResponseEntity.ok().body("El mail es valido para registro, se envio un mail de confirmacion");
+                }
+            }
+            else
+            {
+                return ResponseEntity.badRequest().body("El documento ya posee un usuario registrado");
+            }
+        }
+    }
+
     @PatchMapping("/registrar")
     public ResponseEntity<?> registrar(@Valid @RequestBody RegisterDTO registerDTO) throws PersonaException{
         if(!personaService.existePersona(registerDTO.getDocumento()))

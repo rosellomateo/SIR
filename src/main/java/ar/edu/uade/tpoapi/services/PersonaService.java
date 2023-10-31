@@ -4,7 +4,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
 import org.springframework.stereotype.Service;
 
 import ar.edu.uade.tpoapi.modelo.Persona;
@@ -15,6 +14,9 @@ import ar.edu.uade.tpoapi.repository.PersonaRepository;
 public class PersonaService {
     @Autowired
     PersonaRepository personaRepository;
+
+    @Autowired
+    SendMessageService sendMessageService;
 
     public boolean eliminarPersona(String documento) {
         try {
@@ -59,5 +61,19 @@ public class PersonaService {
         personaRepository.save(persona);
     }
 
-    
+    public void enviarMailConfirmacion(String documentoValidar, String mailValidar) {
+        Persona persona = buscarPersona(documentoValidar);
+        if(persona == null)
+        {
+            return;
+        }
+        String token = generarToken();
+        persona.setTokenMail(token);
+        personaRepository.save(persona);
+        sendMessageService.enviarMailConfirmacion(mailValidar, token);
+    }
+
+    private String generarToken() {
+        return String.valueOf((int) (Math.random() * 999999 + 100000));
+    }
 }

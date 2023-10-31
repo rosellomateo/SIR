@@ -27,6 +27,7 @@ public class Persona {
     @ManyToMany(fetch = FetchType.EAGER,targetEntity = Roles.class,cascade = CascadeType.PERSIST)
     @JoinTable(name = "personas_roles",joinColumns = @JoinColumn(name = "documento"),inverseJoinColumns = @JoinColumn(name = "id_rol"))
     private Set<Roles> roles;
+    private String tokenMail;
 
     public boolean validoParaRegistro(){
         return (this.mail == null && this.password == null);

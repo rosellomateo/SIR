@@ -17,6 +17,7 @@ import org.springframework.web.server.NotAcceptableStatusException;
 import ar.edu.uade.tpoapi.dto.Body;
 import ar.edu.uade.tpoapi.dto.MetaData;
 import ar.edu.uade.tpoapi.dto.SendRequest;
+import ar.edu.uade.tpoapi.modelo.Persona;
 import ar.edu.uade.tpoapi.modelo.Templates;
 import ar.edu.uade.tpoapi.repository.TemplateRepository;
 import jakarta.mail.MessagingException;
