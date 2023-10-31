@@ -135,6 +135,10 @@ public class ControladorAuth {
         }
         else
         {
+            if(persona.getTokenVerificacion() == null)
+            {
+                return ResponseEntity.badRequest().body("El mail ya se encuentra confirmado");
+            }
             if(!persona.getTokenVerificacion().equals(token))
             {
                 return ResponseEntity.badRequest().body("El token no es valido");
