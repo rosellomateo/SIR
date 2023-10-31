@@ -125,4 +125,22 @@ public class ControladorAuth {
         }
         return ResponseEntity.badRequest().body("Token invalid or missing.");
     }
+
+    @PostMapping("/confirmarMail")
+    public ResponseEntity<?> confirmarMail(@RequestParam String token, @RequestParam String mail) throws PersonaException {
+        Persona persona = personaService.buscarPersonaPorMail(mail);
+        if(persona == null)
+        {
+            return ResponseEntity.badRequest().body("No se encuentra cargado el mail");
+        }
+        else
+        {
+            if(!persona.getTokenVerificacion().equals(token))
+            {
+                return ResponseEntity.badRequest().body("El token no es valido");
+            }
+            personaService.confirmarMail(mail);
+            return ResponseEntity.ok().body("Mail confirmado correctamente");
+        }
+    }
 }

@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Builder.Default;
 
 @Entity
 @Table(name = "personas")
@@ -30,7 +31,7 @@ public class Persona {
     @JoinTable(name = "personas_roles",joinColumns = @JoinColumn(name = "documento"),inverseJoinColumns = @JoinColumn(name = "id_rol"))
     private Set<Roles> roles;
     private String tokenVerificacion;
-    private boolean cuentaVerificado;
+    @Default private boolean cuentaVerificado = false;
 
     public boolean validoParaRegistro(){
         return (this.mail == null && this.password == null);

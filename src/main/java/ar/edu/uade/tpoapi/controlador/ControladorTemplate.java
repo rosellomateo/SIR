@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,7 +22,8 @@ public class ControladorTemplate {
     private TemplateService templateService;
 
     @PostMapping("/Save")
-	public ResponseEntity<?> saveNewTemplate(@RequestParam("file") MultipartFile templateFile ,@RequestHeader("title") String title , @RequestHeader("description") String description , @RequestHeader("vars") List<String> vars){
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    public ResponseEntity<?> saveNewTemplate(@RequestParam("file") MultipartFile templateFile ,@RequestHeader("title") String title , @RequestHeader("description") String description , @RequestHeader("vars") List<String> vars){
 		return templateService.saveNewTemplate(templateFile, title, description, vars);
 	}
 }

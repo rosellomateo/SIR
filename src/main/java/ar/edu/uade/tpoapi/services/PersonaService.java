@@ -73,6 +73,7 @@ public class PersonaService {
         }
         String token = generarToken();
         persona.setTokenVerificacion(token);
+        persona.setMail(mailValidar);
         personaRepository.save(persona);
 
         List<MetaData> metaData = new ArrayList<>();
@@ -85,5 +86,19 @@ public class PersonaService {
 
     private String generarToken() {
         return String.valueOf((int) (Math.random() * 999999 + 100000));
+    }
+
+    public void confirmarMail(String mail) {
+        //confirmar mail y enviar mail de bienvenida
+        Persona persona = buscarPersonaPorMail(mail);
+        persona.setCuentaVerificado(true);
+        persona.setTokenVerificacion(null);
+        personaRepository.save(persona);
+        
+        List<MetaData> metaData = new ArrayList<>();
+        metaData.add(new MetaData("name", persona.getNombre()));
+
+        sendMessageService.sendMessage(SendRequest.builder().to(mail).subject("Bienvenido a la aplicacion")
+                .template(2).metaData(metaData).build());
     }
 }
