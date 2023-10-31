@@ -1,5 +1,7 @@
 package ar.edu.uade.tpoapi.services;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Service;
 import ar.edu.uade.tpoapi.modelo.Persona;
 import ar.edu.uade.tpoapi.modelo.Roles;
 import ar.edu.uade.tpoapi.repository.PersonaRepository;
+import ar.edu.uade.tpoapi.views.MetaData;
+import ar.edu.uade.tpoapi.views.SendRequest;
 
 @Service
 public class PersonaService {
@@ -68,9 +72,15 @@ public class PersonaService {
             return;
         }
         String token = generarToken();
-        persona.setTokenMail(token);
+        persona.setTokenVerificacion(token);
         personaRepository.save(persona);
-        sendMessageService.enviarMailConfirmacion(mailValidar, token);
+
+        List<MetaData> metaData = new ArrayList<>();
+        metaData.add(new MetaData("name", persona.getNombre()));
+        metaData.add(new MetaData("confirmationCode", token));
+
+        sendMessageService.sendMessage(SendRequest.builder().to(mailValidar).subject("Confirmacion de mail")
+                .template(1).metaData(metaData).build());
     }
 
     private String generarToken() {
