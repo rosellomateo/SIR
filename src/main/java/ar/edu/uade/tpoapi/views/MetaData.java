@@ -1,4 +1,4 @@
-package ar.edu.uade.tpoapi.dto;
+package ar.edu.uade.tpoapi.views;
 
 public class MetaData {
 

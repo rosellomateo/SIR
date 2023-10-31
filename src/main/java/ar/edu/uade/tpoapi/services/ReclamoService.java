@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import ar.edu.uade.tpoapi.controlador.request.Reclamo.UnidadDTO;
@@ -12,6 +13,7 @@ import ar.edu.uade.tpoapi.modelo.Unidad;
 import ar.edu.uade.tpoapi.repository.ReclamoRepository;
 import ar.edu.uade.tpoapi.repository.UnidadRepository;
 import ar.edu.uade.tpoapi.views.ReclamoView;
+import ar.edu.uade.tpoapi.views.SendRequest;
 
 @Service
 public class ReclamoService {
@@ -19,6 +21,8 @@ public class ReclamoService {
     ReclamoRepository reclamoRepository;
     @Autowired
     UnidadRepository unidadRepository;
+    @Autowired
+    SendMessageService sendMessageService;
 
     public List<ReclamoView> reclamosPorEdificio(int codigo) {
         List<Reclamo> reclamos = reclamoRepository.findByEdificioCodigo(codigo);
@@ -66,6 +70,10 @@ public class ReclamoService {
 
     public Reclamo buscarReclamo(int numero) {
         return reclamoRepository.findById(numero).orElse(null);
+    }
+
+    public ResponseEntity<?> sendMail(SendRequest sendRequest) {
+        return sendMessageService.sendMessage(sendRequest);
     }
 
 }

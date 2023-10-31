@@ -14,12 +14,11 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.NotAcceptableStatusException;
 
-import ar.edu.uade.tpoapi.dto.Body;
-import ar.edu.uade.tpoapi.dto.MetaData;
-import ar.edu.uade.tpoapi.dto.SendRequest;
-import ar.edu.uade.tpoapi.modelo.Persona;
 import ar.edu.uade.tpoapi.modelo.Templates;
 import ar.edu.uade.tpoapi.repository.TemplateRepository;
+import ar.edu.uade.tpoapi.views.Body;
+import ar.edu.uade.tpoapi.views.MetaData;
+import ar.edu.uade.tpoapi.views.SendRequest;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 @Service
@@ -91,4 +90,7 @@ public class SendMessageService {
 		Matcher mather = pattern.matcher(email);
 		return mather.find();
 	}
+
+	
+
 }
