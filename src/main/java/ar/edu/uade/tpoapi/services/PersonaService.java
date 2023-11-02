@@ -3,13 +3,12 @@ package ar.edu.uade.tpoapi.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.edu.uade.tpoapi.modelo.Persona;
-import ar.edu.uade.tpoapi.modelo.Roles;
+import ar.edu.uade.tpoapi.modelo.Enumerations.Rol;
 import ar.edu.uade.tpoapi.repository.PersonaRepository;
 import ar.edu.uade.tpoapi.views.MetaData;
 import ar.edu.uade.tpoapi.views.SendRequest;
@@ -59,9 +58,9 @@ public class PersonaService {
         return persona.orElse(null);
     }
 
-    public void modificarPersona(String documento, Set<Roles> roles) {
+    public void modificarPersona(String documento, Rol roles) {
         Persona persona = buscarPersona(documento);
-        persona.setRoles(roles);
+        persona.setRol(roles);
         personaRepository.save(persona);
     }
 

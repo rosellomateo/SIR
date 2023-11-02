@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.edu.uade.tpoapi.controlador.request.Persona.CreatePersonaDTO;
@@ -15,6 +17,7 @@ import ar.edu.uade.tpoapi.controlador.request.Persona.DeletePersonaDTO;
 import ar.edu.uade.tpoapi.controlador.request.Persona.UpdatePersonaDTO;
 import ar.edu.uade.tpoapi.exceptions.PersonaException;
 import ar.edu.uade.tpoapi.modelo.Persona;
+import ar.edu.uade.tpoapi.modelo.Enumerations.Rol;
 import ar.edu.uade.tpoapi.services.PersonaService;
 import jakarta.validation.Valid;
 
@@ -46,7 +49,7 @@ public class ControladorPersona {
         if(personaService.existePersona(createPersonaDTO.getDocumento()))
             return ResponseEntity.badRequest().body("Ya existe una persona con ese documento");
         else{
-            personaService.guardarPersona(Persona.builder().documento(createPersonaDTO.getDocumento()).nombre(createPersonaDTO.getNombre()).roles(createPersonaDTO.getRoles()).build());
+            personaService.guardarPersona(Persona.builder().documento(createPersonaDTO.getDocumento()).nombre(createPersonaDTO.getNombre()).rol(Rol.valueOf(createPersonaDTO.getRol())).build());
             return ResponseEntity.ok().body("Persona agregada correctamente");
         }
     }
@@ -77,6 +80,21 @@ public class ControladorPersona {
                 return ResponseEntity.ok().body("Persona modificada correctamente");
             } catch (Exception e) {
                 return ResponseEntity.badRequest().body("No se pudo modificar la persona");
+            }
+        }
+        else
+            return ResponseEntity.badRequest().body("No existe una persona con ese documento");
+    }
+
+    @GetMapping("/buscar")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    public ResponseEntity<?> testBuscarPersona(@Valid @RequestParam String documento) throws PersonaException {
+        if(personaService.existePersona(documento))
+        {
+            try {
+                return ResponseEntity.ok().body(personaService.buscarPersona(documento));
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body("No se pudo encontrar la persona");
             }
         }
         else
