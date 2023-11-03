@@ -79,7 +79,7 @@ public class ControladorEdificio {
 
     @GetMapping(value = "/duenios")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
-    public List<PersonaView> dueniosPorEdificio(@RequestBody int codigo) throws EdificioException{
+    public List<PersonaView> dueniosPorEdificio(@RequestParam int codigo) throws EdificioException{
         List<PersonaView> resultado = new ArrayList<PersonaView>();
         Edificio edificio = buscarEdificio(codigo);
         Set<Persona> duenios = edificio.duenios();
