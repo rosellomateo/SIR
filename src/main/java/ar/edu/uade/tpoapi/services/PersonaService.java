@@ -7,11 +7,13 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ar.edu.uade.tpoapi.controlador.request.Persona.UpdatePersonaDTO;
 import ar.edu.uade.tpoapi.modelo.Persona;
 import ar.edu.uade.tpoapi.modelo.Enumerations.Rol;
 import ar.edu.uade.tpoapi.repository.PersonaRepository;
 import ar.edu.uade.tpoapi.views.MetaData;
 import ar.edu.uade.tpoapi.views.SendRequest;
+import jakarta.validation.Valid;
 
 @Service
 public class PersonaService {
@@ -58,10 +60,11 @@ public class PersonaService {
         return persona.orElse(null);
     }
 
-    public void modificarPersona(String documento, Rol roles) {
-        Persona persona = buscarPersona(documento);
-        persona.setRol(roles);
-        personaRepository.save(persona);
+    public Persona modificarPersona(@Valid UpdatePersonaDTO updatePersonaDTO) {
+        Persona persona = buscarPersona(updatePersonaDTO.getDocumento());
+        persona.setNombre(updatePersonaDTO.getNombre());
+        persona.setRol(updatePersonaDTO.getRoles());
+        return personaRepository.save(persona);
     }
 
     public void enviarMailConfirmacion(String documentoValidar, String mailValidar) {
@@ -80,7 +83,7 @@ public class PersonaService {
         metaData.add(new MetaData("confirmationCode", token));
 
         sendMessageService.sendMessage(SendRequest.builder().to(mailValidar).subject("Confirmacion de mail")
-                .template(1).metaData(metaData).build());
+                .template(2).metaData(metaData).build());
     }
 
     private String generarToken() {
@@ -98,7 +101,7 @@ public class PersonaService {
         metaData.add(new MetaData("name", persona.getNombre()));
 
         sendMessageService.sendMessage(SendRequest.builder().to(mail).subject("Bienvenido a la aplicacion")
-                .template(2).metaData(metaData).build());
+                .template(3).metaData(metaData).build());
     }
 
     public String enviarMailOlvidePassword(String mail) {
@@ -128,7 +131,7 @@ public class PersonaService {
         metaData.add(new MetaData("resetCode", token));
 
         sendMessageService.sendMessage(SendRequest.builder().to(mail).subject("Recuperacion de password")
-                .template(3).metaData(metaData).build());
+                .template(10).metaData(metaData).build());
         return "Se envio un mail para recuperar el password";
     }
 }

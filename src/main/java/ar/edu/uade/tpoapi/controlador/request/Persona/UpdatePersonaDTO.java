@@ -15,5 +15,6 @@ import lombok.NoArgsConstructor;
 public class UpdatePersonaDTO {
     
     private String documento;
+    private String nombre;
     private Rol roles;
 }

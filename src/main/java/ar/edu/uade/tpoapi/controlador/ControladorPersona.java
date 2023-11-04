@@ -19,6 +19,7 @@ import ar.edu.uade.tpoapi.exceptions.PersonaException;
 import ar.edu.uade.tpoapi.modelo.Persona;
 import ar.edu.uade.tpoapi.modelo.Enumerations.Rol;
 import ar.edu.uade.tpoapi.services.PersonaService;
+import ar.edu.uade.tpoapi.views.PersonaView;
 import jakarta.validation.Valid;
 
 @RestController
@@ -76,8 +77,11 @@ public class ControladorPersona {
         if(personaService.existePersona(updatePersonaDTO.getDocumento()))
         {
             try {
-                personaService.modificarPersona(updatePersonaDTO.getDocumento(), updatePersonaDTO.getRoles());
-                return ResponseEntity.ok().body("Persona modificada correctamente");
+                PersonaView persona = personaService.modificarPersona(updatePersonaDTO).toView();
+                if(persona != null)
+                    return ResponseEntity.ok().body(persona);
+                else
+                    return ResponseEntity.badRequest().body("No se pudo modificar la persona");
             } catch (Exception e) {
                 return ResponseEntity.badRequest().body("No se pudo modificar la persona");
             }
