@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import ar.edu.uade.tpoapi.controlador.request.Auth.RegisterDTO;
+import ar.edu.uade.tpoapi.controlador.request.Auth.RegisterPasswordDTO;
 import ar.edu.uade.tpoapi.exceptions.PersonaException;
 import ar.edu.uade.tpoapi.modelo.Persona;
 import ar.edu.uade.tpoapi.security.jwt.JwtUtils;
@@ -23,7 +23,6 @@ import jakarta.validation.Valid;
 @RequestMapping("/auth")
 public class ControladorAuth {
 
-    // Inyecta la clase JwtUtils
     @Autowired
     private JwtUtils jwtUtils;
     @Autowired
@@ -32,7 +31,7 @@ public class ControladorAuth {
     PersonaService personaService;
 
     @RequestMapping("/validarDocumento")
-    public ResponseEntity<?> validoParaRegistro(@RequestParam String documento) throws PersonaException {
+    public ResponseEntity<?> validoDocumentoParaRegistro(@RequestParam String documento) throws PersonaException {
         String documentoValidar = documento;
         if (!personaService.existePersona(documentoValidar))
         {
@@ -51,7 +50,7 @@ public class ControladorAuth {
     }
 
     @RequestMapping("/validarMail")
-    public ResponseEntity<?> validoParaRegistro(@RequestParam String documento, @RequestParam String mail) throws PersonaException {
+    public ResponseEntity<?> validoMailParaRegistro(@RequestParam String documento, @RequestParam String mail) throws PersonaException {
         String documentoValidar = documento;
         String mailValidar = mail;
         if (!personaService.existePersona(documentoValidar))
@@ -79,29 +78,22 @@ public class ControladorAuth {
         }
     }
 
-    @PatchMapping("/registrar")
-    public ResponseEntity<?> registrar(@Valid @RequestBody RegisterDTO registerDTO) throws PersonaException{
+    @PatchMapping("/registrarPassword")
+    public ResponseEntity<?> registrarPassword(@Valid @RequestBody RegisterPasswordDTO registerDTO) throws PersonaException{
         if(!personaService.existePersona(registerDTO.getDocumento()))
         {
             return ResponseEntity.badRequest().body("No se encuentra cargado el documento");
         }
         else{
-            if(personaService.buscarPersona(registerDTO.getDocumento()).validoParaRegistro())
+            if(personaService.buscarPersona(registerDTO.getDocumento()).validoParaRegistroPassword())
             {
-                if(personaService.existeMail(registerDTO.getMail()))
-                {
-                    return ResponseEntity.badRequest().body("El mail ya se encuentra registrado");
-                }
+                Persona persona = personaService.buscarPersona(registerDTO.getDocumento());
+                persona.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
+                if(personaService.guardarPersona(persona))
+                    return ResponseEntity.ok().body("Usuario registrado correctamente");
                 else
-                {
-                    Persona persona = personaService.buscarPersona(registerDTO.getDocumento());
-                    persona.setMail(registerDTO.getMail());
-                    persona.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
-                    if(personaService.guardarPersona(persona))
-                        return ResponseEntity.ok().body("Usuario registrado correctamente");
-                    else
-                        return ResponseEntity.badRequest().body("Error al registrar el usuario");
-                }
+                    return ResponseEntity.badRequest().body("Error al registrar el usuario");
+                
             }
             else
             {
