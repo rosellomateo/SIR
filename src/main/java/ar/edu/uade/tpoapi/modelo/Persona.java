@@ -49,4 +49,8 @@ public class Persona {
     public String toString() {
         return "Documento: " + documento + " Nombre: " + nombre + " Mail: " + mail + " Password: " + password;
     }
+
+    public boolean validoParaRegistroPassword() {
+        return (this.mail != null && this.password == null);
+    }
 }

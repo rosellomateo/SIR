@@ -9,13 +9,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterDTO {
-    
+public class RegisterMailDTO {
+
     @NotBlank
     String documento;
     @NotBlank
     @Email
     String mail;
-    @NotBlank
-    String password;
 }
