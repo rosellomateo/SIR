@@ -6,6 +6,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -143,6 +144,7 @@ public class ControladorEdificio {
 
     @DeleteMapping(value = "/eliminar")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    @Transactional
     public ResponseEntity<?> eliminarEdificio(@RequestParam int codigo) throws EdificioException {
         if(edificioService.existeEdificio(codigo))
         {
@@ -150,7 +152,7 @@ public class ControladorEdificio {
                 edificioService.eliminarEdificio(codigo);
                 return ResponseEntity.ok().body("Edificio eliminado correctamente");
             } catch (Exception e) {
-                return ResponseEntity.badRequest().body("No se pudo eliminar el edificio");
+                return ResponseEntity.badRequest().body("No se pudo eliminar el edificio" + e.getMessage());
             }
         }
         else
