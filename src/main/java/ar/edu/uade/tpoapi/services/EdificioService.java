@@ -1,8 +1,10 @@
 package ar.edu.uade.tpoapi.services;
 
 import ar.edu.uade.tpoapi.modelo.Edificio;
+import ar.edu.uade.tpoapi.modelo.Unidad;
 import ar.edu.uade.tpoapi.repository.EdificioRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ public class EdificioService  {
 
     public Edificio guardarEdificio(Edificio edificio)
     {
+        edificio.setUnidades(new ArrayList<Unidad>());
         return edificioRepository.save(edificio);
     }
 

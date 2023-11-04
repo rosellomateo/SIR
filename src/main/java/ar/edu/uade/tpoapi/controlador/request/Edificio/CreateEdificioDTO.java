@@ -17,5 +17,6 @@ public class CreateEdificioDTO {
     private String nombre;
     @NotBlank
     private String direccion;
-    private List<Unidad> unidades;
-}
+
+    
+} 

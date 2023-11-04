@@ -67,9 +67,8 @@ public class ControladorEdificio {
 
     @GetMapping(value = "/habilitados")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
-    public ResponseEntity<?> habilitadosPorEdificio(@RequestBody ConsultaEdificioDTO consultaEdificioDTO) throws EdificioException{
+    public ResponseEntity<?> habilitadosPorEdificio(@RequestParam int codigo) throws EdificioException{
         List<PersonaView> resultado = new ArrayList<PersonaView>();
-        int codigo = consultaEdificioDTO.getCodigo();
         Edificio edificio = buscarEdificio(codigo);
         Set<Persona> habilitados = edificio.habilitados();
         for(Persona persona : habilitados)
@@ -79,7 +78,7 @@ public class ControladorEdificio {
 
     @GetMapping(value = "/duenios")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
-    public List<PersonaView> dueniosPorEdificio(@RequestParam int codigo) throws EdificioException{
+    public List<PersonaView> dueniosPorEdificio(@RequestBody int codigo) throws EdificioException{
         List<PersonaView> resultado = new ArrayList<PersonaView>();
         Edificio edificio = buscarEdificio(codigo);
         Set<Persona> duenios = edificio.duenios();
@@ -90,7 +89,7 @@ public class ControladorEdificio {
 
     @GetMapping(value = "/habitantes")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
-    public List<PersonaView> habitantesPorEdificio(@RequestBody int codigo) throws EdificioException{
+    public List<PersonaView> habitantesPorEdificio(@RequestParam int codigo) throws EdificioException{
         List<PersonaView> resultado = new ArrayList<PersonaView>();
         Edificio edificio = buscarEdificio(codigo);
         Set<Persona> habitantes = edificio.duenios();
@@ -100,7 +99,7 @@ public class ControladorEdificio {
     }
 
     @PostMapping(value = "/agregaredificio")
-    public ResponseEntity<?> agregarEdificio(@Valid @RequestBody CreateEdificioDTO createEdificioDTO) throws EdificioException {
+    public ResponseEntity<?> agregarEdificio(@Valid @RequestBody CreateEdificioDTO createEdificioDTO ) throws EdificioException {
         if(edificioService.existeNombre(createEdificioDTO.getNombre()))
             return ResponseEntity.badRequest().body("Ya existe un edificio con ese nombre");
         else if (edificioService.existeDireccion(createEdificioDTO.getDireccion()))
