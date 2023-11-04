@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateEdificioDTO {
+public class EdificioDTO {
     
     @NotBlank
     private String nombre;

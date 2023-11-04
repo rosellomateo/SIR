@@ -6,14 +6,16 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import ar.edu.uade.tpoapi.controlador.request.Edificio.CreateEdificioDTO;
+import ar.edu.uade.tpoapi.controlador.request.Edificio.EdificioDTO;
 import ar.edu.uade.tpoapi.exceptions.EdificioException;
 import ar.edu.uade.tpoapi.modelo.Edificio;
 import ar.edu.uade.tpoapi.services.EdificioService;
@@ -72,7 +74,7 @@ public class ControladorEdificio {
 
     @GetMapping(value = "/duenios")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
-    public ResponseEntity<?> dueniosPorEdificio(@RequestBody int codigo) throws EdificioException{
+    public ResponseEntity<?> dueniosPorEdificio(@RequestParam int codigo) throws EdificioException{
         Set<PersonaView> duenios = buscarEdificio(codigo).duenios();
         if(duenios == null)
             return ResponseEntity.internalServerError().build();
@@ -93,7 +95,8 @@ public class ControladorEdificio {
     }
 
     @PostMapping(value = "/agregarEdificio")
-    public ResponseEntity<?> agregarEdificio(@Valid @RequestBody CreateEdificioDTO createEdificioDTO ) throws EdificioException {
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    public ResponseEntity<?> agregarEdificio(@Valid @RequestBody EdificioDTO createEdificioDTO ) throws EdificioException {
         if(edificioService.existeNombre(createEdificioDTO.getNombre()))
             return ResponseEntity.badRequest().body("Ya existe un edificio con ese nombre");
         else if (edificioService.existeDireccion(createEdificioDTO.getDireccion()))
@@ -111,6 +114,47 @@ public class ControladorEdificio {
                 return ResponseEntity.badRequest().body("No se pudo agregar el edificio");
             return ResponseEntity.ok().body("Edificio agregado correctamente");
         }
+    }
+
+    @GetMapping(value = "/buscar")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    public ResponseEntity<?> buscarEdificioPorCodigo(@RequestParam int codigo) throws EdificioException {
+        EdificioView edificioView = edificioService.buscarEdificioPorCodigo(codigo).toView();
+        if(edificioView == null)
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(edificioView);
+    }
+
+    @PatchMapping(value = "/modificar")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    public ResponseEntity<?> modificarEdificio(@Valid @RequestBody EdificioView edificioView) throws EdificioException {
+        if(edificioService.existeEdificio(edificioView.getCodigo()))
+        {
+            try {
+                edificioService.modificarEdificio(edificioView);
+                return ResponseEntity.ok().body("Edificio modificado correctamente");
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body("No se pudo modificar el edificio");
+            }
+        }
+        else
+            return ResponseEntity.badRequest().body("No existe un edificio con ese codigo");
+    }
+
+    @DeleteMapping(value = "/eliminar")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    public ResponseEntity<?> eliminarEdificio(@RequestParam int codigo) throws EdificioException {
+        if(edificioService.existeEdificio(codigo))
+        {
+            try {
+                edificioService.eliminarEdificio(codigo);
+                return ResponseEntity.ok().body("Edificio eliminado correctamente");
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body("No se pudo eliminar el edificio");
+            }
+        }
+        else
+            return ResponseEntity.badRequest().body("No existe un edificio con ese codigo");
     }
 
     protected Edificio buscarEdificio(int codigo) throws EdificioException {

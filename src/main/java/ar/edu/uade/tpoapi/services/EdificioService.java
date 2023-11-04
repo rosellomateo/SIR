@@ -1,10 +1,12 @@
 package ar.edu.uade.tpoapi.services;
 
+import ar.edu.uade.tpoapi.controlador.request.Edificio.EdificioDTO;
 import ar.edu.uade.tpoapi.exceptions.EdificioException;
 import ar.edu.uade.tpoapi.modelo.Edificio;
 import ar.edu.uade.tpoapi.modelo.Unidad;
 import ar.edu.uade.tpoapi.repository.EdificioRepository;
 import ar.edu.uade.tpoapi.views.EdificioView;
+import jakarta.validation.Valid;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +28,7 @@ public class EdificioService  {
         for (Edificio edificio : edificios) {
             edificioViews.add(edificio.toView());
         }
-        
+
         return edificioViews;
     }
 
@@ -62,6 +64,16 @@ public class EdificioService  {
 
     public boolean existeNombre(String nombre) {
         return edificioRepository.existsByNombre(nombre);
+    }
+
+	public void eliminarEdificio(int codigo) {
+        edificioRepository.deleteByCodigo(codigo);
+	}
+
+    public void modificarEdificio(@Valid @Valid @Valid EdificioView edificioView) {
+        Edificio edificio = edificioRepository.getEdificioByCodigo(edificioView.getCodigo());
+        edificio.updateEdificio(edificioView);
+        edificioRepository.save(edificio);
     }
 
 
