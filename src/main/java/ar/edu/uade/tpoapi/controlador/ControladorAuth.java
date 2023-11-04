@@ -28,7 +28,6 @@ public class ControladorAuth {
     private JwtUtils jwtUtils;
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     PersonaService personaService;
 

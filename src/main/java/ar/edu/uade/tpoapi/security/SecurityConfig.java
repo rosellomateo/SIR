@@ -42,6 +42,7 @@ public class SecurityConfig{
 
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtUtils);
         jwtAuthenticationFilter.setAuthenticationManager(authenticationManager);
+        jwtAuthenticationFilter.setFilterProcessesUrl("/auth/login");
 
         return httpSecurity
             .csrf(config -> config.disable())

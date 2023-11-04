@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 import ar.edu.uade.tpoapi.views.EdificioView;
+import ar.edu.uade.tpoapi.views.PersonaView;
+import ar.edu.uade.tpoapi.views.UnidadView;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -47,42 +49,51 @@ public class Edificio {
         unidades.add(unidad);
     }
 
-    public Set<Persona> habilitados(){
-        Set<Persona> habilitados = new HashSet<Persona>();
+    public Set<PersonaView> habilitados(){
+        Set<PersonaView> habilitados = new HashSet<PersonaView>();
         for(Unidad unidad : unidades) {
             List<Persona> duenios = unidad.getDuenios();
             for(Persona p : duenios)
-                habilitados.add(p);
+                habilitados.add(p.toView());
             List<Persona> inquilinos = unidad.getInquilinos();
             for(Persona p : inquilinos)
-                habilitados.add(p);
+                habilitados.add(p.toView());
         }
         return habilitados;
     }
 
-    
-
-    public Set<Persona> duenios() {
-        Set<Persona> resultado = new HashSet<Persona>();
+    public Set<PersonaView> duenios() {
+        Set<PersonaView> resultado = new HashSet<PersonaView>();
         for(Unidad unidad : unidades) {
             List<Persona> duenios = unidad.getDuenios();
-            resultado.addAll(duenios); // Agregar todos los elementos de duenios a resultado
+            for(Persona p : duenios)
+                resultado.add(p.toView());
         }
         return resultado;
     }
 
-    public Set<Persona> habitantes() {
-        Set<Persona> resultado = new HashSet<Persona>();
+    public Set<PersonaView> habitantes() {
+        Set<PersonaView> resultado = new HashSet<PersonaView>();
         for(Unidad unidad : unidades) {
             if(unidad.estaHabitado()) {
                 List<Persona> inquilinos = unidad.getInquilinos();
                 if (!inquilinos.isEmpty()) {
-                    resultado.addAll(inquilinos); // Agregar todos los inquilinos a resultado
+                    for(Persona p : inquilinos)
+                        resultado.add(p.toView());
                 } else {
                     List<Persona> duenios = unidad.getDuenios();
-                    resultado.addAll(duenios); // Agregar todos los dueños a resultado
+                    for(Persona p : duenios)
+                        resultado.add(p.toView());
                 }
             }
+        }
+        return resultado;
+    }
+
+    public Set<UnidadView> unidades() {
+        Set<UnidadView> resultado = new HashSet<UnidadView>();
+        for(Unidad unidad : unidades) {
+            resultado.add(unidad.toView());
         }
         return resultado;
     }

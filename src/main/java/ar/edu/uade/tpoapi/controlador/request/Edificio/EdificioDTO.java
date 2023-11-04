@@ -11,11 +11,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateEdificioDTO {
+public class EdificioDTO {
     
     @NotBlank
     private String nombre;
     @NotBlank
     private String direccion;
-    private List<Unidad> unidades;
-}
+
+    
+} 
