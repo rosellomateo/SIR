@@ -70,11 +70,9 @@ public class EdificioService  {
         edificioRepository.deleteByCodigo(codigo);
 	}
 
-    public void modificarEdificio(@Valid @Valid @Valid EdificioView edificioView) {
+    public void modificarEdificio(@Valid EdificioView edificioView) {
         Edificio edificio = edificioRepository.getEdificioByCodigo(edificioView.getCodigo());
         edificio.updateEdificio(edificioView);
         edificioRepository.save(edificio);
     }
-
-
 }
