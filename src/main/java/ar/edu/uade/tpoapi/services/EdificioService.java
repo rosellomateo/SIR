@@ -1,8 +1,10 @@
 package ar.edu.uade.tpoapi.services;
 
+import ar.edu.uade.tpoapi.exceptions.EdificioException;
 import ar.edu.uade.tpoapi.modelo.Edificio;
 import ar.edu.uade.tpoapi.modelo.Unidad;
 import ar.edu.uade.tpoapi.repository.EdificioRepository;
+import ar.edu.uade.tpoapi.views.EdificioView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +18,16 @@ public class EdificioService  {
     EdificioRepository edificioRepository;
     
 
-    public List<Edificio> buscarTodosEdificios()
+    public List<EdificioView> buscarTodosEdificios()
     {
-        return edificioRepository.findAll();
+        List<Edificio> edificios = edificioRepository.findAll();
+        List<EdificioView> edificioViews = new ArrayList<EdificioView>();
+        
+        for (Edificio edificio : edificios) {
+            edificioViews.add(edificio.toView());
+        }
+        
+        return edificioViews;
     }
 
     public Edificio buscarEdificioPorCodigo(int codigo)
