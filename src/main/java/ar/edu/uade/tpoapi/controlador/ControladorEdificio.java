@@ -1,84 +1,156 @@
 package ar.edu.uade.tpoapi.controlador;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import ar.edu.uade.tpoapi.controlador.request.Edificio.EdificioDTO;
 import ar.edu.uade.tpoapi.exceptions.EdificioException;
 import ar.edu.uade.tpoapi.modelo.Edificio;
-import ar.edu.uade.tpoapi.modelo.Persona;
-import ar.edu.uade.tpoapi.modelo.Unidad;
 import ar.edu.uade.tpoapi.services.EdificioService;
 import ar.edu.uade.tpoapi.views.EdificioView;
 import ar.edu.uade.tpoapi.views.PersonaView;
 import ar.edu.uade.tpoapi.views.UnidadView;
+import jakarta.validation.Valid;
 
+@RestController
+@RequestMapping("/edificio")
 public class ControladorEdificio {
+    @Autowired
+    EdificioService edificioService;
 
-    private static ControladorEdificio instancia;
-    private final EdificioService edificioService;
-
-
-    private ControladorEdificio() {
-
-        edificioService =  EdificioService.getInstancia();
+    @GetMapping(value = "/getAll")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    public ResponseEntity<?> getEdificios(){
+        List<EdificioView>edificioViews = edificioService.buscarTodosEdificios();
+        if(edificioViews == null)
+            return ResponseEntity.internalServerError().build();
+        if(edificioViews.isEmpty())
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(edificioViews);
     }
 
-    public static ControladorEdificio getInstancia() {
-        if(instancia == null)
-            instancia = new ControladorEdificio();
-        return instancia;
+    @GetMapping(value = "/getUnidades")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    public ResponseEntity<?> getUnidadesPorEdificio(@RequestParam int codigo) throws EdificioException{
+         Set<UnidadView> unidades = buscarEdificio(codigo).unidades();
+         if (unidades == null)
+             return ResponseEntity.internalServerError().build();
+        if(unidades.isEmpty())
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(unidades);
     }
 
-    public List<EdificioView> getEdificios(){
-        List<Edificio> edificios = edificioService.getAll();
-        List<EdificioView>edificioViews = new ArrayList<>();
-
-        for(Edificio e : edificios)
-            edificioViews.add(e.toView());
-
-        return edificioViews;
+    @GetMapping(value = "/habilitados")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    public ResponseEntity<?> habilitadosPorEdificio(@RequestParam int codigo) throws EdificioException{
+        Set<PersonaView> habilitados = buscarEdificio(codigo).habilitados();
+        if(habilitados == null)
+            return ResponseEntity.internalServerError().build();
+        if(habilitados.isEmpty())
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(habilitados);
     }
 
-    public List<UnidadView> getUnidadesPorEdificio(int codigo) throws EdificioException{
-         List<UnidadView> resultado = new ArrayList<UnidadView>();
-         Edificio edificio = buscarEdificio(codigo);
-         List<Unidad> unidades = edificio.getUnidades();
-         for(Unidad unidad : unidades)
-             resultado.add(unidad.toView());
-         return resultado;
+    @GetMapping(value = "/duenios")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    public ResponseEntity<?> dueniosPorEdificio(@RequestParam int codigo) throws EdificioException{
+        Set<PersonaView> duenios = buscarEdificio(codigo).duenios();
+        if(duenios == null)
+            return ResponseEntity.internalServerError().build();
+        if(duenios.isEmpty())
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(duenios);
     }
 
-    public List<PersonaView> habilitadosPorEdificio(int codigo) throws EdificioException{
-        List<PersonaView> resultado = new ArrayList<PersonaView>();
-        Edificio edificio = buscarEdificio(codigo);
-        Set<Persona> habilitados = edificio.habilitados();
-        for(Persona persona : habilitados)
-            resultado.add(persona.toView());
-        return resultado;
+    @GetMapping(value = "/habitantes")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    public ResponseEntity<?> habitantesPorEdificio(@RequestParam int codigo) throws EdificioException{
+        Set<PersonaView> habitantes = buscarEdificio(codigo).habitantes();
+        if(habitantes == null)
+            return ResponseEntity.internalServerError().build();
+        if(habitantes.isEmpty())
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(habitantes);
     }
 
-    public List<PersonaView> dueniosPorEdificio(int codigo) throws EdificioException{
-        List<PersonaView> resultado = new ArrayList<PersonaView>();
-        Edificio edificio = buscarEdificio(codigo);
-        Set<Persona> duenios = edificio.duenios();
-        for(Persona persona : duenios)
-            resultado.add(persona.toView());
-        return resultado;
+    @PostMapping(value = "/agregarEdificio")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    public ResponseEntity<?> agregarEdificio(@Valid @RequestBody EdificioDTO createEdificioDTO ) throws EdificioException {
+        if(edificioService.existeNombre(createEdificioDTO.getNombre()))
+            return ResponseEntity.badRequest().body("Ya existe un edificio con ese nombre");
+        else if (edificioService.existeDireccion(createEdificioDTO.getDireccion()))
+            return ResponseEntity.badRequest().body("Ya existe un edificio con esa direccion");
+        else{
+            Edificio edificio = Edificio.builder()
+                    .nombre(createEdificioDTO.getNombre())
+                    .direccion(createEdificioDTO.getDireccion())
+                    .build();
+            ;
+            edificio = edificioService.guardarEdificio(edificio);
+            if (edificio == null)
+                return ResponseEntity.internalServerError().build();
+            if (edificio.getCodigo() == 0)
+                return ResponseEntity.badRequest().body("No se pudo agregar el edificio");
+            return ResponseEntity.ok().body("Edificio agregado correctamente");
+        }
     }
 
-    public List<PersonaView> habitantesPorEdificio(int codigo) throws EdificioException{
-        List<PersonaView> resultado = new ArrayList<PersonaView>();
-        Edificio edificio = buscarEdificio(codigo);
-        Set<Persona> habitantes = edificio.duenios();
-        for(Persona persona : habitantes)
-            resultado.add(persona.toView());
-        return resultado;
+    @GetMapping(value = "/buscar")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    public ResponseEntity<?> buscarEdificioPorCodigo(@RequestParam int codigo) throws EdificioException {
+        EdificioView edificioView = edificioService.buscarEdificioPorCodigo(codigo).toView();
+        if(edificioView == null)
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(edificioView);
+    }
+
+    @PatchMapping(value = "/modificar")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    public ResponseEntity<?> modificarEdificio(@Valid @RequestBody EdificioView edificioView) throws EdificioException {
+        if(edificioService.existeEdificio(edificioView.getCodigo()))
+        {
+            try {
+                edificioService.modificarEdificio(edificioView);
+                return ResponseEntity.ok().body("Edificio modificado correctamente");
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body("No se pudo modificar el edificio");
+            }
+        }
+        else
+            return ResponseEntity.badRequest().body("No existe un edificio con ese codigo");
+    }
+
+    @DeleteMapping(value = "/eliminar")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    @Transactional
+    public ResponseEntity<?> eliminarEdificio(@RequestParam int codigo) throws EdificioException {
+        if(edificioService.existeEdificio(codigo))
+        {
+            try {
+                edificioService.eliminarEdificio(codigo);
+                return ResponseEntity.ok().body("Edificio eliminado correctamente");
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body("No se pudo eliminar el edificio" + e.getMessage());
+            }
+        }
+        else
+            return ResponseEntity.badRequest().body("No existe un edificio con ese codigo");
     }
 
     protected Edificio buscarEdificio(int codigo) throws EdificioException {
-        return null;
+        return edificioService.buscarEdificioPorCodigo(codigo);
     }
-
-
 }

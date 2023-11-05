@@ -1,57 +1,40 @@
 package ar.edu.uade.tpoapi.modelo;
 
+import java.util.Set;
+
+import ar.edu.uade.tpoapi.modelo.Enumerations.Rol;
 import ar.edu.uade.tpoapi.views.PersonaView;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Builder.Default;
 
 @Entity
 @Table(name = "personas")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Persona {
     @Id
     private String documento;
     private String nombre;
+    @Email
     private String mail;
     @Column(name = "contrasenia")
     private String password;
+    @Enumerated(EnumType.STRING)
+    private Rol rol;
+    private String tokenVerificacion;
+    @Default private boolean cuentaVerificado = false;
 
-    public Persona(String documento, String nombre, String mail, String password) {
-        this.documento = documento;
-        this.nombre = nombre;
-        this.mail = mail;
-        this.password = password;
-    }
-
-    public Persona() {
-    }
-    public Persona(String nombre, String mail, String password){
-        this.nombre = nombre;
-        this.mail = mail;
-        this.password = password;
-    }
-    public void cambiarPassword(String password) {
-        this.password = password;
-    }
-    public boolean validoParaRegistro(){
-        return (this.mail == null && this.password == null);
-    }
-
-    public String getDocumento() {
-        return documento;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-
-    public String getMail() {
-        return mail;
-    }
-
-    public String getPassword() {
-        return password;
+    public boolean validoParaRegistroMail(){
+        return !this.cuentaVerificado;
     }
 
     public PersonaView toView() {
@@ -60,5 +43,9 @@ public class Persona {
 
     public String toString() {
         return "Documento: " + documento + " Nombre: " + nombre + " Mail: " + mail + " Password: " + password;
+    }
+
+    public boolean validoParaRegistroPassword() {
+        return (this.cuentaVerificado && this.password == null);
     }
 }

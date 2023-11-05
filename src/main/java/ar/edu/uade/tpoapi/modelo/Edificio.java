@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 import ar.edu.uade.tpoapi.views.EdificioView;
+import ar.edu.uade.tpoapi.views.PersonaView;
+import ar.edu.uade.tpoapi.views.UnidadView;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -15,8 +17,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "edificios")
 public class Edificio {
 
@@ -30,118 +40,69 @@ public class Edificio {
     @JoinColumn(name = "codigoedificio")
     private List<Unidad> unidades;
     
-
-    public Edificio(int codigo, String nombre, String direccion) {
-        this.codigo = codigo;
-        this.nombre = nombre;
-        this.direccion = direccion;
-        unidades = new ArrayList<Unidad>();
-    }
-    //constructor sin codigo. CONSULTAR
-    public Edificio(String nombre ,String direccion){
-        this.nombre = nombre;
-        this.direccion = direccion;
-        unidades = new ArrayList<Unidad>();
-    }
-    public Edificio() {
-    }
     public void updateEdificio(EdificioView eView){
         this.nombre = eView.getNombre();
         this.direccion = eView.getDireccion();
     }
+
     public void agregarUnidad(Unidad unidad) {
         unidades.add(unidad);
     }
 
-    public Set<Persona> habilitados(){
-        Set<Persona> habilitados = new HashSet<Persona>();
+    public Set<PersonaView> habilitados(){
+        Set<PersonaView> habilitados = new HashSet<PersonaView>();
         for(Unidad unidad : unidades) {
             List<Persona> duenios = unidad.getDuenios();
             for(Persona p : duenios)
-                habilitados.add(p);
+                habilitados.add(p.toView());
             List<Persona> inquilinos = unidad.getInquilinos();
             for(Persona p : inquilinos)
-                habilitados.add(p);
+                habilitados.add(p.toView());
         }
         return habilitados;
     }
 
-    public int getCodigo() {
-        return codigo;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public List<Unidad> getUnidades() {
-        return unidades;
-    }
-
-    public Set<Persona> duenios() {
-        Set<Persona> resultado = new HashSet<Persona>();
+    public Set<PersonaView> duenios() {
+        Set<PersonaView> resultado = new HashSet<PersonaView>();
         for(Unidad unidad : unidades) {
             List<Persona> duenios = unidad.getDuenios();
-            resultado.addAll(duenios); // Agregar todos los elementos de duenios a resultado
+            for(Persona p : duenios)
+                resultado.add(p.toView());
         }
         return resultado;
     }
-    
 
-    // public Set<Persona> duenios() {
-    //     Set<Persona> resultado = new HashSet<Persona>();
-    //     for(Unidad unidad : unidades) {
-    //         List<Persona> duenios = unidad.getDuenios();
-    //         for(Persona p : duenios)
-    //             duenios.add(p);
-    //     }
-    //     return resultado;
-    // }
-
-    // public Set<Persona> habitantes() {
-    //     Set<Persona> resultado = new HashSet<Persona>();
-    //     for(Unidad unidad : unidades) {
-    //         if(unidad.estaHabitado()) {
-    //             List<Persona> inquilinos = unidad.getInquilinos();
-    //             if(inquilinos.size() > 0)
-    //                 for(Persona p : inquilinos)
-    //                     resultado.add(p);
-    //             else {
-    //                 List<Persona> duenios = unidad.getDuenios();
-    //                 for(Persona p : duenios)
-    //                     resultado.add(p);
-    //             }
-    //         }
-    //     }
-    //     return resultado;
-    // }
-
-    public Set<Persona> habitantes() {
-        Set<Persona> resultado = new HashSet<Persona>();
+    public Set<PersonaView> habitantes() {
+        Set<PersonaView> resultado = new HashSet<PersonaView>();
         for(Unidad unidad : unidades) {
             if(unidad.estaHabitado()) {
                 List<Persona> inquilinos = unidad.getInquilinos();
                 if (!inquilinos.isEmpty()) {
-                    resultado.addAll(inquilinos); // Agregar todos los inquilinos a resultado
+                    for(Persona p : inquilinos)
+                        resultado.add(p.toView());
                 } else {
                     List<Persona> duenios = unidad.getDuenios();
-                    resultado.addAll(duenios); // Agregar todos los dueños a resultado
+                    for(Persona p : duenios)
+                        resultado.add(p.toView());
                 }
             }
         }
         return resultado;
     }
-    
 
+    public Set<UnidadView> unidades() {
+        Set<UnidadView> resultado = new HashSet<UnidadView>();
+        for(Unidad unidad : unidades) {
+            resultado.add(unidad.toView());
+        }
+        return resultado;
+    }
+    
     public EdificioView toView() {
         return new EdificioView(codigo, nombre, direccion);
     }
 
     public String toString() {
-        return codigo + " " + nombre + " " + direccion;
+        return codigo + ";" + nombre + ";" + direccion;
     }
 }

@@ -2,6 +2,8 @@ package ar.edu.uade.tpoapi.views;
 
 import java.util.List;
 
+import ar.edu.uade.tpoapi.modelo.Enumerations.Estado;
+
 public class ReclamoView {
 
     private int numero;
