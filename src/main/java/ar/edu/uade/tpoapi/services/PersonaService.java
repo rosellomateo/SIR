@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import ar.edu.uade.tpoapi.controlador.request.Persona.UpdatePersonaDTO;
 import ar.edu.uade.tpoapi.modelo.Persona;
-import ar.edu.uade.tpoapi.modelo.Enumerations.Rol;
 import ar.edu.uade.tpoapi.repository.PersonaRepository;
 import ar.edu.uade.tpoapi.views.MetaData;
 import ar.edu.uade.tpoapi.views.SendRequest;
@@ -48,7 +47,7 @@ public class PersonaService {
 
     public Boolean guardarPersona(Persona personaRegistro) {
         try {
-            personaRepository.save(personaRegistro);
+            personaRepository.saveAndFlush(personaRegistro);
             return true;
         } catch (Exception e) {
             return false;
@@ -64,7 +63,7 @@ public class PersonaService {
         Persona persona = buscarPersona(updatePersonaDTO.getDocumento());
         persona.setNombre(updatePersonaDTO.getNombre());
         persona.setRol(updatePersonaDTO.getRoles());
-        return personaRepository.save(persona);
+        return personaRepository.saveAndFlush(persona);
     }
 
     public void enviarMailConfirmacion(String documentoValidar, String mailValidar) {
@@ -76,7 +75,7 @@ public class PersonaService {
         String token = generarToken();
         persona.setTokenVerificacion(token);
         persona.setMail(mailValidar);
-        personaRepository.save(persona);
+        personaRepository.saveAndFlush(persona);
 
         List<MetaData> metaData = new ArrayList<>();
         metaData.add(new MetaData("name", persona.getNombre()));
@@ -94,7 +93,7 @@ public class PersonaService {
         Persona persona = buscarPersonaPorMail(mail);
         persona.setCuentaVerificado(true);
         persona.setTokenVerificacion(null);
-        personaRepository.save(persona);
+        personaRepository.saveAndFlush(persona);
         
         List<MetaData> metaData = new ArrayList<>();
         metaData.add(new MetaData("name", persona.getNombre()));
@@ -120,7 +119,7 @@ public class PersonaService {
         {
             String token = generarToken();
             persona.setTokenVerificacion(token);
-            personaRepository.save(persona);
+            personaRepository.saveAndFlush(persona);
 
             List<MetaData> metaData = new ArrayList<>();
             metaData.add(new MetaData("name", persona.getNombre()));
@@ -133,7 +132,7 @@ public class PersonaService {
 
         String token = generarToken();
         persona.setTokenVerificacion(token);
-        personaRepository.save(persona);
+        personaRepository.saveAndFlush(persona);
 
         List<MetaData> metaData = new ArrayList<>();
         metaData.add(new MetaData("name", persona.getNombre()));

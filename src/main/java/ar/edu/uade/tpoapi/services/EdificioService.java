@@ -40,7 +40,7 @@ public class EdificioService  {
     public Edificio guardarEdificio(Edificio edificio)
     {
         edificio.setUnidades(new ArrayList<Unidad>());
-        return edificioRepository.save(edificio);
+        return edificioRepository.saveAndFlush(edificio);
     }
 
     public void eliminarEdificio(Edificio edificio)
@@ -73,6 +73,6 @@ public class EdificioService  {
     public void modificarEdificio(@Valid EdificioView edificioView) {
         Edificio edificio = edificioRepository.getEdificioByCodigo(edificioView.getCodigo());
         edificio.updateEdificio(edificioView);
-        edificioRepository.save(edificio);
+        edificioRepository.saveAndFlush(edificio);
     }
 }

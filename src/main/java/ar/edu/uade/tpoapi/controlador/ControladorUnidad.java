@@ -42,7 +42,7 @@ public class ControladorUnidad {
         else{
             Unidad unidad = unidadService.crearUnidad(createUnidadDTO);
             if(unidad != null)
-                return ResponseEntity.ok().body(unidad);
+                return ResponseEntity.ok().body(unidad.toView());
             return ResponseEntity.badRequest().body("No se pudo crear la unidad");
         }
     }
@@ -91,8 +91,8 @@ public class ControladorUnidad {
 
     @GetMapping("/dueniosPorUnidad")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
-    public ResponseEntity<?> dueniosPorUnidad(@Valid @RequestBody UnidadDTO unidadDTO) throws UnidadException{
-        Set<PersonaView> resultado = unidadService.dueniosPorUnidad(unidadDTO);
+    public ResponseEntity<?> dueniosPorUnidad(@RequestParam int identificador) throws UnidadException{
+        Set<PersonaView> resultado = unidadService.dueniosPorUnidad(identificador);
         if(resultado.isEmpty())
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok().body(resultado);
@@ -100,8 +100,8 @@ public class ControladorUnidad {
 
     @GetMapping("/inquilinosPorUnidad")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
-    public ResponseEntity<?> inquilinosPorUnidad(@Valid @RequestBody UnidadDTO unidadDTO) throws UnidadException{
-        Set<PersonaView> resultado = unidadService.inquilinosPorUnidad(unidadDTO);
+    public ResponseEntity<?> inquilinosPorUnidad(@RequestParam int identificador) throws UnidadException{
+        Set<PersonaView> resultado = unidadService.inquilinosPorUnidad(identificador);
          if(resultado.isEmpty())
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok().body(resultado);

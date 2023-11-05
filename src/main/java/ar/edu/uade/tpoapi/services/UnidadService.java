@@ -51,7 +51,7 @@ public class UnidadService {
 
     public Unidad crearUnidad(Unidad unidad) {
 
-        return unidadRepository.save(unidad);
+        return unidadRepository.saveAndFlush(unidad);
     }
 
     public void eliminarUnidad(Unidad unidad) {
@@ -79,7 +79,7 @@ public class UnidadService {
         Edificio edificio = edificioRepository.findById(createUnidadDTO.getCodigo()).orElse(null);
         if(edificio != null){
             Unidad unidad = Unidad.builder().edificio(edificio).numero(createUnidadDTO.getNumero()).piso(createUnidadDTO.getPiso()).build();
-            return unidadRepository.save(unidad);
+            return unidadRepository.saveAndFlush(unidad);
         }
         return null;
     }
@@ -89,6 +89,7 @@ public class UnidadService {
         Persona persona = personaRepository.findByDocumento(unidadDTO.getDocumento()).orElse(null);
         if(persona != null){
             unidad.alquilar(persona);
+            unidadRepository.saveAndFlush(unidad);
             return "Unidad alquilada";
         }
         return "No se ha encontrado la persona";
@@ -99,6 +100,7 @@ public class UnidadService {
         if(unidad == null)
             return "No se ha encontrado la unidad";
         unidad.liberar();
+        unidadRepository.saveAndFlush(unidad);
         return "Unidad liberada";
     }
 
@@ -107,6 +109,7 @@ public class UnidadService {
         if(unidad == null)
             return "No se ha encontrado la unidad";
         unidad.habitar();
+        unidadRepository.saveAndFlush(unidad);
         return "Unidad habitada";
     }
 
@@ -115,6 +118,7 @@ public class UnidadService {
         if(unidad == null)
             return "No se ha encontrado la unidad";
         unidadRepository.delete(unidad);
+        unidadRepository.flush();
         if(unidadRepository.findById(identificador).orElse(null) == null)
             return "Unidad eliminada";
         else
@@ -128,6 +132,7 @@ public class UnidadService {
         Persona persona = personaRepository.findByDocumento(unidadDTO.getDocumento()).orElse(null);
         if(persona != null){
             unidad.agregarDuenio(persona);
+            unidadRepository.saveAndFlush(unidad);
             return "Duenio agregado";
         }
         return "No se ha encontrado la persona";
@@ -140,13 +145,14 @@ public class UnidadService {
         Persona persona = personaRepository.findByDocumento(unidadDTO.getDocumento()).orElse(null);
         if(persona != null){
             unidad.agregarInquilino(persona);
+            unidadRepository.saveAndFlush(unidad);
             return "Inquilino agregado";
         }
         return "No se ha encontrado la persona";
     }
 
-    public Set<PersonaView> dueniosPorUnidad(UnidadDTO unidadDTO) {
-        Unidad unidad = buscarUnidad(unidadDTO.getCodigo(),unidadDTO.getPiso(),unidadDTO.getNumero());
+    public Set<PersonaView> dueniosPorUnidad(int identificador) {
+        Unidad unidad = buscarUnidad(identificador);
         if(unidad == null)
             return null;
         List<Persona> duenios = unidad.getDuenios();
@@ -156,8 +162,8 @@ public class UnidadService {
         return resultado;        
     }
 
-    public Set<PersonaView> inquilinosPorUnidad(UnidadDTO unidadDTO){
-        Unidad unidad = buscarUnidad(unidadDTO.getCodigo(),unidadDTO.getPiso(),unidadDTO.getNumero());
+    public Set<PersonaView> inquilinosPorUnidad(int identificador){
+        Unidad unidad = buscarUnidad(identificador);
         if(unidad == null){
             return null;
         }else{
