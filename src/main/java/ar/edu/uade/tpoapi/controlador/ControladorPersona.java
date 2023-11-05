@@ -3,6 +3,7 @@ package ar.edu.uade.tpoapi.controlador;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -19,6 +20,7 @@ import ar.edu.uade.tpoapi.exceptions.PersonaException;
 import ar.edu.uade.tpoapi.modelo.Persona;
 import ar.edu.uade.tpoapi.modelo.Enumerations.Rol;
 import ar.edu.uade.tpoapi.services.PersonaService;
+import ar.edu.uade.tpoapi.views.PersonaView;
 import jakarta.validation.Valid;
 
 @RestController
@@ -28,14 +30,6 @@ public class ControladorPersona {
     @Autowired
     PersonaService personaService;
     
-    private static ControladorPersona instancia;
-
-    public static ControladorPersona getInstancia() {
-        if(instancia == null)
-            instancia = new ControladorPersona();
-        return instancia;
-    }
-
     protected Persona buscarPersona(String documento) throws PersonaException {
         if(personaService.existePersona(documento))
             return personaService.buscarPersona(documento);
@@ -72,12 +66,16 @@ public class ControladorPersona {
 
     @PatchMapping("/modificar")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
-    private ResponseEntity<?> modificarPersona(@Valid @RequestBody UpdatePersonaDTO updatePersonaDTO) throws PersonaException {
+    @Transactional
+    public ResponseEntity<?> modificarPersona(@Valid @RequestBody UpdatePersonaDTO updatePersonaDTO) throws PersonaException {
         if(personaService.existePersona(updatePersonaDTO.getDocumento()))
         {
             try {
-                personaService.modificarPersona(updatePersonaDTO.getDocumento(), updatePersonaDTO.getRoles());
-                return ResponseEntity.ok().body("Persona modificada correctamente");
+                PersonaView persona = personaService.modificarPersona(updatePersonaDTO).toView();
+                if(persona != null)
+                    return ResponseEntity.ok().body(persona);
+                else
+                    return ResponseEntity.badRequest().body("No se pudo modificar la persona");
             } catch (Exception e) {
                 return ResponseEntity.badRequest().body("No se pudo modificar la persona");
             }

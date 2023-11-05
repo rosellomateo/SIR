@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import ar.edu.uade.tpoapi.controlador.request.Auth.RegisterDTO;
+import ar.edu.uade.tpoapi.controlador.request.Auth.RegisterPasswordDTO;
 import ar.edu.uade.tpoapi.exceptions.PersonaException;
 import ar.edu.uade.tpoapi.modelo.Persona;
 import ar.edu.uade.tpoapi.security.jwt.JwtUtils;
@@ -23,7 +24,6 @@ import jakarta.validation.Valid;
 @RequestMapping("/auth")
 public class ControladorAuth {
 
-    // Inyecta la clase JwtUtils
     @Autowired
     private JwtUtils jwtUtils;
     @Autowired
@@ -31,27 +31,8 @@ public class ControladorAuth {
     @Autowired
     PersonaService personaService;
 
-    @RequestMapping("/validarDocumento")
-    public ResponseEntity<?> validoParaRegistro(@RequestParam String documento) throws PersonaException {
-        String documentoValidar = documento;
-        if (!personaService.existePersona(documentoValidar))
-        {
-            return ResponseEntity.badRequest().body("No se encuentra cargado el documento");
-        }
-        else{
-            if(personaService.buscarPersona(documentoValidar).validoParaRegistro())
-            {
-                return ResponseEntity.ok().body("El documento es valido para registro");
-            }
-            else
-            {
-                return ResponseEntity.badRequest().body("El documento ya posee un usuario registrado");
-            }
-        }
-    }
-
     @RequestMapping("/validarMail")
-    public ResponseEntity<?> validoParaRegistro(@RequestParam String documento, @RequestParam String mail) throws PersonaException {
+    public ResponseEntity<?> validarMailParaRegistro(@RequestParam String documento, @RequestParam String mail) throws PersonaException {
         String documentoValidar = documento;
         String mailValidar = mail;
         if (!personaService.existePersona(documentoValidar))
@@ -59,7 +40,7 @@ public class ControladorAuth {
             return ResponseEntity.badRequest().body("No se encuentra cargado el documento");
         }
         else{
-            if(personaService.buscarPersona(documentoValidar).validoParaRegistro())
+            if(personaService.buscarPersona(documentoValidar).validoParaRegistroMail())
             {
                 if(personaService.existeMail(mailValidar))
                 {
@@ -79,29 +60,22 @@ public class ControladorAuth {
         }
     }
 
-    @PatchMapping("/registrar")
-    public ResponseEntity<?> registrar(@Valid @RequestBody RegisterDTO registerDTO) throws PersonaException{
+    @PatchMapping("/registrarPassword")
+    public ResponseEntity<?> registrarPassword(@Valid @RequestBody RegisterPasswordDTO registerDTO) throws PersonaException{
         if(!personaService.existePersona(registerDTO.getDocumento()))
         {
             return ResponseEntity.badRequest().body("No se encuentra cargado el documento");
         }
         else{
-            if(personaService.buscarPersona(registerDTO.getDocumento()).validoParaRegistro())
+            if(personaService.buscarPersona(registerDTO.getDocumento()).validoParaRegistroPassword())
             {
-                if(personaService.existeMail(registerDTO.getMail()))
-                {
-                    return ResponseEntity.badRequest().body("El mail ya se encuentra registrado");
-                }
+                Persona persona = personaService.buscarPersona(registerDTO.getDocumento());
+                persona.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
+                if(personaService.guardarPersona(persona))
+                    return ResponseEntity.ok().body("Usuario registrado correctamente");
                 else
-                {
-                    Persona persona = personaService.buscarPersona(registerDTO.getDocumento());
-                    persona.setMail(registerDTO.getMail());
-                    persona.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
-                    if(personaService.guardarPersona(persona))
-                        return ResponseEntity.ok().body("Usuario registrado correctamente");
-                    else
-                        return ResponseEntity.badRequest().body("Error al registrar el usuario");
-                }
+                    return ResponseEntity.badRequest().body("Error al registrar el usuario");
+                
             }
             else
             {
@@ -150,5 +124,64 @@ public class ControladorAuth {
     @PostMapping("/olvidePassword")
     public ResponseEntity<?> olvidePassword(@RequestParam String mail) throws PersonaException {
         return ResponseEntity.ok().body(personaService.enviarMailOlvidePassword(mail));
+    }
+
+    @PatchMapping("/cambiarPassword")
+    public ResponseEntity<?> cambiarPassword(@RequestParam String token, @RequestParam String mail, @RequestParam String password) throws PersonaException {
+        Persona persona = personaService.buscarPersonaPorMail(mail);
+        if(persona == null)
+        {
+            return ResponseEntity.badRequest().body("No se encuentra cargado el mail");
+        }
+        else
+        {
+            if(persona.getTokenVerificacion() == null)
+            {
+                return ResponseEntity.badRequest().body("El mail ya se encuentra confirmado");
+            }
+            if(!persona.getTokenVerificacion().equals(token))
+            {
+                return ResponseEntity.badRequest().body("El token no es valido");
+            }
+            persona.setPassword(passwordEncoder.encode(password));
+            persona.setTokenVerificacion(null);
+            personaService.guardarPersona(persona);
+            return ResponseEntity.ok().body("Password cambiado correctamente");
+        }
+    }
+
+    @GetMapping("/reenviarTokenMail")
+    public ResponseEntity<?> reenviarToken(@RequestParam String mail) throws PersonaException {
+        Persona persona = personaService.buscarPersonaPorMail(mail);
+        if(persona == null)
+        {
+            return ResponseEntity.badRequest().body("No se encuentra cargado el mail");
+        }
+        else
+        {
+            if(persona.isCuentaVerificado())
+            {
+                return ResponseEntity.badRequest().body("El mail ya se encuentra confirmado");
+            }
+            personaService.enviarMailConfirmacion(persona.getDocumento(), mail);
+            return ResponseEntity.ok().body("Mail reenviado correctamente");
+        }
+    }
+
+    @GetMapping("/reenviarTokenPassword")
+    public ResponseEntity<?> reenviarTokenPassword(@RequestParam String mail) throws PersonaException {
+        Persona persona = personaService.buscarPersonaPorMail(mail);
+        if(persona == null)
+        {
+            return ResponseEntity.badRequest().body("No se encuentra cargado el mail");
+        }
+        else
+        {
+            if(persona.getTokenVerificacion() == null)
+            {
+                return ResponseEntity.badRequest().body("No se encuentra solicitado el cambio de password");
+            }
+            return ResponseEntity.ok().body(personaService.enviarMailOlvidePassword(mail));
+        }
     }
 }
