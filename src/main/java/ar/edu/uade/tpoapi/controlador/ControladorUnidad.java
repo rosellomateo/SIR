@@ -6,6 +6,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,14 +35,15 @@ public class ControladorUnidad {
 
     @PutMapping("/crearUnidad")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
+    @Transactional
     public ResponseEntity<?> crearUnidad(@Valid @RequestBody CreateUnidadDTO createUnidadDTO) throws UnidadException, EdificioException{
         if(unidadService.existeUnidad(createUnidadDTO))
             return ResponseEntity.badRequest().body("Ya existe una unidad igual para ese edificio");
         else{
             Unidad unidad = unidadService.crearUnidad(createUnidadDTO);
-            if(unidad == null)
-                return ResponseEntity.badRequest().body("No se pudo crear la unidad");
-            return ResponseEntity.ok().body(unidad);
+            if(unidad != null)
+                return ResponseEntity.ok().body(unidad);
+            return ResponseEntity.badRequest().body("No se pudo crear la unidad");
         }
     }
     

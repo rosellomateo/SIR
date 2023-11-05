@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LoginDTO {
     
-    @NotBlank
-    @Email
+    @NotBlank(message = "El email no puede estar vacío")
+    @Email(message = "El email debe ser válido")
     private String Email;
-    @NotBlank
+    @NotBlank(message = "La contraseña no puede estar vacía")
     private String password;
 }
