@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EdificioDTO {
     
-    @NotBlank
+    @NotBlank(message = "El nombre no puede estar vacío")
     private String nombre;
-    @NotBlank
+    @NotBlank(message = "La dirección no puede estar vacía")
     private String direccion;
 
     

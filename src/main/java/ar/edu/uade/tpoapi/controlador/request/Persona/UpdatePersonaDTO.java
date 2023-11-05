@@ -15,9 +15,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UpdatePersonaDTO {
 
-    @NotBlank
+    @NotBlank(message = "El documento no puede estar vacío")
     private String documento;
-    @NotBlank
+    @NotBlank(message = "El nombre no puede estar vacío")
     private String nombre;
     private Rol roles;
 }

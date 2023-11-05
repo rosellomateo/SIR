@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RegisterPasswordDTO {
     
-    @NotBlank
+    @NotBlank(message = "El documento no puede estar vacío")
     String documento;
-    @NotBlank
+    @NotBlank(message = "La contraseña no puede estar vacía")
     String password;
 }

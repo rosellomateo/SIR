@@ -98,6 +98,4 @@ public class ControladorPersona {
         else
             return ResponseEntity.badRequest().body("No existe una persona con ese documento");
     }
-
-
 }

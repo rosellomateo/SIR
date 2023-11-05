@@ -14,10 +14,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CreatePersonaDTO {
     
-    @NotBlank
+    @NotBlank(message = "El documento no puede estar vacío")
     private String documento;
-    @NotBlank
+    @NotBlank(message = "El nombre no puede estar vacío")
     private String nombre;
-    @NotBlank
+    @NotBlank(message = "El Rol no puede estar vacío")
     private String rol;
 }

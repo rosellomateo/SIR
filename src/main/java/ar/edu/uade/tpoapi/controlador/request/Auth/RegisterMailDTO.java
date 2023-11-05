@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RegisterMailDTO {
 
-    @NotBlank
+    @NotBlank(message = "El documento no puede estar vacío")
     String documento;
-    @NotBlank
-    @Email
+    @NotBlank(message = "El email no puede estar vacío")
+    @Email(message = "El email debe ser válido")
     String mail;
 }
