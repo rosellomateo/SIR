@@ -7,9 +7,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "imagenes")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Imagen {
 
     @Id
@@ -19,43 +27,10 @@ public class Imagen {
     private String direccion;
     private String tipo;
 
-    public Imagen(String direccion, String tipo) {
-        this.direccion = direccion;
-        this.tipo = tipo;
-    }
-
-    public Imagen() {
-    }
-
-    public int getNumero() {
-        return numero;
-    }
-
-    public void setNumero(int numero) {
-        this.numero = numero;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
     public String toString(){
         return "Imagen: " + this.numero + " - " + this.direccion + " - " + this.tipo;
     }
-
-
+    
     public ImagenView toView() {
         return new ImagenView(this.numero, this.direccion, this.tipo);
     }

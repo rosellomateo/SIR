@@ -1,6 +1,5 @@
 package ar.edu.uade.tpoapi.controlador;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,20 +14,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.edu.uade.tpoapi.controlador.request.Reclamo.CambiarEstadoDTO;
+import ar.edu.uade.tpoapi.controlador.request.Reclamo.ComentarReclamoDTO;
 import ar.edu.uade.tpoapi.controlador.request.Reclamo.ImagenReclamoDTO;
 import ar.edu.uade.tpoapi.controlador.request.Reclamo.ReclamoDTO;
-import ar.edu.uade.tpoapi.controlador.request.Reclamo.UnidadDTO;
 import ar.edu.uade.tpoapi.exceptions.EdificioException;
 import ar.edu.uade.tpoapi.exceptions.PersonaException;
 import ar.edu.uade.tpoapi.exceptions.ReclamoException;
 import ar.edu.uade.tpoapi.exceptions.UnidadException;
-import ar.edu.uade.tpoapi.modelo.Edificio;
-import ar.edu.uade.tpoapi.modelo.Persona;
 import ar.edu.uade.tpoapi.modelo.Reclamo;
-import ar.edu.uade.tpoapi.modelo.Unidad;
 import ar.edu.uade.tpoapi.services.ReclamoService;
 import ar.edu.uade.tpoapi.views.ReclamoView;
 import jakarta.validation.Valid;
+
 
 @RestController
 @RequestMapping("/Reclamo")
@@ -50,8 +47,8 @@ public class ControladorReclamo
 
     @GetMapping("/unidad")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
-    public ResponseEntity<?> reclamosPorUnidad(@Valid @RequestBody UnidadDTO unidadDTO) {
-        List<ReclamoView> resultado = reclamoService.reclamosPorUnidad(unidadDTO);
+    public ResponseEntity<?> reclamosPorUnidad(@RequestParam int identificador) {
+        List<ReclamoView> resultado = reclamoService.reclamosPorUnidad(identificador);
         if (resultado.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -61,11 +58,11 @@ public class ControladorReclamo
     @GetMapping("/numero")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
     public ResponseEntity<?> reclamosPorNumero(@RequestParam int numero) throws ReclamoException {
-        ReclamoView resultado = buscarReclamo(numero).toView();
+        Reclamo resultado = reclamoService.buscarReclamo(numero);
         if (resultado == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(resultado);
+        return ResponseEntity.ok(resultado.toView());
     }
 
     @GetMapping("/persona")
@@ -81,43 +78,37 @@ public class ControladorReclamo
 
     @PutMapping("/agregar")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
-    public ResponseEntity<?> agregarReclamo(ReclamoDTO reclamoDTO) throws EdificioException, UnidadException, PersonaException {
-       //Edificio edificio = controladorEdificio.buscarEdificio(reclamoDTO.getCodigo());
-       // Unidad unidad = controlerUnidad.buscarUnidad(reclamoDTO.getCodigo(), reclamoDTO.getPiso(),reclamoDTO.getNumero());
-        //Persona persona = controlerPersona.buscarPersona(reclamoDTO.getDocumento());
-        //Reclamo reclamo = new Reclamo(persona, edificio, reclamoDTO.getUbicacion(), reclamoDTO.getDescripcion(), unidad);
-       // reclamo = reclamoService.agregarReclamo(reclamo);
-       // return ResponseEntity.ok("Reclamo agregado correctamente " + reclamo.getNumero());
-                                	return null;                        
+    public ResponseEntity<?> agregarReclamo(@Valid @RequestBody ReclamoDTO reclamoDTO) throws EdificioException, UnidadException, PersonaException {
+        return reclamoService.agregarReclamo(reclamoDTO);
     }
 
     @PutMapping("/agregar-imagen")
     @PreAuthorize("hasRole('Residente')or hasRole('Encargado')")
-    public ResponseEntity<?> agregarImagenAReclamo(ImagenReclamoDTO imagenDTO) throws ReclamoException {
-        Reclamo reclamo = buscarReclamo(imagenDTO.getNumero());
-        reclamo.agregarImagen(imagenDTO.getDireccion(),imagenDTO.getTipo());
-        reclamoService.agregarImagenAReclamo(reclamo);
-        return ResponseEntity.ok("Imagen agregada correctamente");
+    public ResponseEntity<?> agregarImagenAReclamo(@Valid @RequestBody ImagenReclamoDTO imagenDTO) throws ReclamoException {
+        if(reclamoService.agregarImagenAReclamo(imagenDTO))
+        {
+            return ResponseEntity.ok("Imagen agregada correctamente");
+        }
+        else
+        {
+            return ResponseEntity.badRequest().body("Error al agregar la imagen");
+        }
     }
 
     @PostMapping("/cambiar-estado")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
-    public ResponseEntity<?> cambiarEstado(@RequestBody CambiarEstadoDTO dto) throws ReclamoException {
-        Reclamo reclamo = buscarReclamo(dto.getNumero());
-        reclamo.cambiarEstado(dto.getEstado());
-        boolean isUpdated = reclamoService.ActualizarEstado(reclamo);
-        if (isUpdated) {
+    public ResponseEntity<?> cambiarEstado(@Valid @RequestBody CambiarEstadoDTO cambiarEstadoDTO) throws ReclamoException {
+        if (reclamoService.ActualizarEstado(cambiarEstadoDTO)) {
             return ResponseEntity.ok("Estado cambiado correctamente");
         } else {
             return ResponseEntity.badRequest().body("Error al actualizar el estado");
         }
     }
-    
-    private Reclamo buscarReclamo(int numero) throws ReclamoException {
-        Reclamo reclamo = reclamoService.buscarReclamo(numero);
-        if (reclamo == null) {
-            throw new ReclamoException("No existe reclamo con ese numero");
-        }
-        return reclamo;
+
+    @PutMapping("/comentarReclamo")
+    public ResponseEntity<?> comentarReclamo(@Valid @RequestBody ComentarReclamoDTO comentarReclamoDTO) throws ReclamoException {
+        return reclamoService.comentarReclamo(comentarReclamoDTO);
     }
 }
+
+
