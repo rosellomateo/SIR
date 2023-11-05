@@ -12,15 +12,12 @@ import ar.edu.uade.tpoapi.modelo.Persona;
 import ar.edu.uade.tpoapi.modelo.Unidad;
 import ar.edu.uade.tpoapi.services.UnidadService;
 import ar.edu.uade.tpoapi.views.PersonaView;
+import jakarta.validation.Valid;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/unidad")
@@ -30,7 +27,7 @@ public class ControladorUnidad {
 
     @PutMapping("/crearUnidad")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
-    public ResponseEntity<?> crearUnidad(UnidadDTO unidadDTO) throws UnidadException, EdificioException{
+    public ResponseEntity<?> crearUnidad(@Valid @RequestBody UnidadDTO unidadDTO) throws UnidadException, EdificioException{
         Edificio edificio = ControladorEdificio.getInstancia().buscarEdificio(unidadDTO.getCodigo())  ;
 
         Unidad unidad = Unidad.builder()
@@ -44,7 +41,7 @@ public class ControladorUnidad {
     
     @PostMapping("/transferirUnidad")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
-    public ResponseEntity<?> transferirUnidad(UnidadDTO transferirUnidadDTO) throws UnidadException, PersonaException {
+    public ResponseEntity<?> transferirUnidad(@Valid @RequestBody UnidadDTO transferirUnidadDTO) throws UnidadException, PersonaException {
         Unidad unidad = buscarUnidad(transferirUnidadDTO.getCodigo(),transferirUnidadDTO.getPiso(),transferirUnidadDTO.getNumero());
         //Persona persona = controladorPersona.buscarPersona(transferirUnidadDTO.getDocumento()); //dudas
         //unidad.transferir(persona);
@@ -53,7 +50,7 @@ public class ControladorUnidad {
 
     @PostMapping("/alquilarUnidad")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
-    public ResponseEntity<?> alquilarUnidad(UnidadDTO unidadDTO) throws UnidadException, PersonaException{
+    public ResponseEntity<?> alquilarUnidad(@Valid @RequestBody UnidadDTO unidadDTO) throws UnidadException, PersonaException{
         Unidad unidad = buscarUnidad(unidadDTO.getCodigo(),unidadDTO.getPiso(),unidadDTO.getNumero());
         //Persona persona = controladorPersona.buscarPersona(unidadDTO.getDocumento());
         //unidad.alquilar(persona);
@@ -62,7 +59,7 @@ public class ControladorUnidad {
 
     @PostMapping("/liberarUnidad")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
-    public ResponseEntity<?> liberarUnidad(UnidadDTO unidadDTO) throws UnidadException {
+    public ResponseEntity<?> liberarUnidad(@Valid @RequestBody UnidadDTO unidadDTO) throws UnidadException {
         Unidad unidad = buscarUnidad(unidadDTO.getCodigo(),unidadDTO.getPiso(),unidadDTO.getNumero());
         unidad.liberar();
         return ResponseEntity.ok().build();
@@ -70,7 +67,7 @@ public class ControladorUnidad {
 
     @PostMapping("/habitarUnidad")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
-    public ResponseEntity<?> habitarUnidad(UnidadDTO unidadDTO) throws UnidadException {
+    public ResponseEntity<?> habitarUnidad(@Valid @RequestBody UnidadDTO unidadDTO) throws UnidadException {
         Unidad unidad = buscarUnidad(unidadDTO.getCodigo(),unidadDTO.getPiso(),unidadDTO.getNumero());
         unidad.habitar();
         return ResponseEntity.ok().build();
@@ -78,7 +75,7 @@ public class ControladorUnidad {
 
     @DeleteMapping("/eliminarUnidad")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
-    public ResponseEntity<?> eliminarUnidad(UnidadDTO unidadDTO) throws UnidadException {
+    public ResponseEntity<?> eliminarUnidad(@Valid @RequestBody UnidadDTO unidadDTO) throws UnidadException {
         Unidad unidad = buscarUnidad(unidadDTO.getCodigo(),unidadDTO.getPiso(),unidadDTO.getNumero());
         unidadService.eliminarUnidad(unidad);
         return ResponseEntity.ok().build();
@@ -93,7 +90,7 @@ public class ControladorUnidad {
 
     @PostMapping("/agregarDuenioUnidad")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
-    public ResponseEntity<?> agregarDuenioUnidad(UnidadDTO unidadDTO) throws UnidadException, PersonaException {
+    public ResponseEntity<?> agregarDuenioUnidad(@Valid @RequestBody UnidadDTO unidadDTO) throws UnidadException, PersonaException {
         Unidad unidad = buscarUnidad(unidadDTO.getCodigo(),unidadDTO.getPiso(),unidadDTO.getNumero());
         //Persona persona = controladorPersona.buscarPersona(unidadDTO.getDocumento());
         //unidad.agregarDuenio(persona);
@@ -102,7 +99,7 @@ public class ControladorUnidad {
     
     @PostMapping("/agregarInquilinoUnidad")    
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
-    public ResponseEntity<?> agregarInquilinoUnidad(UnidadDTO unidadDTO) throws UnidadException, PersonaException{
+    public ResponseEntity<?> agregarInquilinoUnidad(@Valid @RequestBody UnidadDTO unidadDTO) throws UnidadException, PersonaException{
         Unidad unidad = buscarUnidad(unidadDTO.getCodigo(),unidadDTO.getPiso(),unidadDTO.getNumero());
         //Persona persona = controladorPersona.buscarPersona(unidadDTO.getDocumento());
         //unidad.agregarInquilino(persona);
@@ -111,7 +108,7 @@ public class ControladorUnidad {
 
     @GetMapping("/dueniosPorUnidad")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
-    public ResponseEntity<?> dueniosPorUnidad(UnidadDTO unidadDTO) throws UnidadException{
+    public ResponseEntity<?> dueniosPorUnidad(@Valid @RequestBody UnidadDTO unidadDTO) throws UnidadException{
         List<PersonaView> resultado = new ArrayList<PersonaView>();
         Unidad unidad = buscarUnidad(unidadDTO.getCodigo(),unidadDTO.getPiso(),unidadDTO.getNumero());
         List<Persona> duenios = unidad.getDuenios();
@@ -122,7 +119,7 @@ public class ControladorUnidad {
 
     @GetMapping("/inquilinosPorUnidad")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
-    public ResponseEntity<?> inquilinosPorUnidad(UnidadDTO unidadDTO) throws UnidadException{
+    public ResponseEntity<?> inquilinosPorUnidad(@Valid @RequestBody UnidadDTO unidadDTO) throws UnidadException{
         List<PersonaView> resultado = new ArrayList<PersonaView>();
         Unidad unidad = buscarUnidad(unidadDTO.getCodigo(),unidadDTO.getPiso(),unidadDTO.getNumero());
         List<Persona> inquilinos = unidad.getInquilinos();
