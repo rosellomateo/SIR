@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -146,6 +147,41 @@ public class ControladorAuth {
             persona.setTokenVerificacion(null);
             personaService.guardarPersona(persona);
             return ResponseEntity.ok().body("Password cambiado correctamente");
+        }
+    }
+
+    @GetMapping("/reenviarTokenMail")
+    public ResponseEntity<?> reenviarToken(@RequestParam String mail) throws PersonaException {
+        Persona persona = personaService.buscarPersonaPorMail(mail);
+        if(persona == null)
+        {
+            return ResponseEntity.badRequest().body("No se encuentra cargado el mail");
+        }
+        else
+        {
+            if(persona.isCuentaVerificado())
+            {
+                return ResponseEntity.badRequest().body("El mail ya se encuentra confirmado");
+            }
+            personaService.enviarMailConfirmacion(persona.getDocumento(), mail);
+            return ResponseEntity.ok().body("Mail reenviado correctamente");
+        }
+    }
+
+    @GetMapping("/reenviarTokenPassword")
+    public ResponseEntity<?> reenviarTokenPassword(@RequestParam String mail) throws PersonaException {
+        Persona persona = personaService.buscarPersonaPorMail(mail);
+        if(persona == null)
+        {
+            return ResponseEntity.badRequest().body("No se encuentra cargado el mail");
+        }
+        else
+        {
+            if(persona.getTokenVerificacion() == null)
+            {
+                return ResponseEntity.badRequest().body("No se encuentra solicitado el cambio de password");
+            }
+            return ResponseEntity.ok().body(personaService.enviarMailOlvidePassword(mail));
         }
     }
 }

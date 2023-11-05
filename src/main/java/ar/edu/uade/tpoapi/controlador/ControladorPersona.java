@@ -3,6 +3,7 @@ package ar.edu.uade.tpoapi.controlador;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -29,14 +30,6 @@ public class ControladorPersona {
     @Autowired
     PersonaService personaService;
     
-    private static ControladorPersona instancia;
-
-    public static ControladorPersona getInstancia() {
-        if(instancia == null)
-            instancia = new ControladorPersona();
-        return instancia;
-    }
-
     protected Persona buscarPersona(String documento) throws PersonaException {
         if(personaService.existePersona(documento))
             return personaService.buscarPersona(documento);
@@ -73,7 +66,8 @@ public class ControladorPersona {
 
     @PatchMapping("/modificar")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
-    private ResponseEntity<?> modificarPersona(@Valid @RequestBody UpdatePersonaDTO updatePersonaDTO) throws PersonaException {
+    @Transactional
+    public ResponseEntity<?> modificarPersona(@Valid @RequestBody UpdatePersonaDTO updatePersonaDTO) throws PersonaException {
         if(personaService.existePersona(updatePersonaDTO.getDocumento()))
         {
             try {

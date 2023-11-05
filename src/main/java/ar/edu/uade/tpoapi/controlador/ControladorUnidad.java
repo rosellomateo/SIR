@@ -28,15 +28,6 @@ public class ControladorUnidad {
     @Autowired
     UnidadService unidadService;
 
-    private static ControladorUnidad instancia;
-    private static final ControladorPersona controladorPersona = ControladorPersona.getInstancia();
-
-    public static ControladorUnidad getInstancia() {
-        if(instancia == null)
-            instancia = new ControladorUnidad();
-        return instancia;
-    }
-
     @PutMapping("/crearUnidad")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
     public ResponseEntity<?> crearUnidad(UnidadDTO unidadDTO) throws UnidadException, EdificioException{
@@ -55,8 +46,8 @@ public class ControladorUnidad {
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
     public ResponseEntity<?> transferirUnidad(UnidadDTO transferirUnidadDTO) throws UnidadException, PersonaException {
         Unidad unidad = buscarUnidad(transferirUnidadDTO.getCodigo(),transferirUnidadDTO.getPiso(),transferirUnidadDTO.getNumero());
-        Persona persona = controladorPersona.buscarPersona(transferirUnidadDTO.getDocumento()); //dudas
-        unidad.transferir(persona);
+        //Persona persona = controladorPersona.buscarPersona(transferirUnidadDTO.getDocumento()); //dudas
+        //unidad.transferir(persona);
         return ResponseEntity.ok().build();
     }
 
@@ -64,8 +55,8 @@ public class ControladorUnidad {
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
     public ResponseEntity<?> alquilarUnidad(UnidadDTO unidadDTO) throws UnidadException, PersonaException{
         Unidad unidad = buscarUnidad(unidadDTO.getCodigo(),unidadDTO.getPiso(),unidadDTO.getNumero());
-        Persona persona = controladorPersona.buscarPersona(unidadDTO.getDocumento());
-        unidad.alquilar(persona);
+        //Persona persona = controladorPersona.buscarPersona(unidadDTO.getDocumento());
+        //unidad.alquilar(persona);
         return ResponseEntity.ok().build();
     }
 
@@ -104,8 +95,8 @@ public class ControladorUnidad {
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
     public ResponseEntity<?> agregarDuenioUnidad(UnidadDTO unidadDTO) throws UnidadException, PersonaException {
         Unidad unidad = buscarUnidad(unidadDTO.getCodigo(),unidadDTO.getPiso(),unidadDTO.getNumero());
-        Persona persona = controladorPersona.buscarPersona(unidadDTO.getDocumento());
-        unidad.agregarDuenio(persona);
+        //Persona persona = controladorPersona.buscarPersona(unidadDTO.getDocumento());
+        //unidad.agregarDuenio(persona);
         return ResponseEntity.ok().build();
     }
     
@@ -113,8 +104,8 @@ public class ControladorUnidad {
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
     public ResponseEntity<?> agregarInquilinoUnidad(UnidadDTO unidadDTO) throws UnidadException, PersonaException{
         Unidad unidad = buscarUnidad(unidadDTO.getCodigo(),unidadDTO.getPiso(),unidadDTO.getNumero());
-        Persona persona = controladorPersona.buscarPersona(unidadDTO.getDocumento());
-        unidad.agregarInquilino(persona);
+        //Persona persona = controladorPersona.buscarPersona(unidadDTO.getDocumento());
+        //unidad.agregarInquilino(persona);
         return ResponseEntity.ok().build();
     }
 

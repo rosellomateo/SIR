@@ -118,7 +118,17 @@ public class PersonaService {
 
         if(persona.getTokenVerificacion() != null)
         {
-            return "Ya se envio un mail para recuperar el password";
+            String token = generarToken();
+            persona.setTokenVerificacion(token);
+            personaRepository.save(persona);
+
+            List<MetaData> metaData = new ArrayList<>();
+            metaData.add(new MetaData("name", persona.getNombre()));
+            metaData.add(new MetaData("resetCode", token));
+
+            sendMessageService.sendMessage(SendRequest.builder().to(mail).subject("Recuperacion de password")
+                .template(10).metaData(metaData).build());
+            return "Se reenvio un mail para recuperar el password";
         }
 
         String token = generarToken();

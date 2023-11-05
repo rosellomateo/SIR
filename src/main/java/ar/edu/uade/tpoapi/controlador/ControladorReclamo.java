@@ -37,17 +37,6 @@ public class ControladorReclamo
 
     @Autowired
     ReclamoService reclamoService;
-
-    private static ControladorReclamo instancia;
-    private static final ControladorEdificio controladorEdificio = ControladorEdificio.getInstancia();
-    private static final ControladorUnidad controlerUnidad = ControladorUnidad.getInstancia();
-    private static final ControladorPersona controlerPersona = ControladorPersona.getInstancia();
-
-    public static ControladorReclamo getInstancia() {
-        if(instancia == null)
-            instancia = new ControladorReclamo();
-        return instancia;
-    }
     
     @GetMapping("/edificio")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
@@ -93,12 +82,13 @@ public class ControladorReclamo
     @PutMapping("/agregar")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
     public ResponseEntity<?> agregarReclamo(ReclamoDTO reclamoDTO) throws EdificioException, UnidadException, PersonaException {
-        Edificio edificio = controladorEdificio.buscarEdificio(reclamoDTO.getCodigo());
-        Unidad unidad = controlerUnidad.buscarUnidad(reclamoDTO.getCodigo(), reclamoDTO.getPiso(),reclamoDTO.getNumero());
-        Persona persona = controlerPersona.buscarPersona(reclamoDTO.getDocumento());
-        Reclamo reclamo = new Reclamo(persona, edificio, reclamoDTO.getUbicacion(), reclamoDTO.getDescripcion(), unidad);
-        reclamo = reclamoService.agregarReclamo(reclamo);
-        return ResponseEntity.ok("Reclamo agregado correctamente " + reclamo.getNumero());
+       //Edificio edificio = controladorEdificio.buscarEdificio(reclamoDTO.getCodigo());
+       // Unidad unidad = controlerUnidad.buscarUnidad(reclamoDTO.getCodigo(), reclamoDTO.getPiso(),reclamoDTO.getNumero());
+        //Persona persona = controlerPersona.buscarPersona(reclamoDTO.getDocumento());
+        //Reclamo reclamo = new Reclamo(persona, edificio, reclamoDTO.getUbicacion(), reclamoDTO.getDescripcion(), unidad);
+       // reclamo = reclamoService.agregarReclamo(reclamo);
+       // return ResponseEntity.ok("Reclamo agregado correctamente " + reclamo.getNumero());
+                                	return null;                        
     }
 
     @PutMapping("/agregar-imagen")
