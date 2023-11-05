@@ -3,6 +3,7 @@ package ar.edu.uade.tpoapi.controlador;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.edu.uade.tpoapi.controlador.request.Unidad.TransferirUnidadDTO;
 import ar.edu.uade.tpoapi.controlador.request.Unidad.UnidadDTO;
 import ar.edu.uade.tpoapi.exceptions.EdificioException;
 import ar.edu.uade.tpoapi.exceptions.PersonaException;
@@ -41,11 +42,8 @@ public class ControladorUnidad {
     
     @PostMapping("/transferirUnidad")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
-    public ResponseEntity<?> transferirUnidad(@Valid @RequestBody UnidadDTO transferirUnidadDTO) throws UnidadException, PersonaException {
-        Unidad unidad = buscarUnidad(transferirUnidadDTO.getCodigo(),transferirUnidadDTO.getPiso(),transferirUnidadDTO.getNumero());
-        //Persona persona = controladorPersona.buscarPersona(transferirUnidadDTO.getDocumento()); //dudas
-        //unidad.transferir(persona);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<?> transferirUnidad(@Valid @RequestBody TransferirUnidadDTO transferirUnidadDTO) throws UnidadException, PersonaException {
+        return ResponseEntity.ok().body(unidadService.transferirUnidad(transferirUnidadDTO));
     }
 
     @PostMapping("/alquilarUnidad")
