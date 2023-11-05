@@ -10,5 +10,6 @@ public interface UnidadRepository extends JpaRepository<Unidad, Integer>{
     public void deleteById(Integer id);
     public Unidad getById(Integer id);
     public Unidad findByEdificioCodigoAndPisoAndNumero(int codigo, String piso, String numero);
+    public boolean existsByEdificioCodigoAndPisoAndNumero(int codigo, String piso, String numero);
 
 }

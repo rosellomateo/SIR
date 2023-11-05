@@ -31,15 +31,6 @@ public class ControladorEdificio {
     @Autowired
     EdificioService edificioService;
 
-    private static ControladorEdificio instancia;
-
-
-    public static ControladorEdificio getInstancia() {
-        if(instancia == null)
-            instancia = new ControladorEdificio();
-        return instancia;
-    }
-
     @GetMapping(value = "/getAll")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
     public ResponseEntity<?> getEdificios(){
