@@ -28,18 +28,13 @@ public class Persona {
     private String mail;
     @Column(name = "contrasenia")
     private String password;
-    /*
-    @ManyToMany(fetch = FetchType.EAGER,targetEntity = Roles.class,cascade = CascadeType.PERSIST)
-    @JoinTable(name = "personas_roles",joinColumns = @JoinColumn(name = "documento"),inverseJoinColumns = @JoinColumn(name = "id_rol"))
-    private Roles roles;
-    */
     @Enumerated(EnumType.STRING)
     private Rol rol;
     private String tokenVerificacion;
     @Default private boolean cuentaVerificado = false;
 
-    public boolean validoParaRegistro(){
-        return (this.mail == null && this.password == null);
+    public boolean validoParaRegistroMail(){
+        return !this.cuentaVerificado;
     }
 
     public PersonaView toView() {
@@ -51,6 +46,6 @@ public class Persona {
     }
 
     public boolean validoParaRegistroPassword() {
-        return (this.mail != null && this.password == null);
+        return (this.cuentaVerificado && this.password == null);
     }
 }

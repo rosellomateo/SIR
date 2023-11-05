@@ -91,7 +91,6 @@ public class PersonaService {
     }
 
     public void confirmarMail(String mail) {
-        //confirmar mail y enviar mail de bienvenida
         Persona persona = buscarPersonaPorMail(mail);
         persona.setCuentaVerificado(true);
         persona.setTokenVerificacion(null);
