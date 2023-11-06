@@ -6,6 +6,8 @@ import ar.edu.uade.tpoapi.views.ComentarioView;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
@@ -27,6 +29,8 @@ public class Comentario {
     private int idcomentario;
     private String texto;
     private Date fecha;
+    @ManyToOne
+    @JoinColumn(name = "documento")
     private Persona usuario; 
     private String urlImagen;    
 

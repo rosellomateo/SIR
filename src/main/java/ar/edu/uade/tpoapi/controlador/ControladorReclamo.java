@@ -28,7 +28,7 @@ import jakarta.validation.Valid;
 
 
 @RestController
-@RequestMapping("/Reclamo")
+@RequestMapping("/reclamo")
 public class ControladorReclamo 
 {
 
@@ -106,6 +106,7 @@ public class ControladorReclamo
     }
 
     @PutMapping("/comentarReclamo")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
     public ResponseEntity<?> comentarReclamo(@Valid @RequestBody ComentarReclamoDTO comentarReclamoDTO) throws ReclamoException {
         return reclamoService.comentarReclamo(comentarReclamoDTO);
     }

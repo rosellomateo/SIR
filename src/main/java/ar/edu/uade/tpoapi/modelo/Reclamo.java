@@ -84,6 +84,7 @@ public class Reclamo {
             .build();
     }
 
-    public void comentar(String texto, Persona persona, String urlImagen) {
+    public void agregarComentario(Comentario comentario) {
+        comentarios.add(comentario);
     }
 }
