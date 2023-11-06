@@ -1,6 +1,7 @@
 package ar.edu.uade.tpoapi.services;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +13,14 @@ import ar.edu.uade.tpoapi.controlador.request.Reclamo.ComentarReclamoDTO;
 import ar.edu.uade.tpoapi.controlador.request.Reclamo.ImagenReclamoDTO;
 import ar.edu.uade.tpoapi.controlador.request.Reclamo.ReclamoDTO;
 import ar.edu.uade.tpoapi.controlador.request.Reclamo.UnidadDTO;
+import ar.edu.uade.tpoapi.modelo.Comentario;
 import ar.edu.uade.tpoapi.modelo.Edificio;
 import ar.edu.uade.tpoapi.modelo.Imagen;
 import ar.edu.uade.tpoapi.modelo.Persona;
 import ar.edu.uade.tpoapi.modelo.Reclamo;
 import ar.edu.uade.tpoapi.modelo.Unidad;
 import ar.edu.uade.tpoapi.modelo.Enumerations.Estado;
+import ar.edu.uade.tpoapi.repository.ComentarioRepository;
 import ar.edu.uade.tpoapi.repository.EdificioRepository;
 import ar.edu.uade.tpoapi.repository.ImagenRepository;
 import ar.edu.uade.tpoapi.repository.PersonaRepository;
@@ -38,6 +41,8 @@ public class ReclamoService {
     PersonaRepository personaRepository;
     @Autowired
     ImagenRepository imagenRepository;
+    @Autowired
+    ComentarioRepository comentarioRepository;
     @Autowired
     SendMessageService sendMessageService;
 
@@ -141,7 +146,29 @@ public class ReclamoService {
     }
 
     public ResponseEntity<?> comentarReclamo(ComentarReclamoDTO comentarReclamoDTO) {
-        return null;
+        Reclamo reclamo = reclamoRepository.findById(comentarReclamoDTO.getNumero()).orElse(null);
+        if (reclamo != null) {
+            Persona persona = personaRepository.findByDocumento(comentarReclamoDTO.getDocumento()).orElse(null);
+            if (persona != null) {
+                Comentario comentario = Comentario.builder().texto(comentarReclamoDTO.getTexto())
+                        .urlImagen(comentarReclamoDTO.getUrlImagen()).usuario(persona).fecha(new Date()).build();
+                comentario = comentarioRepository.saveAndFlush(comentario);
+                if (comentario == null) {
+                    return ResponseEntity.badRequest().body("Error al comentar el reclamo");
+                }
+                reclamo.agregarComentario(comentario);
+                reclamo = reclamoRepository.saveAndFlush(reclamo);
+                if (reclamo != null) {
+                    return ResponseEntity.ok(reclamo.toView());
+                } else {
+                    return ResponseEntity.badRequest().body("Error al comentar el reclamo");
+                }
+            } else {
+                return ResponseEntity.badRequest().body("La persona no existe");
+            }
+        } else {
+            return ResponseEntity.badRequest().body("El reclamo no existe");
+        }
     }
 
 }

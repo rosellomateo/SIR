@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.edu.uade.tpoapi.modelo.Enumerations.Estado;
+import ar.edu.uade.tpoapi.views.ComentarioView;
 import ar.edu.uade.tpoapi.views.ImagenView;
 import ar.edu.uade.tpoapi.views.ReclamoView;
 import jakarta.persistence.Column;
@@ -49,6 +50,9 @@ public class Reclamo {
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "idreclamo")
     private List<Imagen> imagenes;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idreclamo")
+    private List<Comentario> comentarios;
 
     public void agregarImagen(Imagen imagen) {
         imagenes.add(imagen);
@@ -60,10 +64,27 @@ public class Reclamo {
 
     public ReclamoView toView(){
         List<ImagenView> imagenesView = new ArrayList<ImagenView>();
-
         for (Imagen imagen : this.imagenes) {
             imagenesView.add(imagen.toView());
         }
-        return new ReclamoView(this.numero, this.usuario.toView(), this.edificio.toView(), this.ubicacion, this.descripcion, this.unidad.toView(), this.estado,imagenesView);
+        List<ComentarioView> comentariosView = new ArrayList<ComentarioView>();
+        for (Comentario comentario : this.comentarios) {
+            comentariosView.add(comentario.toView());
+        }
+        return ReclamoView.builder()
+            .numero(this.numero)
+            .usuario(this.usuario.toView())
+            .edificio(this.edificio.toView())
+            .ubicacion(this.ubicacion)
+            .descripcion(this.descripcion)
+            .unidad(this.unidad.toView())
+            .estado(this.estado)
+            .imagenes(imagenesView)
+            .comentarios(comentariosView)
+            .build();
+    }
+
+    public void agregarComentario(Comentario comentario) {
+        comentarios.add(comentario);
     }
 }
