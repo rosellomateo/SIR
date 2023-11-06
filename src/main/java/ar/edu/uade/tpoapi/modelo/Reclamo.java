@@ -83,4 +83,7 @@ public class Reclamo {
             .comentarios(comentariosView)
             .build();
     }
+
+    public void comentar(String texto, Persona persona, String urlImagen) {
+    }
 }

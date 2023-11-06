@@ -141,7 +141,23 @@ public class ReclamoService {
     }
 
     public ResponseEntity<?> comentarReclamo(ComentarReclamoDTO comentarReclamoDTO) {
-        return null;
+        Reclamo reclamo = reclamoRepository.findById(comentarReclamoDTO.getNumero()).orElse(null);
+        if (reclamo != null) {
+            Persona persona = personaRepository.findByDocumento(comentarReclamoDTO.getDocumento()).orElse(null);
+            if (persona != null) {
+                reclamo.comentar(comentarReclamoDTO.getTexto(), persona, comentarReclamoDTO.getUrlImagen());
+                reclamo = reclamoRepository.saveAndFlush(reclamo);
+                if (reclamo != null) {
+                    return ResponseEntity.ok(reclamo.toView());
+                } else {
+                    return ResponseEntity.badRequest().body("Error al comentar el reclamo");
+                }
+            } else {
+                return ResponseEntity.badRequest().body("La persona no existe");
+            }
+        } else {
+            return ResponseEntity.badRequest().body("El reclamo no existe");
+        }
     }
 
 }
