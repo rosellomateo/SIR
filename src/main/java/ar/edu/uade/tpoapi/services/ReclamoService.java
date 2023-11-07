@@ -1,6 +1,7 @@
 package ar.edu.uade.tpoapi.services;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,17 +13,20 @@ import ar.edu.uade.tpoapi.controlador.request.Reclamo.ComentarReclamoDTO;
 import ar.edu.uade.tpoapi.controlador.request.Reclamo.ImagenReclamoDTO;
 import ar.edu.uade.tpoapi.controlador.request.Reclamo.ReclamoDTO;
 import ar.edu.uade.tpoapi.controlador.request.Reclamo.UnidadDTO;
+import ar.edu.uade.tpoapi.modelo.Comentario;
 import ar.edu.uade.tpoapi.modelo.Edificio;
 import ar.edu.uade.tpoapi.modelo.Imagen;
 import ar.edu.uade.tpoapi.modelo.Persona;
 import ar.edu.uade.tpoapi.modelo.Reclamo;
 import ar.edu.uade.tpoapi.modelo.Unidad;
 import ar.edu.uade.tpoapi.modelo.Enumerations.Estado;
+import ar.edu.uade.tpoapi.repository.ComentarioRepository;
 import ar.edu.uade.tpoapi.repository.EdificioRepository;
 import ar.edu.uade.tpoapi.repository.ImagenRepository;
 import ar.edu.uade.tpoapi.repository.PersonaRepository;
 import ar.edu.uade.tpoapi.repository.ReclamoRepository;
 import ar.edu.uade.tpoapi.repository.UnidadRepository;
+import ar.edu.uade.tpoapi.views.MetaData;
 import ar.edu.uade.tpoapi.views.ReclamoView;
 import ar.edu.uade.tpoapi.views.SendRequest;
 
@@ -38,6 +42,8 @@ public class ReclamoService {
     PersonaRepository personaRepository;
     @Autowired
     ImagenRepository imagenRepository;
+    @Autowired
+    ComentarioRepository comentarioRepository;
     @Autowired
     SendMessageService sendMessageService;
 
@@ -96,9 +102,26 @@ public class ReclamoService {
         .build();
         reclamo = reclamoRepository.saveAndFlush(reclamo);
         if(reclamo != null){
+            enviarMailCreacionReclamo(reclamo);
             return ResponseEntity.ok(reclamo.toView());
         }
         return ResponseEntity.badRequest().body("No se pudo crear el reclamo");
+    }
+
+    private void enviarMailCreacionReclamo(Reclamo reclamo) {
+        List<MetaData> metaData = new ArrayList<>();
+        metaData.add(new MetaData("nombrePersona", reclamo.getUsuario().getNombre()));
+        metaData.add(new MetaData("numeroReclamo", String.valueOf(reclamo.getNumero())));
+        metaData.add(new MetaData("descripcionReclamo", reclamo.getDescripcion()));
+        metaData.add(new MetaData("ubicacionReclamo", reclamo.getUbicacion()));
+        metaData.add(new MetaData("estadoReclamo", reclamo.getEstado().toString()));
+        SendRequest sendRequest = SendRequest.builder()
+        .to(reclamo.getUsuario().getMail())
+        .subject("Creacion de reclamo")
+        .template(12)
+        .metaData(metaData)
+        .build();
+        sendMessageService.sendMessage(sendRequest);
     }
 
     public boolean agregarImagenAReclamo(ImagenReclamoDTO imagenDTO){
@@ -125,11 +148,29 @@ public class ReclamoService {
             reclamo.setEstado(cambiarEstadoDTO.getEstado());
             reclamo = reclamoRepository.saveAndFlush(reclamo);
             if (reclamo != null)
+            {
+                enviarMailCambioEstado(reclamo);
                 return true;
+            }
             else
                 return false;
         }
         return false;
+    }
+
+    private void enviarMailCambioEstado(Reclamo reclamo) {
+        List<MetaData> metaData = new ArrayList<>();
+        metaData.add(new MetaData("nombrePersona", reclamo.getUsuario().getNombre()));
+        metaData.add(new MetaData("numeroReclamo", String.valueOf(reclamo.getNumero())));
+        metaData.add(new MetaData("descripcionReclamo", reclamo.getDescripcion()));
+        metaData.add(new MetaData("nuevoEstado", reclamo.getEstado().toString()));
+        SendRequest sendRequest = SendRequest.builder()
+        .to(reclamo.getUsuario().getMail())
+        .subject("Cambio de estado de reclamo")
+        .template(11)
+        .metaData(metaData)
+        .build();
+        sendMessageService.sendMessage(sendRequest);
     }
 
     public Reclamo buscarReclamo(int numero) {
@@ -141,7 +182,46 @@ public class ReclamoService {
     }
 
     public ResponseEntity<?> comentarReclamo(ComentarReclamoDTO comentarReclamoDTO) {
-        return null;
+        Reclamo reclamo = reclamoRepository.findById(comentarReclamoDTO.getNumero()).orElse(null);
+        if (reclamo != null) {
+            Persona persona = personaRepository.findByDocumento(comentarReclamoDTO.getDocumento()).orElse(null);
+            if (persona != null) {
+                Comentario comentario = Comentario.builder().texto(comentarReclamoDTO.getTexto())
+                        .urlImagen(comentarReclamoDTO.getUrlImagen()).usuario(persona).fecha(new Date()).build();
+                comentario = comentarioRepository.saveAndFlush(comentario);
+                if (comentario == null) {
+                    return ResponseEntity.badRequest().body("Error al comentar el reclamo");
+                }
+                reclamo.agregarComentario(comentario);
+                reclamo = reclamoRepository.saveAndFlush(reclamo);
+                if (reclamo != null) {
+                    enviarMailCargarComentario(reclamo);
+                    return ResponseEntity.ok(reclamo.toView());
+                } else {
+                    return ResponseEntity.badRequest().body("Error al comentar el reclamo");
+                }
+            } else {
+                return ResponseEntity.badRequest().body("La persona no existe");
+            }
+        } else {
+            return ResponseEntity.badRequest().body("El reclamo no existe");
+        }
+    }
+
+    private void enviarMailCargarComentario(Reclamo reclamo) {
+        List<MetaData> metaData = new ArrayList<>();
+        metaData.add(new MetaData("nombrePersona", reclamo.getUsuario().getNombre()));
+        metaData.add(new MetaData("numeroReclamo", String.valueOf(reclamo.getNumero())));
+        metaData.add(new MetaData("descripcionReclamo", reclamo.getDescripcion()));
+        metaData.add(new MetaData("ubicacionReclamo", reclamo.getUbicacion()));
+        metaData.add(new MetaData("estadoReclamo", reclamo.getEstado().toString()));
+        SendRequest sendRequest = SendRequest.builder()
+        .to(reclamo.getUsuario().getMail())
+        .subject("Nuevo comentario en reclamo")
+        .template(13)
+        .metaData(metaData)
+        .build();
+        sendMessageService.sendMessage(sendRequest);
     }
 
 }
