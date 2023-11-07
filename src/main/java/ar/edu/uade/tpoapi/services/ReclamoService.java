@@ -195,6 +195,7 @@ public class ReclamoService {
                 reclamo.agregarComentario(comentario);
                 reclamo = reclamoRepository.saveAndFlush(reclamo);
                 if (reclamo != null) {
+                    enviarMailCargarComentario(reclamo);
                     return ResponseEntity.ok(reclamo.toView());
                 } else {
                     return ResponseEntity.badRequest().body("Error al comentar el reclamo");
@@ -205,6 +206,22 @@ public class ReclamoService {
         } else {
             return ResponseEntity.badRequest().body("El reclamo no existe");
         }
+    }
+
+    private void enviarMailCargarComentario(Reclamo reclamo) {
+        List<MetaData> metaData = new ArrayList<>();
+        metaData.add(new MetaData("nombrePersona", reclamo.getUsuario().getNombre()));
+        metaData.add(new MetaData("numeroReclamo", String.valueOf(reclamo.getNumero())));
+        metaData.add(new MetaData("descripcionReclamo", reclamo.getDescripcion()));
+        metaData.add(new MetaData("ubicacionReclamo", reclamo.getUbicacion()));
+        metaData.add(new MetaData("estadoReclamo", reclamo.getEstado().toString()));
+        SendRequest sendRequest = SendRequest.builder()
+        .to(reclamo.getUsuario().getMail())
+        .subject("Nuevo comentario en reclamo")
+        .template(13)
+        .metaData(metaData)
+        .build();
+        sendMessageService.sendMessage(sendRequest);
     }
 
 }
