@@ -26,6 +26,7 @@ import ar.edu.uade.tpoapi.repository.ImagenRepository;
 import ar.edu.uade.tpoapi.repository.PersonaRepository;
 import ar.edu.uade.tpoapi.repository.ReclamoRepository;
 import ar.edu.uade.tpoapi.repository.UnidadRepository;
+import ar.edu.uade.tpoapi.views.MetaData;
 import ar.edu.uade.tpoapi.views.ReclamoView;
 import ar.edu.uade.tpoapi.views.SendRequest;
 
@@ -130,11 +131,29 @@ public class ReclamoService {
             reclamo.setEstado(cambiarEstadoDTO.getEstado());
             reclamo = reclamoRepository.saveAndFlush(reclamo);
             if (reclamo != null)
+            {
+                enviarMailCambioEstado(reclamo);
                 return true;
+            }
             else
                 return false;
         }
         return false;
+    }
+
+    private void enviarMailCambioEstado(Reclamo reclamo) {
+        List<MetaData> metaData = new ArrayList<>();
+        metaData.add(new MetaData("nombrePersona", reclamo.getUsuario().getNombre()));
+        metaData.add(new MetaData("numeroReclamo", String.valueOf(reclamo.getNumero())));
+        metaData.add(new MetaData("descripcionReclamo", reclamo.getDescripcion()));
+        metaData.add(new MetaData("nuevoEstado", reclamo.getEstado().toString()));
+        SendRequest sendRequest = SendRequest.builder()
+        .to(reclamo.getUsuario().getMail())
+        .subject("Cambio de estado de reclamo")
+        .template(11)
+        .metaData(metaData)
+        .build();
+        sendMessageService.sendMessage(sendRequest);
     }
 
     public Reclamo buscarReclamo(int numero) {
