@@ -102,9 +102,26 @@ public class ReclamoService {
         .build();
         reclamo = reclamoRepository.saveAndFlush(reclamo);
         if(reclamo != null){
+            enviarMailCreacionReclamo(reclamo);
             return ResponseEntity.ok(reclamo.toView());
         }
         return ResponseEntity.badRequest().body("No se pudo crear el reclamo");
+    }
+
+    private void enviarMailCreacionReclamo(Reclamo reclamo) {
+        List<MetaData> metaData = new ArrayList<>();
+        metaData.add(new MetaData("nombrePersona", reclamo.getUsuario().getNombre()));
+        metaData.add(new MetaData("numeroReclamo", String.valueOf(reclamo.getNumero())));
+        metaData.add(new MetaData("descripcionReclamo", reclamo.getDescripcion()));
+        metaData.add(new MetaData("ubicacionReclamo", reclamo.getUbicacion()));
+        metaData.add(new MetaData("estadoReclamo", reclamo.getEstado().toString()));
+        SendRequest sendRequest = SendRequest.builder()
+        .to(reclamo.getUsuario().getMail())
+        .subject("Creacion de reclamo")
+        .template(12)
+        .metaData(metaData)
+        .build();
+        sendMessageService.sendMessage(sendRequest);
     }
 
     public boolean agregarImagenAReclamo(ImagenReclamoDTO imagenDTO){
