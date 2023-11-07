@@ -68,8 +68,11 @@ public class Reclamo {
             imagenesView.add(imagen.toView());
         }
         List<ComentarioView> comentariosView = new ArrayList<ComentarioView>();
-        for (Comentario comentario : this.comentarios) {
-            comentariosView.add(comentario.toView());
+        if(this.comentarios != null)
+        {
+            for (Comentario comentario : this.comentarios) {
+                comentariosView.add(comentario.toView());
+            }
         }
         return ReclamoView.builder()
             .numero(this.numero)
