@@ -1,5 +1,7 @@
 package ar.edu.uade.tpoapi.views;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +17,6 @@ public class ComentarioView {
     private String texto;
     private String fecha;
     private PersonaView persona; 
-    private String urlImagen;
+    private List<ImagenView> imagenes;
     
 }
