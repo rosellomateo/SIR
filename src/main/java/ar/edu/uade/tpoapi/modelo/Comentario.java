@@ -73,6 +73,7 @@ public class Comentario {
             .fecha(this.fecha.toString())
             .persona(this.usuario.toView())
             .imagenes(imagenesView)
+            .respuestas(respuestasView)
             .build();
     }
 }

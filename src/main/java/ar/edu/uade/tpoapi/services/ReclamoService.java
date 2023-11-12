@@ -12,7 +12,6 @@ import ar.edu.uade.tpoapi.controlador.request.Reclamo.CambiarEstadoDTO;
 import ar.edu.uade.tpoapi.controlador.request.Reclamo.ComentarReclamoDTO;
 import ar.edu.uade.tpoapi.controlador.request.Reclamo.ImagenReclamoDTO;
 import ar.edu.uade.tpoapi.controlador.request.Reclamo.ReclamoDTO;
-import ar.edu.uade.tpoapi.controlador.request.Reclamo.UnidadDTO;
 import ar.edu.uade.tpoapi.modelo.Comentario;
 import ar.edu.uade.tpoapi.modelo.Edificio;
 import ar.edu.uade.tpoapi.modelo.Imagen;

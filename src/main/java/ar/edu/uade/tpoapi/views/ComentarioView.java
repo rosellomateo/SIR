@@ -18,5 +18,5 @@ public class ComentarioView {
     private String fecha;
     private PersonaView persona; 
     private List<ImagenView> imagenes;
-    
+    private List<ComentarioView> respuestas;    
 }
