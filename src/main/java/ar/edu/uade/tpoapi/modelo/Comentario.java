@@ -40,7 +40,7 @@ public class Comentario {
     @JoinColumn(name = "documento")
     private Persona usuario; 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idreclamo")
+    @JoinColumn(name = "idcomentario")
     private List<Imagen> imagenes; 
     @OneToMany(mappedBy = "comentarioPadre", cascade = CascadeType.ALL)
     private List<Comentario> respuestas;
