@@ -24,5 +24,4 @@ public class ComentarReclamoDTO {
     @NotBlank(message = "El documento del usuario no puede estar vacío")
     private String documento;
     private List<ImagenReclamoDTO> imagenes;
-
 }

@@ -3,7 +3,6 @@ package ar.edu.uade.tpoapi.modelo;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import ar.edu.uade.tpoapi.views.ComentarioView;
 import ar.edu.uade.tpoapi.views.ImagenView;
@@ -59,13 +58,21 @@ public class Comentario {
 
     public ComentarioView toView()
     {
+        if(this.imagenes == null)
+            this.imagenes = new ArrayList<Imagen>();
+            
+        if(this.respuestas == null)
+            this.respuestas = new ArrayList<Comentario>();
+
         List<ImagenView> imagenesView = new ArrayList<ImagenView>();
         for (Imagen imagen : this.imagenes) {
             imagenesView.add(imagen.toView());
         }
-        List<ComentarioView> respuestasView = respuestas.stream()
-                .map(Comentario::toView)
-                .collect(Collectors.toList());
+        List<ComentarioView> respuestasView = new ArrayList<ComentarioView>();
+        
+        for (Comentario comentario : this.respuestas) {
+            respuestasView.add(comentario.toView());
+        }
 
         return ComentarioView.builder()
             .idcomentario(this.idcomentario)

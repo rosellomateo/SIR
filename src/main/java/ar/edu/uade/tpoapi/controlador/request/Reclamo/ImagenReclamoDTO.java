@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 
 public class ImagenReclamoDTO {
-    @Min(value = 1, message = "El número de reclamo debe ser mayor a 0")
+    @Min(value = 0, message = "El número de reclamo debe ser mayor a 0")
     private int numero;
     @NotBlank(message = "La dirección no puede estar vacía")
     private String direccion;

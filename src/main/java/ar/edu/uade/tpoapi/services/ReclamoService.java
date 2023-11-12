@@ -204,13 +204,19 @@ public class ReclamoService {
                 if (comentario == null) {
                     return ResponseEntity.badRequest().body("Error al comentar el reclamo");
                 }
-                reclamo.agregarComentario(comentario);
-                reclamo = reclamoRepository.saveAndFlush(reclamo);
-                if (reclamo != null) {
-                    enviarMailCargarComentario(reclamo);
+                if(comentarioPadre == null){
+                    reclamo.agregarComentario(comentario);
+                    reclamo = reclamoRepository.saveAndFlush(reclamo);
+                    if (reclamo != null) {
+                        enviarMailCargarComentario(reclamo);
+                        return ResponseEntity.ok(reclamo.toView());
+                    } else {
+                        return ResponseEntity.badRequest().body("Error al comentar el reclamo");
+                    }
+                }
+                else{
+                    reclamo = reclamoRepository.findById(comentarReclamoDTO.getNumero()).orElse(null);
                     return ResponseEntity.ok(reclamo.toView());
-                } else {
-                    return ResponseEntity.badRequest().body("Error al comentar el reclamo");
                 }
             } else {
                 return ResponseEntity.badRequest().body("La persona no existe");
