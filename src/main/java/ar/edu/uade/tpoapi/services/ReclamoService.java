@@ -186,8 +186,21 @@ public class ReclamoService {
         if (reclamo != null) {
             Persona persona = personaRepository.findByDocumento(comentarReclamoDTO.getDocumento()).orElse(null);
             if (persona != null) {
-                Comentario comentario = Comentario.builder().texto(comentarReclamoDTO.getTexto())
-                        .urlImagen(comentarReclamoDTO.getUrlImagen()).usuario(persona).fecha(new Date()).build();
+                
+                List<ImagenReclamoDTO> imagenes = comentarReclamoDTO.getImagenes();
+                List<Imagen> imagenesReclamo = new ArrayList<Imagen>();
+                for (ImagenReclamoDTO imagenReclamoDTO : imagenes) {
+                    Imagen imagen = Imagen.builder().direccion(imagenReclamoDTO.getDireccion())
+                            .tipo(imagenReclamoDTO.getTipo()).build();
+                    imagen = imagenRepository.saveAndFlush(imagen);
+                    if (imagen == null) {
+                        return ResponseEntity.badRequest().body("Error al comentar el reclamo");
+                    }
+                    imagenesReclamo.add(imagen);
+                }
+                Comentario comentarioPadre = comentarioRepository.findById(comentarReclamoDTO.getNumeroPadre()).orElse(null);
+                Comentario comentario = Comentario.builder().texto(comentarReclamoDTO.getTexto()).comentarioPadre(comentarioPadre)
+                .imagenes(imagenesReclamo).usuario(persona).fecha(new Date()).build();
                 comentario = comentarioRepository.saveAndFlush(comentario);
                 if (comentario == null) {
                     return ResponseEntity.badRequest().body("Error al comentar el reclamo");
