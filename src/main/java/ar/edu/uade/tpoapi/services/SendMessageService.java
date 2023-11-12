@@ -1,7 +1,5 @@
 package ar.edu.uade.tpoapi.services;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -60,7 +58,6 @@ public class SendMessageService {
 			Optional<Templates> template = templateRepository.findById(sendRequest.getTemplate());
 
 			if (template.isPresent()) {
-				List<String> keys = new ArrayList<>();	
 				String finalMessage = template.get().getContent();
 				for (MetaData meta : sendRequest.getMetaData()) {
 					if(template.get().getVars().contains(meta.getKey())) {

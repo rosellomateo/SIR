@@ -12,7 +12,6 @@ import ar.edu.uade.tpoapi.controlador.request.Reclamo.CambiarEstadoDTO;
 import ar.edu.uade.tpoapi.controlador.request.Reclamo.ComentarReclamoDTO;
 import ar.edu.uade.tpoapi.controlador.request.Reclamo.ImagenReclamoDTO;
 import ar.edu.uade.tpoapi.controlador.request.Reclamo.ReclamoDTO;
-import ar.edu.uade.tpoapi.controlador.request.Reclamo.UnidadDTO;
 import ar.edu.uade.tpoapi.modelo.Comentario;
 import ar.edu.uade.tpoapi.modelo.Edificio;
 import ar.edu.uade.tpoapi.modelo.Imagen;
@@ -186,19 +185,38 @@ public class ReclamoService {
         if (reclamo != null) {
             Persona persona = personaRepository.findByDocumento(comentarReclamoDTO.getDocumento()).orElse(null);
             if (persona != null) {
-                Comentario comentario = Comentario.builder().texto(comentarReclamoDTO.getTexto())
-                        .urlImagen(comentarReclamoDTO.getUrlImagen()).usuario(persona).fecha(new Date()).build();
+                
+                List<ImagenReclamoDTO> imagenes = comentarReclamoDTO.getImagenes();
+                List<Imagen> imagenesReclamo = new ArrayList<Imagen>();
+                for (ImagenReclamoDTO imagenReclamoDTO : imagenes) {
+                    Imagen imagen = Imagen.builder().direccion(imagenReclamoDTO.getDireccion())
+                            .tipo(imagenReclamoDTO.getTipo()).build();
+                    imagen = imagenRepository.saveAndFlush(imagen);
+                    if (imagen == null) {
+                        return ResponseEntity.badRequest().body("Error al comentar el reclamo");
+                    }
+                    imagenesReclamo.add(imagen);
+                }
+                Comentario comentarioPadre = comentarioRepository.findById(comentarReclamoDTO.getNumeroPadre()).orElse(null);
+                Comentario comentario = Comentario.builder().texto(comentarReclamoDTO.getTexto()).comentarioPadre(comentarioPadre)
+                .imagenes(imagenesReclamo).usuario(persona).fecha(new Date()).build();
                 comentario = comentarioRepository.saveAndFlush(comentario);
                 if (comentario == null) {
                     return ResponseEntity.badRequest().body("Error al comentar el reclamo");
                 }
-                reclamo.agregarComentario(comentario);
-                reclamo = reclamoRepository.saveAndFlush(reclamo);
-                if (reclamo != null) {
-                    enviarMailCargarComentario(reclamo);
+                if(comentarioPadre == null){
+                    reclamo.agregarComentario(comentario);
+                    reclamo = reclamoRepository.saveAndFlush(reclamo);
+                    if (reclamo != null) {
+                        enviarMailCargarComentario(reclamo);
+                        return ResponseEntity.ok(reclamo.toView());
+                    } else {
+                        return ResponseEntity.badRequest().body("Error al comentar el reclamo");
+                    }
+                }
+                else{
+                    reclamo = reclamoRepository.findById(comentarReclamoDTO.getNumero()).orElse(null);
                     return ResponseEntity.ok(reclamo.toView());
-                } else {
-                    return ResponseEntity.badRequest().body("Error al comentar el reclamo");
                 }
             } else {
                 return ResponseEntity.badRequest().body("La persona no existe");
