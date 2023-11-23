@@ -21,6 +21,7 @@ import ar.edu.uade.tpoapi.views.MetaData;
 import ar.edu.uade.tpoapi.views.SendRequest;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+
 @Service
 public class SendMessageService {
 

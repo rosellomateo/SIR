@@ -30,8 +30,6 @@ public class UserDetailsImpl implements UserDetailsService{
         SimpleGrantedAuthority  authority = new SimpleGrantedAuthority("ROLE_" + persona.getRol().name());
         Collection<SimpleGrantedAuthority> authorities = Arrays.asList(authority);
 
-        
         return new User(persona.getMail(), persona.getPassword(),true,true,true,true,authorities);
     }
-    
 }
