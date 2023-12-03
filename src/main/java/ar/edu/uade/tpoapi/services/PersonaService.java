@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 
 import ar.edu.uade.tpoapi.controlador.request.Persona.UpdatePersonaDTO;
 import ar.edu.uade.tpoapi.modelo.Persona;
+import ar.edu.uade.tpoapi.modelo.Enumerations.Rol;
 import ar.edu.uade.tpoapi.repository.PersonaRepository;
 import ar.edu.uade.tpoapi.views.MetaData;
 import ar.edu.uade.tpoapi.views.SendRequest;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 
 @Service
 public class PersonaService {
@@ -141,5 +143,16 @@ public class PersonaService {
         sendMessageService.sendMessage(SendRequest.builder().to(mail).subject("Recuperacion de password")
                 .template(10).metaData(metaData).build());
         return "Se envio un mail para recuperar el password";
+    }
+
+    public ArrayList<Persona> getAdmins() {
+        Rol rol = Rol.Admin;
+        ArrayList<Persona> Admins = personaRepository.findByRol(rol);
+        return Admins;
+    }
+
+    public Object getRol(@Email String mail) {
+        Persona persona = buscarPersonaPorMail(mail);
+        return persona.getRol();
     }
 }

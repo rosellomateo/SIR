@@ -7,6 +7,7 @@ import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import ar.edu.uade.tpoapi.modelo.Persona;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -15,14 +16,13 @@ import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtUtils {
-    
+
     @Value("${jwt.secret.key}")
     private String secretKey;
     @Value("${jwt.token.expiration.time}")
     private String timeExpiration;
 
     //Generar token de acceso
-
     public String generateAccesToken(String mail) {
         return Jwts.builder()
         .setSubject(mail)
@@ -71,4 +71,5 @@ public class JwtUtils {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+
 }

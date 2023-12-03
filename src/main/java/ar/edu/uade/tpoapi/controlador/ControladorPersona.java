@@ -22,14 +22,15 @@ import ar.edu.uade.tpoapi.modelo.Enumerations.Rol;
 import ar.edu.uade.tpoapi.services.PersonaService;
 import ar.edu.uade.tpoapi.views.PersonaView;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 
 @RestController
 @RequestMapping("/persona")
 public class ControladorPersona {
-    
+
     @Autowired
     PersonaService personaService;
-    
+
     protected Persona buscarPersona(String documento) throws PersonaException {
         if(personaService.existePersona(documento))
             return personaService.buscarPersona(documento);
@@ -97,5 +98,25 @@ public class ControladorPersona {
         }
         else
             return ResponseEntity.badRequest().body("No existe una persona con ese documento");
+    }
+
+    @GetMapping("/getAdmins")
+    @PreAuthorize("hasRole('SuperAdmin')")
+    public ResponseEntity<?> getAdmins() throws PersonaException {
+        try {
+            return ResponseEntity.ok().body(personaService.getAdmins());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("No se pudo traer los admins");
+        }
+    }
+
+    @GetMapping("/getRol")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin') or hasRole('Residente') or hasRole('Encargado')")
+    public ResponseEntity<?> getRol(@RequestParam String mail) throws PersonaException {
+        try {
+            return ResponseEntity.ok().body(personaService.getRol(mail));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("No se pudo traer el rol");
+        }
     }
 }

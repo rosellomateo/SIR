@@ -24,6 +24,7 @@ import ar.edu.uade.tpoapi.exceptions.UnidadException;
 import ar.edu.uade.tpoapi.modelo.Unidad;
 import ar.edu.uade.tpoapi.services.UnidadService;
 import ar.edu.uade.tpoapi.views.PersonaView;
+import ar.edu.uade.tpoapi.views.UnidadView;
 import jakarta.validation.Valid;
 
 @RestController
@@ -45,7 +46,16 @@ public class ControladorUnidad {
             return ResponseEntity.badRequest().body("No se pudo crear la unidad");
         }
     }
-    
+
+    @GetMapping("/buscarUnidad")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin') or hasRole('Encargado') or hasRole('Residente')")
+    public ResponseEntity<?> buscarUnidad(@RequestParam int identificador) throws UnidadException{
+        Unidad unidad = unidadService.buscarUnidad(identificador);
+        if(unidad != null)
+            return ResponseEntity.ok().body(unidad.toView());
+        return ResponseEntity.notFound().build();
+    }
+
     @PostMapping("/transferirUnidad")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
     public ResponseEntity<?> transferirUnidad(@Valid @RequestBody TransferirUnidadDTO transferirUnidadDTO) throws UnidadException, PersonaException {
@@ -102,6 +112,15 @@ public class ControladorUnidad {
     public ResponseEntity<?> inquilinosPorUnidad(@RequestParam int identificador) throws UnidadException{
         Set<PersonaView> resultado = unidadService.inquilinosPorUnidad(identificador);
          if(resultado.isEmpty())
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(resultado);
+    }
+
+    @GetMapping("/obtenerTodas")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
+    public ResponseEntity<?> obtenerTodas() throws UnidadException{
+        Set<UnidadView> resultado = unidadService.obtenerTodas();
+        if(resultado.isEmpty())
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok().body(resultado);
     }

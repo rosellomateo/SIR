@@ -1,5 +1,6 @@
 package ar.edu.uade.tpoapi.services;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,6 +19,7 @@ import ar.edu.uade.tpoapi.repository.EdificioRepository;
 import ar.edu.uade.tpoapi.repository.PersonaRepository;
 import ar.edu.uade.tpoapi.repository.UnidadRepository;
 import ar.edu.uade.tpoapi.views.PersonaView;
+import ar.edu.uade.tpoapi.views.UnidadView;
 
 @Service
 public class UnidadService {
@@ -174,5 +176,13 @@ public class UnidadService {
             }
             return resultado;
         }
-    }    
+    }
+
+    public Set<UnidadView> obtenerTodas() {
+        List<Unidad> unidades = unidadRepository.findAll();
+        Set<UnidadView> resultado = new HashSet<>();
+        for(Unidad unidad : unidades)
+            resultado.add(unidad.toView());
+        return resultado;
+    }
 }

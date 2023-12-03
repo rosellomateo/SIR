@@ -1,5 +1,7 @@
 package ar.edu.uade.tpoapi.security;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +14,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 import ar.edu.uade.tpoapi.security.filters.JwtAuthenticationFilter;
 import ar.edu.uade.tpoapi.security.filters.JwtAuthorizationFilter;
 import ar.edu.uade.tpoapi.security.jwt.JwtUtils;
@@ -38,9 +44,9 @@ public class SecurityConfig{
         jwtAuthenticationFilter.setAuthenticationManager(authenticationManager);
         jwtAuthenticationFilter.setFilterProcessesUrl("/auth/login");
 
-        return httpSecurity
-            .csrf(config -> config.disable())
-            .authorizeHttpRequests(auth -> {
+        httpSecurity.csrf(config -> config.disable())
+        .cors().and()
+        .authorizeHttpRequests(auth -> {
                 auth.requestMatchers("/auth/**").permitAll();
                 auth.anyRequest().authenticated();
             })
@@ -49,8 +55,21 @@ public class SecurityConfig{
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
             })
             .addFilter(jwtAuthenticationFilter)
-            .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
-            .build();
+            .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return httpSecurity .build();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE","OPTIONS","HEAD","TRACE","CONNECT","PATCH"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setExposedHeaders(Arrays.asList("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean

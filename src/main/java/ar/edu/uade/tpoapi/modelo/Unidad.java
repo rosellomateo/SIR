@@ -5,6 +5,7 @@ import java.util.List;
 
 import ar.edu.uade.tpoapi.exceptions.UnidadException;
 import ar.edu.uade.tpoapi.views.EdificioView;
+import ar.edu.uade.tpoapi.views.PersonaView;
 import ar.edu.uade.tpoapi.views.UnidadView;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -83,11 +84,26 @@ public class Unidad {
             this.habitado = true;
     }
 
-   
-
      public UnidadView toView() {
-         EdificioView auxEdificio = edificio.toView();
-         return new UnidadView(id, piso, numero, habitado, auxEdificio);
+        ArrayList<PersonaView> dueniosView = new ArrayList<PersonaView>();
+        ArrayList<PersonaView> inquilinosView = new ArrayList<PersonaView>();
+        if(duenios != null)
+            for(Persona persona : duenios)
+                dueniosView.add(persona.toView());
+
+        if(inquilinos != null)
+            for(Persona persona : inquilinos)
+                inquilinosView.add(persona.toView());
+
+        return UnidadView.builder()
+        .id(this.id)
+        .piso(this.piso)
+        .numero(this.numero)
+        .habitado(this.habitado)
+        .edificio(this.edificio.toView())
+        .duenio(dueniosView)
+        .inquilino(inquilinosView)
+        .build();
      }
 
     public String toString() {
