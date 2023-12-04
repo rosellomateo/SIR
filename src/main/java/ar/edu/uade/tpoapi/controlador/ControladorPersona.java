@@ -87,7 +87,7 @@ public class ControladorPersona {
 
     @GetMapping("/buscar")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
-    public ResponseEntity<?> testBuscarPersona(@Valid @RequestParam String documento) throws PersonaException {
+    public ResponseEntity<?> BuscarPersona(@RequestParam String documento) throws PersonaException {
         if(personaService.existePersona(documento))
         {
             try {
@@ -100,11 +100,11 @@ public class ControladorPersona {
             return ResponseEntity.badRequest().body("No existe una persona con ese documento");
     }
 
-    @GetMapping("/getAdmins")
+    @GetMapping("/getPorRol")
     @PreAuthorize("hasRole('SuperAdmin')")
-    public ResponseEntity<?> getAdmins() throws PersonaException {
+    public ResponseEntity<?> getAdmins(@RequestParam String rol) throws PersonaException {
         try {
-            return ResponseEntity.ok().body(personaService.getAdmins());
+            return ResponseEntity.ok().body(personaService.getPorRol(rol));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("No se pudo traer los admins");
         }
@@ -117,6 +117,16 @@ public class ControladorPersona {
             return ResponseEntity.ok().body(personaService.getRol(mail));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("No se pudo traer el rol");
+        }
+    }
+
+    @GetMapping("/getReporteUsuarios")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    public ResponseEntity<?> getReporteUsuarios() throws PersonaException {
+        try {
+            return ResponseEntity.ok().body(personaService.getReporteUsuarios());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("No se pudo traer el reporte");
         }
     }
 }

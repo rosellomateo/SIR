@@ -145,14 +145,19 @@ public class PersonaService {
         return "Se envio un mail para recuperar el password";
     }
 
-    public ArrayList<Persona> getAdmins() {
-        Rol rol = Rol.Admin;
-        ArrayList<Persona> Admins = personaRepository.findByRol(rol);
-        return Admins;
-    }
-
     public Object getRol(@Email String mail) {
         Persona persona = buscarPersonaPorMail(mail);
         return persona.getRol();
+    }
+
+    public ArrayList<Persona> getPorRol(String rol) {
+        Rol rolBuscar = Rol.valueOf(rol);
+        ArrayList<Persona> personas = personaRepository.findByRol(rolBuscar);
+        return personas;
+    }
+
+    public Object getReporteUsuarios() {
+        Object reporte = personaRepository.getReporteUsuarios();
+        return reporte;
     }
 }
