@@ -36,7 +36,7 @@ public class ControladorReclamo
     ReclamoService reclamoService;
     
     @GetMapping("/edificio")
-    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleado') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
     public ResponseEntity<?> reclamosPorEdificio(@RequestParam int codigo) {
         List<ReclamoView> resultado = reclamoService.reclamosPorEdificio(codigo);
         if (resultado.isEmpty()) {
@@ -46,7 +46,7 @@ public class ControladorReclamo
     }
 
     @GetMapping("/unidad")
-    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleado') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
     public ResponseEntity<?> reclamosPorUnidad(@RequestParam int identificador) {
         List<ReclamoView> resultado = reclamoService.reclamosPorUnidad(identificador);
         if (resultado.isEmpty()) {
@@ -56,7 +56,7 @@ public class ControladorReclamo
     }
 
     @GetMapping("/numero")
-    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleado') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
     public ResponseEntity<?> reclamosPorNumero(@RequestParam int numero) throws ReclamoException {
         Reclamo resultado = reclamoService.buscarReclamo(numero);
         if (resultado == null) {
@@ -66,7 +66,7 @@ public class ControladorReclamo
     }
 
     @GetMapping("/persona")
-    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleado') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
     public ResponseEntity<?> reclamosPorPersona(@RequestParam String documento) {
         List<ReclamoView> resultado = reclamoService.reclamosPorPersona(documento);
         if (resultado.isEmpty()) {
@@ -77,7 +77,7 @@ public class ControladorReclamo
 
 
     @PutMapping("/agregar")
-    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleado') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
     public ResponseEntity<?> agregarReclamo(@Valid @RequestBody ReclamoDTO reclamoDTO) throws EdificioException, UnidadException, PersonaException {
         return reclamoService.agregarReclamo(reclamoDTO);
     }
@@ -96,7 +96,7 @@ public class ControladorReclamo
     }
 
     @PostMapping("/cambiar-estado")
-    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleado') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
     public ResponseEntity<?> cambiarEstado(@Valid @RequestBody CambiarEstadoDTO cambiarEstadoDTO) throws ReclamoException {
         if (reclamoService.ActualizarEstado(cambiarEstadoDTO)) {
             return ResponseEntity.ok("Estado cambiado correctamente");
@@ -106,7 +106,7 @@ public class ControladorReclamo
     }
 
     @PutMapping("/comentarReclamo")
-    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleado') or hasRole('SuperAdmin') or hasRole('Residente')or hasRole('Encargado')")
     public ResponseEntity<?> comentarReclamo(@Valid @RequestBody ComentarReclamoDTO comentarReclamoDTO) throws ReclamoException {
         return reclamoService.comentarReclamo(comentarReclamoDTO);
     }

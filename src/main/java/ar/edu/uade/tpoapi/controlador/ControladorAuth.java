@@ -75,7 +75,6 @@ public class ControladorAuth {
                     return ResponseEntity.ok().body("Usuario registrado correctamente");
                 else
                     return ResponseEntity.badRequest().body("Error al registrar el usuario");
-                
             }
             else
             {

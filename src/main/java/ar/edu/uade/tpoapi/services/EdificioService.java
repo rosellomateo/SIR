@@ -73,4 +73,10 @@ public class EdificioService  {
         edificio.updateEdificio(edificioView);
         edificioRepository.saveAndFlush(edificio);
     }
+
+    public List<Object[]> obtenerSelector() {
+        List<Object[]> edificioViews = edificioRepository.obtenerSelector();
+
+        return edificioViews;
+    }
 }

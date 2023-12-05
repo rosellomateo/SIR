@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import ar.edu.uade.tpoapi.controlador.request.Unidad.CreateUnidadDTO;
 import ar.edu.uade.tpoapi.controlador.request.Unidad.TransferirUnidadDTO;
 import ar.edu.uade.tpoapi.controlador.request.Unidad.UnidadDTO;
+import ar.edu.uade.tpoapi.controlador.request.Unidad.UnidadModificarDTO;
 import ar.edu.uade.tpoapi.exceptions.UnidadException;
 import ar.edu.uade.tpoapi.modelo.Edificio;
 import ar.edu.uade.tpoapi.modelo.Persona;
@@ -20,6 +21,7 @@ import ar.edu.uade.tpoapi.repository.PersonaRepository;
 import ar.edu.uade.tpoapi.repository.UnidadRepository;
 import ar.edu.uade.tpoapi.views.PersonaView;
 import ar.edu.uade.tpoapi.views.UnidadView;
+import jakarta.validation.Valid;
 
 @Service
 public class UnidadService {
@@ -184,5 +186,15 @@ public class UnidadService {
         for(Unidad unidad : unidades)
             resultado.add(unidad.toView());
         return resultado;
+    }
+
+    public Unidad modificarUnidad(UnidadModificarDTO unidadDTO) {
+        Unidad unidad = buscarUnidad(unidadDTO.getIdentificador());
+        if(unidad == null)
+            return null;
+        unidad.setNumero(unidadDTO.getNumero());
+        unidad.setPiso(unidadDTO.getPiso());
+        unidadRepository.saveAndFlush(unidad);
+        return unidad;
     }
 }

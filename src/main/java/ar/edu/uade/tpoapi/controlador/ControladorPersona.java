@@ -39,7 +39,7 @@ public class ControladorPersona {
     }
 
     @PostMapping("/agregar")
-    @PreAuthorize("hasRole('Admin') or hasRole('Empleados')or hasRole('SuperAdmin')")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleado')or hasRole('SuperAdmin')")
     public ResponseEntity<?>agregarPersona(@Valid @RequestBody CreatePersonaDTO createPersonaDTO)  throws PersonaException{
         if(personaService.existePersona(createPersonaDTO.getDocumento()))
             return ResponseEntity.badRequest().body("Ya existe una persona con ese documento");
@@ -50,7 +50,7 @@ public class ControladorPersona {
     }
 
     @DeleteMapping("/eliminar")
-    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleado') or hasRole('SuperAdmin')")
     public ResponseEntity<?> eliminarPersona(@Valid @RequestBody DeletePersonaDTO deletePersonaDTO) throws PersonaException {
         if(personaService.existePersona(deletePersonaDTO.getDocumento()))
         {
@@ -66,7 +66,7 @@ public class ControladorPersona {
     }
 
     @PatchMapping("/modificar")
-    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleado') or hasRole('SuperAdmin')")
     @Transactional
     public ResponseEntity<?> modificarPersona(@Valid @RequestBody UpdatePersonaDTO updatePersonaDTO) throws PersonaException {
         if(personaService.existePersona(updatePersonaDTO.getDocumento()))
@@ -86,7 +86,7 @@ public class ControladorPersona {
     }
 
     @GetMapping("/buscar")
-    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleado') or hasRole('SuperAdmin')")
     public ResponseEntity<?> BuscarPersona(@RequestParam String documento) throws PersonaException {
         if(personaService.existePersona(documento))
         {
@@ -101,7 +101,7 @@ public class ControladorPersona {
     }
 
     @GetMapping("/getPorRol")
-    @PreAuthorize("hasRole('SuperAdmin')")
+    @PreAuthorize("hasRole('SuperAdmin') or hasRole('Admin') or hasRole('Empleado')")
     public ResponseEntity<?> getAdmins(@RequestParam String rol) throws PersonaException {
         try {
             return ResponseEntity.ok().body(personaService.getPorRol(rol));
@@ -111,7 +111,7 @@ public class ControladorPersona {
     }
 
     @GetMapping("/getRol")
-    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin') or hasRole('Residente') or hasRole('Encargado')")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleado') or hasRole('SuperAdmin') or hasRole('Residente') or hasRole('Encargado')")
     public ResponseEntity<?> getRol(@RequestParam String mail) throws PersonaException {
         try {
             return ResponseEntity.ok().body(personaService.getRol(mail));
@@ -121,7 +121,7 @@ public class ControladorPersona {
     }
 
     @GetMapping("/getReporteUsuarios")
-    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleado') or hasRole('SuperAdmin')")
     public ResponseEntity<?> getReporteUsuarios() throws PersonaException {
         try {
             return ResponseEntity.ok().body(personaService.getReporteUsuarios());

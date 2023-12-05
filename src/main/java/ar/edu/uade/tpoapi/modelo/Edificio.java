@@ -96,12 +96,22 @@ public class Edificio {
         }
         return resultado;
     }
-    
+
     public EdificioView toView() {
         return new EdificioView(codigo, nombre, direccion);
     }
 
     public String toString() {
         return codigo + ";" + nombre + ";" + direccion;
+    }
+
+    public Set<PersonaView> inquilinos() {
+        Set<PersonaView> resultado = new HashSet<PersonaView>();
+        for(Unidad unidad : unidades) {
+            List<Persona> duenios = unidad.getInquilinos();
+            for(Persona p : duenios)
+                resultado.add(p.toView());
+        }
+        return resultado;
     }
 }

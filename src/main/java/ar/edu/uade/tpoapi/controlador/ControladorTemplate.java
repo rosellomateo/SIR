@@ -22,7 +22,7 @@ public class ControladorTemplate {
     private TemplateService templateService;
 
     @PostMapping("/Save")
-    @PreAuthorize("hasRole('Admin') or hasRole('Empleados') or hasRole('SuperAdmin')")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleado') or hasRole('SuperAdmin')")
     public ResponseEntity<?> saveNewTemplate(@RequestParam("file") MultipartFile templateFile ,@RequestHeader("title") String title , @RequestHeader("description") String description , @RequestHeader("vars") List<String> vars){
 		return templateService.saveNewTemplate(templateFile, title, description, vars);
 	}
