@@ -120,6 +120,17 @@ public class ControladorPersona {
         }
     }
 
+    @GetMapping("/getPersonaPorMail")
+    @PreAuthorize("hasRole('Admin') or hasRole('Empleado') or hasRole('SuperAdmin') or hasRole('Residente') or hasRole('Encargado')")
+    public ResponseEntity<?> getPersonaPorMail(@RequestParam String mail) throws PersonaException {
+        try {
+            return ResponseEntity.ok().body(personaService.buscarPersonaPorMail(mail));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("No se pudo traer la persona");
+        }
+    }
+
+
     @GetMapping("/getReporteUsuarios")
     @PreAuthorize("hasRole('Admin') or hasRole('Empleado') or hasRole('SuperAdmin')")
     public ResponseEntity<?> getReporteUsuarios() throws PersonaException {
